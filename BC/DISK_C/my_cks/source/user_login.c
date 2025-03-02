@@ -1,10 +1,11 @@
 #include "all_func.h"
+#include "all_func.h"
 //ÆÁÄ»¿í¶È1024£¬¸ß¶È768
 
-int welcome(int *page){
+int user_login(int *page){
 	mouse_off(&mouse);
 	
-	draw_basic();
+	draw_login();
 
 	mouse_on(mouse);
 
@@ -12,7 +13,7 @@ int welcome(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(300,490, 485, 540)==1){
-			*page=1;
+			*page=2;
 			break;
 		}
 		delay(15);
@@ -20,7 +21,7 @@ int welcome(int *page){
 	return page;
 }
 
-void draw_basic()
+void draw_login()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
@@ -33,11 +34,10 @@ void draw_basic()
     Draw_Rounded_Rectangle(300, 410, 700, 460, 5, 1,0xB71C);//ÃÜÂëÀ¸Ô²½Ç¾ØÐÎ
     Fill_Rounded_Rectangle(300,490, 485, 540, 5,0x435c);//µÇÂ¼°´Å¥
     Draw_Rounded_Rectangle(515, 490, 700, 540, 5,1,0x0235);//×¢²á°´Å¥
-    PrintCC(305,225,"Ð£Ô°ÍâÂô¿ìµÝÆ½Ì¨",HEI,48,1,0);
+    PrintCC(305,225,"µÇÂ¼",HEI,48,1,0);
     PrintCC(305,345,"ÕËºÅ",HEI,24,1,0XC618);
     PrintCC(305,425,"ÃÜÂë",HEI,24,1,0XC618);
     PrintCC(365,503,"µÇÂ¼",HEI,24,1,0xFFFF);
     PrintCC(580,503,"×¢²á",HEI,24,1,0x0235);
     
 }
-

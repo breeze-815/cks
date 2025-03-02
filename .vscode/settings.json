@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "HZK.C": "cpp",
+        "all_func.h": "c",
+        "draw.h": "c",
+        "svga.h": "c"
+    }
+}
