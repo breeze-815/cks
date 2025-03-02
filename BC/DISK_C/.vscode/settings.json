@@ -57,6 +57,11 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "SVGA.C": "cpp"
+    "SVGA.C": "cpp",
+    "BGIDEMO.C": "cpp",
+    "PRINTCC.C": "cpp",
+    "all_func.h": "c",
+    "MAIN.C": "cpp",
+    "HZK.C": "cpp"
   }
 }

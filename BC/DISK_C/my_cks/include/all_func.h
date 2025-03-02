@@ -11,11 +11,12 @@
 #include<math.h>
 #include<time.h>
 
-#include "ghz.h"
-#include "hz.h"
+
 #include "mouse.h"
 #include "SVGA.H"
 #include "draw.h"
+#include "HZK.h"
+#include "draw_shape.h"
 extern MOUSE mouse;
 
 #endif

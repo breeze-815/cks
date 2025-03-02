@@ -1,13 +1,15 @@
 #include "all_func.h"
 
-void draw_basic_logging();
+
 
 
 int main()
 {
     int gd = DETECT, gm;
+    
     SetSVGA64k();//启动SVGA画图界面 
-
+    
+    
     mouse_init(); // 初始化鼠标
 
     draw_login();
@@ -22,7 +24,8 @@ int main()
 
         
     }
-    CloseSVGA();//关闭图形界面  
+    CloseSVGA();//关闭图形界面 
+    
     return 0;
 }
 

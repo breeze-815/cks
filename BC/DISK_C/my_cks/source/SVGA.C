@@ -970,6 +970,28 @@ void bar2(int x1,int y1,int x2,int y2,unsigned int color)
 	Line1(x1,y2,x2,y2,color);
 }
 
+
+/**
+ * @brief 绘制任意角度的圆弧
+ * @param xc, yc 圆心坐标
+ * @param radius 半径
+ * @param start_angle 起始角度（弧度制，从x轴正方向逆时针计算）
+ * @param end_angle 结束角度（弧度制）
+ * @param color 颜色
+ */
+
+
+
+
+ 
+ 
+
+
+
+ 
+ 
+
+
 void Circle(int xc, int yc, int radius, unsigned int color)
 {
 	/*画圆圈的定位变量和决策变量*/
@@ -1114,7 +1136,7 @@ void LoadBMP(int x1, int y1, int x2, int y2, int n)     //加载图像
 	if((fp=fopen(f,"rb"))==NULL)
 	{
 		fclose(fp);
-		puthz_coverd2(400,400,"当前位置并没有储存路径！",12,32,34,0x000000,0xBDBD);
+		//puthz_coverd2(400,400,"当前位置并没有储存路径！",12,32,34,0x000000,0xBDBD);
 	}
 	else
 	{
