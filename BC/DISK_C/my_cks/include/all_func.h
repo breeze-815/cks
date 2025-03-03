@@ -16,7 +16,6 @@
 #include "SVGA.H"
 #include "user_re.h"
 #include "welcome.h"
-#include "lgfunc.h"
 
 #include "HZK.h"
 #include "draw_shape.h"
