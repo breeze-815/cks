@@ -361,18 +361,18 @@ void hide_cursor(int x,int y)
 }
 
 /* 切换光标可见性 */
-void toggle_cursor() 
+void toggle_cursor(int x,int y) 
 {
     int i, j;
     //mouse_off(&mouse);  // 先隐藏鼠标
     if(cursor_visible) 
-		draw_cursor(305,335);
+		draw_cursor(x,y);
 	else 
-        hide_cursor(305,335);
+        hide_cursor(x,y);
     cursor_visible = !cursor_visible;
 }
 
-void cursor()
+void cursor(int x,int y)
 {
 	while(!kbhit()) {
 		clock_t current = clock();
@@ -381,7 +381,7 @@ void cursor()
 		// 非阻塞光标闪烁（500ms间隔）
 		if((current - last_toggle)*1000/CLK_TCK >= 500) 
 		{
-			toggle_cursor();
+			toggle_cursor(x,y);
 			last_toggle = current;
 		}
 	}

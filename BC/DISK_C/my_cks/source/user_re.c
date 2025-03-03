@@ -17,12 +17,15 @@ int user_register(int *page){
 			*page=0;//返回
 			break;
 		}else if(mouse_press(230, 250, 350, 300)==1){
-            press(1);
+            press(1);//按下"用户"
         }else if(mouse_press(230, 330, 350, 380)==1){
-            press(2);
+            press(2);//按下"商家"
         }else if(mouse_press(230, 410, 350, 460)==1){
-            press(3);
-        }else if(mouse_press(498,287,870,326)==1) {//输入账号
+            press(3);//按下"骑手"
+        }else if(mouse_press(450, 250, 850, 300)==1) {//输入账号
+            bar1(455, 255, 845, 295,0xFFFF);
+            cursor(455,260);
+            
 		}
     }
 }
