@@ -11,8 +11,8 @@ int welcome(int *page){
 	while(1){
 		mouse_show(&mouse);
 
-		if(mouse_press(300,490, 485, 540)==1){
-			*page=1;
+		if(mouse_press(515, 490, 700, 540)==1){
+			*page=1;//进入注册界面
 			break;
 		}
 		delay(15);
@@ -24,10 +24,8 @@ void draw_basic()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
-    Fill_Rounded_Rectangle(200,180, 800, 630, 30,0xFFDF);
+    Fill_Rounded_Rectangle(200, 148, 824, 600, 30,0xFFDF);//填色
     Draw_Rounded_Rectangle(200, 148, 824, 600, 30, 2,0x6B4D);//最外围灰色圆角矩形
-
-
     
     Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//账号栏圆角矩形
     Draw_Rounded_Rectangle(300, 410, 700, 460, 5, 1,0xB71C);//密码栏圆角矩形

@@ -3,6 +3,10 @@
         "HZK.C": "cpp",
         "all_func.h": "c",
         "draw.h": "c",
-        "svga.h": "c"
+        "svga.h": "c",
+        "user_register.h": "c",
+        "welcome.h": "c",
+        "SVGA.H": "cpp",
+        "SVGA.C": "cpp"
     }
 }
