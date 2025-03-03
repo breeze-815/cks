@@ -14,8 +14,10 @@
 
 #include "mouse.h"
 #include "SVGA.H"
-#include "draw.h"
-#include "user_login.h"
+#include "user_re.h"
+#include "welcome.h"
+#include "lgfunc.h"
+
 #include "HZK.h"
 #include "draw_shape.h"
 extern MOUSE mouse;

@@ -1,5 +1,5 @@
 #include "all_func.h"
-//#include "draw.h"
+
 #define  H 15
 #define  W 12
 clock_t last_toggle;
@@ -31,10 +31,6 @@ int mouse_shape[H][W] =    //鼠标形状二维数组
 
 unsigned int mouse_bk[20][20];           //存放被鼠标覆盖的区域
            
- 
-
-
-
 /***鼠标初始化***/
 void mouse_init()
 {

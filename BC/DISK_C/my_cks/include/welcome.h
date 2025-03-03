@@ -3,6 +3,6 @@
 
 int welcome(int *page);
 void draw_basic();
-void draw_workbox();
+
 
 #endif
