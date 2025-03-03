@@ -2,7 +2,11 @@
 //#include "draw.h"
 #define  H 15
 #define  W 12
-
+clock_t last_toggle;
+volatile int cursor_visible = 1;   // 光标可见状态
+               
+int cursor_x = 100, cursor_y = 100;// 光标初始位置（根据需求修改）
+unsigned int cursor_bk[16][2];     // 光标背景存储（假设16x2光标）
 MOUSE mouse={0,0,0}; //定义一个鼠标结构变量
 
 int mouse_shape[H][W] =    //鼠标形状二维数组
@@ -345,5 +349,44 @@ void getmouse(int *button,int *x,int *y)
 	{
 		*x=mx;
 		*y=my;
+	}
+}
+
+//绘制光标
+void draw_cursor(int x,int y)
+{
+	Line1(x,y,x,y+28,0);
+}
+
+//隐藏光标
+void hide_cursor(int x,int y)
+{
+	Line1(x,y,x,y+28,0xffff);
+}
+
+/* 切换光标可见性 */
+void toggle_cursor() 
+{
+    int i, j;
+    //mouse_off(&mouse);  // 先隐藏鼠标
+    if(cursor_visible) 
+		draw_cursor(305,335);
+	else 
+        hide_cursor(305,335);
+    cursor_visible = !cursor_visible;
+}
+
+void cursor()
+{
+	while(!kbhit()) {
+		clock_t current = clock();
+		// mouse_on(mouse);  // 恢复鼠标显示
+		mouse_show(&mouse);
+		// 非阻塞光标闪烁（500ms间隔）
+		if((current - last_toggle)*1000/CLK_TCK >= 500) 
+		{
+			toggle_cursor();
+			last_toggle = current;
+		}
 	}
 }

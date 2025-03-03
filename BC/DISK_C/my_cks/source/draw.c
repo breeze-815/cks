@@ -1,6 +1,7 @@
 #include "all_func.h"
 //ÆÁÄ»¿í¶È1024£¬¸ß¶È768
 
+
 int welcome(int *page){
 	mouse_off(&mouse);
 	
@@ -15,9 +16,13 @@ int welcome(int *page){
 			*page=1;
 			break;
 		}
+
+        if(mouse_press(300,330,700,380)==1){
+            bar1(305,335,695,375,0xFFFF);
+            cursor();
 		delay(15);
 	}
-	return page;
+}
 }
 
 void draw_basic()
@@ -38,6 +43,7 @@ void draw_basic()
     PrintCC(305,425,"ÃÜÂë",HEI,24,1,0XC618);
     PrintCC(365,503,"µÇÂ¼",HEI,24,1,0xFFFF);
     PrintCC(580,503,"×¢²á",HEI,24,1,0x0235);
+    PrintText(100,100,"chp123",HEI,16,1,0XC618);
     
 }
 

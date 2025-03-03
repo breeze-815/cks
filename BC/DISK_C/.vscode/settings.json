@@ -62,6 +62,9 @@
     "PRINTCC.C": "cpp",
     "all_func.h": "c",
     "MAIN.C": "cpp",
-    "HZK.C": "cpp"
+    "HZK.C": "cpp",
+    "time.h": "c",
+    "EWCONIO.C": "cpp",
+    "TIME.H": "cpp"
   }
 }

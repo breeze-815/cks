@@ -61,5 +61,11 @@ void Curhide(void);
 
 void getmouse(int *button,int *x,int *y);
 
+void draw_cursor(int x,int y);
 
+void hide_cursor(int x,int y);
+
+void toggle_cursor();
+
+void cursor();
 #endif
