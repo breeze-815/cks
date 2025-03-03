@@ -15,14 +15,13 @@ int welcome(int *page){
 		if(mouse_press(515, 490, 700, 540)==1){
 			*page=1;//进入注册界面
 			break;
-		}
-
-        if(mouse_press(300,330,700,380)==1){
+		}else if(mouse_press(300,330,700,380)==1){
             bar1(305,335,695,375,0xFFFF);
-            cursor();
+            cursor(305,340);
+            
 		delay(15);
-	}
-}
+	    }
+    }
 }
 
 void draw_basic()
