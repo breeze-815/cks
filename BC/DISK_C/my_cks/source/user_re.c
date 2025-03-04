@@ -1,7 +1,8 @@
 #include "all_func.h"
 //屏幕宽度1024，高度768
 int user_register(int *page){
-    
+    struct USER temp={0};//存储信息的用户结构体 
+	char judge[10]="\0";//用于判断的密码 
 
 	mouse_off(&mouse);
 	
