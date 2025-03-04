@@ -16,16 +16,81 @@ int user_register(int *page){
 		if(mouse_press(450,490, 635, 540)==1){
 			*page=0;//返回
 			break;
-		}else if(mouse_press(230, 250, 350, 300)==1){
+		}
+        else if(mouse_press(230, 250, 350, 300)==1)
+        {
             press(1);//按下"用户"
-        }else if(mouse_press(230, 330, 350, 380)==1){
+        }
+        else if(mouse_press(230, 330, 350, 380)==1)
+        {
             press(2);//按下"商家"
-        }else if(mouse_press(230, 410, 350, 460)==1){
+        }
+        else if(mouse_press(230, 410, 350, 460)==1)
+        {
             press(3);//按下"骑手"
-        }else if(mouse_press(450, 250, 850, 300)==1) {//输入账号
+        }
+        else if(mouse_press(450, 250, 850, 300)==1)//输入账号
+        {
             bar1(455, 255, 845, 295,0xFFFF);
-            cursor(455,260);
-            
+            strcpy(temp.name,"\0");
+            //cursor(455,260);
+            Getinfo(455,260,temp.name,10,455,260,845,295);
+		}
+        else if(mouse_press(450, 330, 850, 380)==1)//输入密码
+        {   
+			mouse_off(&mouse);
+			bar1(455, 335, 845, 375,0xffff);
+			strcpy(temp.code,"\0");
+			Getcode(455,340,temp.code,10,450, 330, 850, 380);
+			mouse_on(mouse);
+		}
+		else if(mouse_press(450, 410, 850, 460)==1)//重新输入密码
+        {   
+			mouse_off(&mouse);
+			bar1(455, 415, 845, 455,0xffff);
+			strcpy(judge,"\0");
+			Getcode(455,420,judge,10,450, 410, 850, 460);
+			mouse_on(mouse);
+		}if(mouse_press(665, 490, 850, 540)==1)//点击确认键
+        {     
+			if(strcmp(temp.name,"\0")!=0)//用户名不为空 
+            {
+				if(strcmp(temp.code,"\0")!=0)//密码不为空 
+                {
+					if(!strcmp(temp.code,judge))//两次密码相同 
+                    {
+				      if(save_user(temp)==0)
+                      {
+                        *page=2;
+				        break;
+                      }
+                      else
+                      {
+                        PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
+                        delay(1500);
+				        bar1(570,575,800,600,0xffff);
+                      }
+			        }
+			        else
+			        {
+                        PrintCC(570,575,"两次密码不相同",HEI,24,1,0XF800);
+				        delay(1500);
+				        bar1(570,575,800,600,0xffff);
+			        }  
+				}
+				else
+				{
+					PrintCC(570,575,"密码为空",HEI,24,1,0XF800);
+				    delay(1500);
+				    bar1(570,575,800,600,0xffff);
+				}	
+			}
+			else
+			{
+				PrintCC(570,575,"用户名为空",HEI,24,1,0XF800);
+				delay(1500);
+				bar1(570,575,800,600,0xffff);
+			}	
 		}
     }
 }

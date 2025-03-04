@@ -246,15 +246,19 @@ void show_gb(int x,int y)
 void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1)
 {
 	char showtemp[2]= {0,0};
+	char str[2];  // 先声明数组
 	int key;    			//按键值
 	int i=0,k,temp;
 	int border=x1+4;	    //border表示显示图片的左边界
+	str[0] = showtemp[0];  // 运行时赋值
+	str[1] = '\0';  // 添加字符串终止符
 	x1=x1+4;
 	y1=y1+5;
 	for(i=strlen(name)-1;i>=0;i--)
 	{
 		*showtemp=name[i];
-		prt_asc16_ch(x1+i*8,y1-2,showtemp[0],0);
+		
+		PrintText(x1+i*8,y1-2,str,HEI,16,1,0);
 	}
 	i=strlen(name);
 	while(bioskey(1))					//清空输入缓冲区
@@ -286,7 +290,7 @@ void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1)
 					bar1(border,y1,border+8, y1+16, 0xffff);
 					name[i]=temp;				//字符送入给定字符串			
 					*showtemp=temp;
-					prt_asc16(border,y1-2,showtemp,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					i++;
 					name[i]='\0';		//标记字符串结尾
 					border+=8;
@@ -298,7 +302,7 @@ void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1)
 					temp+=32;
 					name[i]=temp;				//字符送入给定字符串			
 					*showtemp=temp;             //显示新的字符串达到画面与实际输入的同步
-					prt_asc16(border,y1-2,showtemp,0);
+					PrintText(border,y1-2,showtemp,HEI,16,1,0);
 					i++;
 					name[i]='\0';		//标记字符串结尾
 					border+=8;
@@ -351,7 +355,7 @@ void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1)
 	for(i=strlen(code)-1;i>=0;i--)
 	{
 		*showtemp=code[i];
-		prt_asc16_ch(x1+i*8,y1-2,'*',0);
+		PrintText(x1+i*8,y1-2,"*",HEI,16,1,0);
 	}
 	i=strlen(code);
 	while(bioskey(1))					//清空输入缓冲区
@@ -383,13 +387,13 @@ void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1)
 					bar1(border,y1,border+8, y1+16, 0xffff);
 					code[i]=temp;				//字符送入给定字符串			
 					*showtemp=temp;
-					prt_asc16(border,y1-2,showtemp,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					delay(150);
 					bar1(border,y1,border+8, y1+16, 0xffff);
-					prt_asc16(border,y1-2,"_",0);
+					PrintText(border,y1-2,"_",HEI,16,1,0);
 					delay(50);
 					bar1(border,y1,border+8, y1+16, 0xffff);
-					prt_asc16(border,y1-2,"*",0);
+					PrintText(border,y1-2,"*",HEI,16,1,0);
 					i++;
 					code[i]=0;		//标记字符串结尾
 					border+=8;
@@ -401,13 +405,13 @@ void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1)
 					temp+=32;
 					code[i]=temp;				//字符送入给定字符串			
 					*showtemp=temp;       //显示新的字符串达到画面与实际输入的同步
-					prt_asc16(border,y1-2,showtemp,0);
+					PrintText(border,y1-2,showtemp,HEI,16,1,0);
 					delay(300);
 					bar1(border,y1,border+8, y1+16, 0xffff);
-					prt_asc16(border,y1-2,"_",0);
+					PrintText(border,y1-2,"_",HEI,16,1,0);
 					delay(100);
 					bar1(border,y1,border+8, y1+16, 0xffff);
-					prt_asc16(border,y1-2,"*",0);
+					PrintText(border,y1-2,"*",HEI,16,1,0);
 					i++;
 					code[i]=0;		//标记字符串结尾
 					border+=8;
