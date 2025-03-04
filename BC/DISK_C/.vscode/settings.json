@@ -65,6 +65,7 @@
     "HZK.C": "cpp",
     "time.h": "c",
     "EWCONIO.C": "cpp",
-    "TIME.H": "cpp"
+    "TIME.H": "cpp",
+    "typeinfo": "c"
   }
 }

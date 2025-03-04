@@ -85,13 +85,11 @@ int Userposition(UserList UL,USER e);
 //显示光标
 void show_gb(int x,int y);
 //得到显示信息
-void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1);
+void Get_account(int x1,int y1,char *name,char *judge);
 //得到密码
-void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1);
-
-/***从存有用户数据的文件中逐个读取并与形参对比***/
-int Check_info(struct UserList UL,char *name,char *code);
-
+void Get_code(int x1,int y1,char *name,char *judge);
+//检查密码
+void Check_code(int x1,int y1,char *judge);
 //保存用户信息
 int save_user(USER temp);
 

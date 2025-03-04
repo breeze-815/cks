@@ -41,6 +41,5 @@ void draw_basic()
     PrintCC(365,503,"µÇÂ¼",HEI,24,1,0xFFFF);
     PrintCC(580,503,"×¢²á",HEI,24,1,0x0235);
     PrintText(100,100,"chp123",HEI,16,1,0XC618);
-    
+    Circlefill(50,50,3,0);
 }
-

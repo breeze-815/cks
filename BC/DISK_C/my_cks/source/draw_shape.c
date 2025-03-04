@@ -192,3 +192,4 @@ void Fill_Rounded_Rectangle(int x1, int y1, int x2, int y2, int radius, unsigned
         bar1(cx - dx, y2 - radius + y, cx, y2 - radius + y + 1, color);
     }
 }
+

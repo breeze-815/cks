@@ -32,7 +32,7 @@ int Check_info(UserList UL,char name[10],char code[10])
 参数说明：用户结构体 
 返回值说明:0：保存成功   -1： 保存失败 
 **********************/
-int save_user(USER temp)
+int save_user(USER users)
 {
 	UserList UL={0};
 	FILE *fp=NULL;
@@ -43,9 +43,9 @@ int save_user(USER temp)
 		delay(5000);
 		exit(1);
 	}
-	if(Check_info(UL,temp.name,temp.code)==-3)			//用户不存在 
+	if(Check_info(UL,users.name,users.code)==-3)			//用户不存在 
 	{
-	    UListInsert(&UL,temp);
+	    UListInsert(&UL,users);
 	    fseek(fp,0,SEEK_SET);
 	    rewind(fp);
 	    fwrite(&UL.length, sizeof(int), 1, fp);
@@ -234,88 +234,66 @@ int Userposition(UserList UL,USER e)
 
 
 
-
-
-/***画光标函数***/
-void show_gb(int x,int y)
-{
-	Line1(x,y,x,y+16,0);
-}
-
 /***信息输入时所做的相同操作***/
-void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1)
+void Get_account(int x1,int y1,char *name,char *judge)
 {
-	char showtemp[2]= {0,0};
-	char str[2];  // 先声明数组
-	int key;    			//按键值
-	int i=0,k,temp;
-	int border=x1+4;	    //border表示显示图片的左边界
-	str[0] = showtemp[0];  // 运行时赋值
-	str[1] = '\0';  // 添加字符串终止符
+	int length;
+	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
+	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
+	int border=x1+4; //光标的横坐标	    
 	x1=x1+4;
-	y1=y1+5;
-	for(i=strlen(name)-1;i>=0;i--)
+	y1=y1+5;//光标相较于输入框的偏移量
+	//每个字符占8个像素,每输入一个字符光标右移8个像素
+	if(name[0]=='\0') //如果输入框为空，则显示输入框
+		bar1(455, 255, 845, 295,0xFFFF);
+	else
 	{
-		*showtemp=name[i];
-		
-		PrintText(x1+i*8,y1-2,str,HEI,16,1,0);
+		length=strlen(name);
+		i=length;
+		border+=8*i;
+		cursor(border,y1);
+		//光标定位至文本末尾
 	}
-	i=strlen(name);
-	while(bioskey(1))					//清空输入缓冲区
-	{
-		bioskey(0);
-	}
-	border+=8*i;
-	while(1)     													//当按下回车键时表示输入完毕（回车键值为13）
+	while(1) 
     {
-	    show_gb(border,y1);//光标闪烁 
-		if(bioskey(1)==0||!MouseGet(&mouse))			//延时函数，使光标闪烁，在点击鼠标或有输入时退出
+		mouse_off(&mouse);
+	    cursor(border,y1);//光标闪烁 
+		mouse_show(&mouse);
+		if(bioskey(1)) //如果有键盘输入
 		{
-			for(k=0;k<100;k++)				//延时的同时检测鼠标键盘
-			{
-				delay(2);
-				if(bioskey(1)||MouseGet(&mouse))
-				{
-					break;
-				}
-			}
-		}
-		if(bioskey(1))
-		{
-			temp=bioskey(0)&0x00ff;
+			temp=bioskey(0)&0x00ff; //获取键盘输入
+			mouse_show(&mouse); //显示鼠标
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
-				if(('0'<=temp&&temp<='9'||('a'<=temp&&temp<='z')/*||temp=='_'*/)&&i<num)	//检测为数字或字母或下划线，则记录
+				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <10)//检测为数字或字母，则记录
 				{
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					name[i]=temp;				//字符送入给定字符串			
-					*showtemp=temp;
+					hide_cursor(border,y1); //隐藏原光标
+					name[i]=temp;			//字符送入给定字符串，用于保存用户信息			
+					*showtemp=temp;  //temp转化为字符串
 					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
-					i++;
+					i++;	//字符个数自增
 					name[i]='\0';		//标记字符串结尾
-					border+=8;
-					show_gb(border,y1);
+					border+=8;	//光标横坐标右移8像素
+					cursor(border,y1);	//显示新光标
 				}
-				else if('A'<=temp&&temp<='Z'&&i<num)	//由于文件名不区分大小写，而后面的文件部分要用用户名做文件名 
-				{						             	//故在注册时就不区分大小写了 
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					temp+=32;
-					name[i]=temp;				//字符送入给定字符串			
-					*showtemp=temp;             //显示新的字符串达到画面与实际输入的同步
-					PrintText(border,y1-2,showtemp,HEI,16,1,0);
-					i++;
-					name[i]='\0';		//标记字符串结尾
-					border+=8;
-					show_gb(border,y1);
-				}
-				else if(temp=='\b'&&i>0)			//检测是否为退格键，是则消除前一个字符
+				else if(temp=='\b'&&i>0)  //检测是否为退格键，是则消除前一个字符
 				{
-					border-=8;
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					i--;
-					name[i]='\0';
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					show_gb(border,y1);
+					hide_cursor(border,y1);	//隐藏原光标
+					border-=8;	//光标左移8像素
+					i--;	//字符个数自减
+					name[i]='\0';	//将存储的字符用0覆盖
+					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					cursor(border,y1);	//显示新光标
+				}
+				else if(temp=='\t')
+				{
+					Get_code(455,340,users.code,judge);
+				}
+				else if(i>=10)
+				{
+					mouse_off(&mouse);
+					mouse_show(&mouse);
+					PrintCC(1,1,"输入账号超出长度限制",HEI,24,1,0xF800);
 				}
 			}
 			else
@@ -323,108 +301,76 @@ void Getinfo(int x1,int y1,char *name,int num,int a1,int b1,int c1,int d1)
 				break;
 			}
 		}
-		if(!mouse_press(a1,b1,c1,d1)&&MouseGet(&mouse))		//如果鼠标点击输入框外的部分，退出
-		{
+		else if (mouse_press(450, 250, 850, 300)!=1) {
 			break;
 		}
-		bar1(border,y1,border+8, y1+16, 0xffff);
-		if(bioskey(1)==0||!MouseGet(&mouse))			//延时函数，使光标闪烁，在点击鼠标或有输入时退出
-		{
-			for(k=0;k<100;k++)				//延时的同时检测鼠标键盘
-			{
-				delay(2);
-				if(bioskey(1)||MouseGet(&mouse))
-				{
-					break;
-				}
-			}
-		}
+		hide_cursor(border,y1);	//隐藏光标
 	}
-	bar1(border,y1,border+8, y1+16, 0xffff);
 }
 
-/***密码输入时所做的相同操作***/
-void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1)
+
+void Get_code(int x1,int y1,char *name,char *judge)
 {
-	char showtemp[2]= {0,0};
-	int key;    			//按键值
-	int i=0,k,temp;
-	int border=x1+4;	    //border表示显示图片的左边界
+	int length;
+	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
+	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
+	int border=x1+4; //光标的横坐标	    
 	x1=x1+4;
-	y1=y1+5;
-	for(i=strlen(code)-1;i>=0;i--)
+	y1=y1+5;//光标相较于输入框的偏移量
+	//每个字符占8个像素,每输入一个字符光标右移8个像素
+	if(name[0]=='\0') //如果输入框为空，则显示输入框
+		bar1(455, 335, 845, 375,0xffff);
+	else
 	{
-		*showtemp=code[i];
-		PrintText(x1+i*8,y1-2,"*",HEI,16,1,0);
+		length=strlen(name);
+		i=length;
+		border+=8*i;
+		cursor(border,y1);
+		//光标定位至文本末尾
 	}
-	i=strlen(code);
-	while(bioskey(1))					//清空输入缓冲区
-	{
-		bioskey(0);
-	}
-	border+=8*i;
-	while(1)     													//当按下回车键时表示输入完毕（回车键值为13）
-   {
-	   show_gb(border,y1);
-		if(bioskey(1)==0||!MouseGet(&mouse))			//延时函数，使光标闪烁，在点击鼠标或有输入时退出
+	while(1) 
+    {
+		mouse_off(&mouse);
+	    cursor(border,y1);//光标闪烁 
+		mouse_show(&mouse);
+		if(bioskey(1)) //如果有键盘输入
 		{
-			for(k=0;k<100;k++)				//延时的同时检测鼠标键盘
-			{
-				delay(2);
-				if(bioskey(1)||MouseGet(&mouse))
-				{
-					break;
-				}
-			}
-		}
-		if(bioskey(1))
-		{
-			temp=bioskey(0)&0x00ff;
+			temp=bioskey(0)&0x00ff; //获取键盘输入
+			mouse_show(&mouse); //显示鼠标
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
-				if(('0'<=temp&&temp<='9'||'a'<=temp&&temp<='z'||temp=='_')&&i<num)	//检测为数字或字母或下划线，则记录
+				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <10)//检测为数字或字母，则记录
 				{
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					code[i]=temp;				//字符送入给定字符串			
-					*showtemp=temp;
+					hide_cursor(border,y1); //隐藏原光标
+					name[i]=temp;			//字符送入给定字符串，用于保存用户信息			
+					*showtemp=temp;  //temp转化为字符串
 					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
-					delay(150);
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					PrintText(border,y1-2,"_",HEI,16,1,0);
-					delay(50);
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					PrintText(border,y1-2,"*",HEI,16,1,0);
-					i++;
-					code[i]=0;		//标记字符串结尾
-					border+=8;
-					show_gb(border,y1);
-				}
-				else if('A'<=temp&&temp<='Z'&&i<num)	//由于文件名不区分大小写，而后面的文件部分要用用户名做文件名 
-				{							//故在注册时就不区分大小写了 
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					temp+=32;
-					code[i]=temp;				//字符送入给定字符串			
-					*showtemp=temp;       //显示新的字符串达到画面与实际输入的同步
-					PrintText(border,y1-2,showtemp,HEI,16,1,0);
-					delay(300);
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					PrintText(border,y1-2,"_",HEI,16,1,0);
 					delay(100);
 					bar1(border,y1,border+8, y1+16, 0xffff);
-					PrintText(border,y1-2,"*",HEI,16,1,0);
-					i++;
-					code[i]=0;		//标记字符串结尾
-					border+=8;
-					show_gb(border,y1);
+					Circlefill(border+4,y1+8,2,0);
+					i++;	//字符个数自增
+					name[i]='\0';		//标记字符串结尾
+					border+=8;	//光标横坐标右移8像素
+					cursor(border,y1);	//显示新光标
 				}
-				else if(temp=='\b'&&i>0)			//检测是否为退格键，是则消除前一个字符
+				else if(temp=='\b'&&i>0)  //检测是否为退格键，是则消除前一个字符
 				{
-					border-=8;
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					i--;
-					code[i]=0;
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					show_gb(border,y1);
+					hide_cursor(border,y1);	//隐藏原光标
+					border-=8;	//光标左移8像素
+					i--;	//字符个数自减
+					name[i]='\0';	//将存储的字符用0覆盖
+					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					cursor(border,y1);	//显示新光标
+				}
+				else if(temp=='\t')
+				{
+					Check_code(455,420,judge);
+				}
+				else if(i>=10)
+				{
+					mouse_off(&mouse);
+					mouse_show(&mouse);
+					PrintCC(1,1,"输入密码超出长度限制",HEI,24,1,0xF800);
 				}
 			}
 			else
@@ -432,22 +378,81 @@ void Getcode(int x1,int y1,char *code,int num,int a1,int b1,int c1,int d1)
 				break;
 			}
 		}
-		if(!mouse_press(a1,b1,c1,d1)&&MouseGet(&mouse))		//如果鼠标点击输入框外的部分，退出
-		{
+		else if (mouse_press(450, 250, 850, 300)!=1) {
 			break;
 		}
-		bar1(border,y1,border+8, y1+16, 0xffff);
-		if(bioskey(1)==0||!MouseGet(&mouse))			//延时函数，使光标闪烁，在点击鼠标或有输入时退出
+		hide_cursor(border,y1);	//隐藏光标
+	}
+}
+
+void Check_code(int x1,int y1,char *judge)
+{
+	int length;
+	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
+	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
+	int border=x1+4; //光标的横坐标	    
+	x1=x1+4;
+	y1=y1+5;//光标相较于输入框的偏移量
+	//每个字符占8个像素,每输入一个字符光标右移8个像素
+	if(judge[0]=='\0') //如果输入框为空，则显示输入框
+		bar1(455, 415, 845, 455,0xffff);
+	else
+	{
+		length=strlen(judge);
+		i=length;
+		border+=8*i;
+		cursor(border,y1);
+		//光标定位至文本末尾
+	}
+	while(1) 
+    {
+		mouse_off(&mouse);
+	    cursor(border,y1);//光标闪烁 
+		mouse_show(&mouse);
+		if(bioskey(1)) //如果有键盘输入
 		{
-			for(k=0;k<100;k++)				//延时的同时检测鼠标键盘
+			temp=bioskey(0)&0x00ff; //获取键盘输入
+			mouse_show(&mouse); //显示鼠标
+			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
-				delay(2);
-				if(bioskey(1)||MouseGet(&mouse))
+				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <10)//检测为数字或字母，则记录
 				{
-					break;
+					hide_cursor(border,y1); //隐藏原光标
+					judge[i]=temp;			//字符送入给定字符串，用于保存用户信息			
+					*showtemp=temp;  //temp转化为字符串
+					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					delay(100);
+					bar1(border,y1,border+8, y1+16, 0xffff);
+					Circlefill(border+4,y1+8,2,0);
+					i++;	//字符个数自增
+					judge[i]='\0';		//标记字符串结尾
+					border+=8;	//光标横坐标右移8像素
+					cursor(border,y1);	//显示新光标
+				}
+				else if(temp=='\b'&&i>0)  //检测是否为退格键，是则消除前一个字符
+				{
+					hide_cursor(border,y1);	//隐藏原光标
+					border-=8;	//光标左移8像素
+					i--;	//字符个数自减
+					judge[i]='\0';	//将存储的字符用0覆盖
+					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					cursor(border,y1);	//显示新光标
+				}
+				else if(i>=10)
+				{
+					mouse_off(&mouse);
+					mouse_show(&mouse);
+					PrintCC(1,1,"输入密码超出长度限制",HEI,24,1,0xF800);
 				}
 			}
+			else
+			{
+				break;
+			}
 		}
+		else if (mouse_press(450, 250, 850, 300)!=1) {
+			break;
+		}
+		hide_cursor(border,y1);	//隐藏光标
 	}
-	bar1(border,y1,border+8, y1+16, 0xffff);
 }

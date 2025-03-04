@@ -1,7 +1,9 @@
 #include "all_func.h"
 //屏幕宽度1024，高度768
-int user_register(int *page){
-    struct USER temp={0};//存储信息的用户结构体 
+struct USER users={0};//存储信息的用户结构体 
+
+void user_register(int *page){
+    
 	char judge[10]="\0";//用于判断的密码 
 
 	mouse_off(&mouse);
@@ -31,35 +33,26 @@ int user_register(int *page){
         }
         else if(mouse_press(450, 250, 850, 300)==1)//输入账号
         {
-            bar1(455, 255, 845, 295,0xFFFF);
-            strcpy(temp.name,"\0");
-            //cursor(455,260);
-            Getinfo(455,260,temp.name,10,455,260,845,295);
+            
+            Get_account(455,260,users.name,judge);
 		}
         else if(mouse_press(450, 330, 850, 380)==1)//输入密码
         {   
-			mouse_off(&mouse);
-			bar1(455, 335, 845, 375,0xffff);
-			strcpy(temp.code,"\0");
-			Getcode(455,340,temp.code,10,450, 330, 850, 380);
-			mouse_on(mouse);
+			Get_code(455,340,users.code,judge);
 		}
 		else if(mouse_press(450, 410, 850, 460)==1)//重新输入密码
         {   
-			mouse_off(&mouse);
-			bar1(455, 415, 845, 455,0xffff);
-			strcpy(judge,"\0");
-			Getcode(455,420,judge,10,450, 410, 850, 460);
-			mouse_on(mouse);
-		}if(mouse_press(665, 490, 850, 540)==1)//点击确认键
+			Check_code(455,420,judge);
+		}
+        if(mouse_press(665, 490, 850, 540)==1)//点击确认键
         {     
-			if(strcmp(temp.name,"\0")!=0)//用户名不为空 
+			if(strcmp(users.name,"\0")!=0)//用户名不为空 
             {
-				if(strcmp(temp.code,"\0")!=0)//密码不为空 
+				if(strcmp(users.code,"\0")!=0)//密码不为空 
                 {
-					if(!strcmp(temp.code,judge))//两次密码相同 
+					if(!strcmp(users.code,judge))//两次密码相同 
                     {
-				      if(save_user(temp)==0)
+				      if(save_user(users)==0)
                       {
                         *page=2;
 				        break;

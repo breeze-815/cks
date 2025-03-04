@@ -21,5 +21,6 @@
 #include "HZK.h"
 #include "draw_shape.h"
 extern MOUSE mouse;
+extern USER users;
 
 #endif
