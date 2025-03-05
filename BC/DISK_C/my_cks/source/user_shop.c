@@ -65,8 +65,8 @@ void draw_user_shop(){
     //bar2(630,100,750,220,deepblue);
     //bar2(810,100,930,220,deepblue);
 
-    bar2(270,280,390,400,deepblue);//120*120
-    bar2(450,280,570,400,deepblue);
+    //bar2(270,280,390,400,deepblue);//120*120
+    //bar2(450,280,570,400,deepblue);
     bar2(630,280,750,400,deepblue);
     bar2(810,280,930,400,deepblue);
 
@@ -75,12 +75,13 @@ void draw_user_shop(){
     bar2(630,460,750,580,deepblue);
     bar2(810,460,930,580,deepblue);
 
-    PrintCC(280,240,"生活用品",HEI,24,1,deepblue);
+    PrintCC(315,240,"盆",HEI,24,1,deepblue);
     Readbmp64k(270, 100, "bmp\\pen.bmp");//盆
     Readbmp64k(450, 100, "bmp\\saoba.bmp");//扫把
     Readbmp64k(630, 100, "bmp\\canju.bmp");//餐具
     Readbmp64k(810, 100, "bmp\\wan.bmp");//碗
-    
+    Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
+    Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
     
     
 }

@@ -46,15 +46,15 @@ int welcome(int *page){
 			}
 			if(i==-2)//密码输入错误 
 			{
-				PrintCC(570,575,"密码错误",HEI,24,1,0XF800);
+				PrintCC(430,560,"密码错误",HEI,24,1,0XF800);
 			    delay(1500);
-				bar1(570,550,690,574,0xffff);
+				bar1(430,560,580,590,snow);
 			}
 			if(i==-3)//用户不存在 
 			{
-				PrintCC(570,575,"用户不存在",HEI,24,1,0XF800);
+				PrintCC(430,560,"用户不存在",HEI,24,1,0XF800);
 			    delay(1500);
-				bar1(570,550,570+144,574,0xffff);
+				bar1(430,560,580,590,snow);
 			} 
 		delay(15);
 	    }
@@ -65,7 +65,7 @@ void draw_basic()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
-    Fill_Rounded_Rectangle(200, 148, 824, 600, 30,0xFFDF);//填色
+    Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//填色
     Draw_Rounded_Rectangle(200, 148, 824, 600, 30, 2,0x6B4D);//最外围灰色圆角矩形
     
     Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//账号栏圆角矩形

@@ -26,9 +26,11 @@ extern MOUSE mouse;
 extern USER users;
 
 #define white 0xFFFF
+#define snow 0xFFDF
 #define black 0x0000
 #define deepblue 0x0235
 #define lightblue 0x435c
 #define skyblue 0xB71C
 #define grey 0xC618
+#define lightred 0XF800
 #endif

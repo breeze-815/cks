@@ -59,42 +59,43 @@ void user_register(int *page){
                         {
 				            if(save_user(users)==0)
                             {
-                                PrintCC(570,575,"注册成功",HEI,24,1,0XF800);
-                                *page=2;
+                                PrintCC(570,575,"注册成功",HEI,24,1,snow);
+                                delay(1500);
+				                bar1(570,575,800,600,snow);
                             }
                             else
                             {
                                 PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
                                 delay(1500);
-				                bar1(570,575,800,600,0xffff);
+				                bar1(570,575,800,600,snow);
                             }
 			            }
 			            else
 			            {
                             PrintCC(570,575,"两次密码不相同",HEI,24,1,0XF800);
 				            delay(1500);
-				            bar1(570,575,800,600,0xffff);
+				            bar1(570,575,800,600,snow);
 			            }  
 				    }
 				    else
 				    {
 					    PrintCC(570,575,"密码为空",HEI,24,1,0XF800);
 				        delay(1500);
-				        bar1(570,575,800,600,0xffff);
+				        bar1(570,575,800,600,snow);
 				    }	
 			    }
 			    else
 			    {
 				    PrintCC(570,575,"用户名为空",HEI,24,1,0XF800);
 				    delay(1500);
-				    bar1(570,575,800,600,0xffff);
+				    bar1(570,575,800,600,snow);
 			    }	
             }
             else
             {
                 PrintCC(570,575,"未选择用户类型",HEI,24,1,0XF800);
                 delay(1500);
-                bar1(570,575,800,600,0xffff);
+                bar1(570,575,800,600,snow);
             }
 		}
     }
@@ -103,7 +104,7 @@ void draw_register()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
-    Fill_Rounded_Rectangle(100, 108, 924, 640, 30,0xFFDF);//填色
+    Fill_Rounded_Rectangle(100, 108, 924, 640, 30,snow);//填色
     Draw_Rounded_Rectangle(100, 108, 924, 640, 30, 2,0x6B4D);//最外围灰色圆角矩形
 
     Draw_Rounded_Rectangle(450, 250, 850, 300, 5, 1,0xB71C);//账号栏圆角矩形
