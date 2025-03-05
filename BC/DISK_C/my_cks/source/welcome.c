@@ -3,6 +3,15 @@
 
 
 int welcome(int *page){
+
+    char name[10]="\0";
+	char code[10]="\0";
+    char judge1[10]="\0";//用于判断的密码
+    int i=-5;
+
+    UserList UL={0};
+	InitUList(&UL);
+	ReadAllUser(&UL);
 	mouse_off(&mouse);
 	
 	draw_basic();
@@ -12,13 +21,41 @@ int welcome(int *page){
 	while(1){
 		mouse_show(&mouse);
 
-		if(mouse_press(515, 490, 700, 540)==1){
+		if(mouse_press(515, 490, 700, 540)==1)
+        {
 			*page=1;//进入注册界面
 			break;
-		}else if(mouse_press(300,330,700,380)==1){
-            bar1(305,335,695,375,0xFFFF);
-            cursor(305,340);
-            
+		}
+        else if(mouse_press(300, 330, 700, 380)==1)//点击账号框 
+		{
+			Get_account(305, 336,name,judge1, 305, 335, 695, 375);
+		}
+        else if(mouse_press(300, 410, 700, 460)==1)//点击密码框 
+		{
+			Get_code(305, 416,code,judge1, 305, 415, 695, 455);
+		}
+        else if(mouse_press(300,490, 485, 540)==1)//点击登录
+        {
+            i=Check_info(UL,name,code);
+            if(i>=0)
+			{
+				//*unum=i;
+				DestroyUList(&UL);
+				*page=2;      //进入主界面
+                break;
+			}
+			if(i==-2)//密码输入错误 
+			{
+				PrintCC(570,575,"密码错误",HEI,24,1,0XF800);
+			    delay(1500);
+				bar1(570,550,690,574,0xffff);
+			}
+			if(i==-3)//用户不存在 
+			{
+				PrintCC(570,575,"用户不存在",HEI,24,1,0XF800);
+			    delay(1500);
+				bar1(570,550,570+144,574,0xffff);
+			} 
 		delay(15);
 	    }
     }

@@ -28,6 +28,41 @@ int main()
                 user_register(&page);
                 break;
             }
+            case 2:
+            {
+                user(&page);//用户页面
+                break;
+            }
+            case 3:
+            {
+                //商家页面
+                break;
+            }
+            case 4:
+            {
+                //骑手页面
+                break;
+            }
+            case 5:
+            {   
+                user_shop(&page);
+                //用户超市页面
+                break;
+            }
+            case 6:
+            {
+                //用户外卖页面
+                break;
+            }
+            case 7:
+            {
+                //用户快递页面
+                break;
+            }
+            case 8:
+            {
+                break;
+            }
         }
 
         

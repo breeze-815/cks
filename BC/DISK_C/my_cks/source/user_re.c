@@ -22,68 +22,80 @@ void user_register(int *page){
         else if(mouse_press(230, 250, 350, 300)==1)
         {
             press(1);//按下"用户"
+            users.type=1;
         }
         else if(mouse_press(230, 330, 350, 380)==1)
         {
             press(2);//按下"商家"
+            users.type=2;
         }
         else if(mouse_press(230, 410, 350, 460)==1)
         {
             press(3);//按下"骑手"
+            users.type=3;
         }
         else if(mouse_press(450, 250, 850, 300)==1)//输入账号
         {
             
-            Get_account(455,260,users.name,judge);
+            Get_account(455,256,users.name,judge,455,255,845,295);
 		}
         else if(mouse_press(450, 330, 850, 380)==1)//输入密码
         {   
-			Get_code(455,340,users.code,judge);
+			Get_code(455,336,users.code,judge,455,335,845,375);
 		}
 		else if(mouse_press(450, 410, 850, 460)==1)//重新输入密码
         {   
-			Check_code(455,420,judge);
+			Check_code(455,416,judge,455,415,845,455);
 		}
         if(mouse_press(665, 490, 850, 540)==1)//点击确认键
-        {     
-			if(strcmp(users.name,"\0")!=0)//用户名不为空 
+        {   
+            if(users.type!=0)
             {
-				if(strcmp(users.code,"\0")!=0)//密码不为空 
+			    if(strcmp(users.name,"\0")!=0)//用户名不为空 
                 {
-					if(!strcmp(users.code,judge))//两次密码相同 
+				    if(strcmp(users.code,"\0")!=0)//密码不为空 
                     {
-				      if(save_user(users)==0)
-                      {
-                        *page=2;
-				        break;
-                      }
-                      else
-                      {
-                        PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
-                        delay(1500);
-				        bar1(570,575,800,600,0xffff);
-                      }
-			        }
-			        else
-			        {
-                        PrintCC(570,575,"两次密码不相同",HEI,24,1,0XF800);
+					    if(!strcmp(users.code,judge))//两次密码相同 
+                        {
+				            if(save_user(users)==0)
+                            {
+                                PrintCC(570,575,"注册成功",HEI,24,1,0XF800);
+                                *page=2;
+                            }
+                            else
+                            {
+                                PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
+                                delay(1500);
+				                bar1(570,575,800,600,0xffff);
+                            }
+			            }
+			            else
+			            {
+                            PrintCC(570,575,"两次密码不相同",HEI,24,1,0XF800);
+				            delay(1500);
+				            bar1(570,575,800,600,0xffff);
+			            }  
+				    }
+				    else
+				    {
+					    PrintCC(570,575,"密码为空",HEI,24,1,0XF800);
 				        delay(1500);
 				        bar1(570,575,800,600,0xffff);
-			        }  
-				}
-				else
-				{
-					PrintCC(570,575,"密码为空",HEI,24,1,0XF800);
+				    }	
+			    }
+			    else
+			    {
+				    PrintCC(570,575,"用户名为空",HEI,24,1,0XF800);
 				    delay(1500);
 				    bar1(570,575,800,600,0xffff);
-				}	
-			}
-			else
-			{
-				PrintCC(570,575,"用户名为空",HEI,24,1,0XF800);
-				delay(1500);
-				bar1(570,575,800,600,0xffff);
-			}	
+			    }	
+            }
+            else
+            {
+                PrintCC(570,575,"未选择用户类型",HEI,24,1,0XF800);
+                delay(1500);
+                bar1(570,575,800,600,0xffff);
+            }
 		}
     }
 }

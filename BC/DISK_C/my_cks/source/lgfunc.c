@@ -235,7 +235,7 @@ int Userposition(UserList UL,USER e)
 
 
 /***信息输入时所做的相同操作***/
-void Get_account(int x1,int y1,char *name,char *judge)
+void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
@@ -245,7 +245,8 @@ void Get_account(int x1,int y1,char *name,char *judge)
 	y1=y1+5;//光标相较于输入框的偏移量
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(name[0]=='\0') //如果输入框为空，则显示输入框
-		bar1(455, 255, 845, 295,0xFFFF);
+		//bar1(455, 255, 845, 295,0xFFFF);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 	else
 	{
 		length=strlen(name);
@@ -287,13 +288,13 @@ void Get_account(int x1,int y1,char *name,char *judge)
 				}
 				else if(temp=='\t')
 				{
-					Get_code(455,340,users.code,judge);
+					Get_code(455,340,users.code,judge,bar_x1, bar_y1, bar_x2, bar_y2);
 				}
 				else if(i>=10)
 				{
 					mouse_off(&mouse);
 					mouse_show(&mouse);
-					PrintCC(1,1,"输入账号超出长度限制",HEI,24,1,0xF800);
+					PrintCC(570,575,"输入账号超过长度限制",HEI,24,1,0XF800);
 				}
 			}
 			else
@@ -309,7 +310,7 @@ void Get_account(int x1,int y1,char *name,char *judge)
 }
 
 
-void Get_code(int x1,int y1,char *name,char *judge)
+void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
@@ -319,7 +320,8 @@ void Get_code(int x1,int y1,char *name,char *judge)
 	y1=y1+5;//光标相较于输入框的偏移量
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(name[0]=='\0') //如果输入框为空，则显示输入框
-		bar1(455, 335, 845, 375,0xffff);
+		//bar1(455, 335, 845, 375,0xffff);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xffff);
 	else
 	{
 		length=strlen(name);
@@ -364,13 +366,13 @@ void Get_code(int x1,int y1,char *name,char *judge)
 				}
 				else if(temp=='\t')
 				{
-					Check_code(455,420,judge);
+					Check_code(455,420,judge,bar_x1,bar_y1,bar_x2,bar_y2);
 				}
 				else if(i>=10)
 				{
 					mouse_off(&mouse);
 					mouse_show(&mouse);
-					PrintCC(1,1,"输入密码超出长度限制",HEI,24,1,0xF800);
+					PrintCC(570,575,"输入密码超过长度限制",HEI,24,1,0XF800);
 				}
 			}
 			else
@@ -378,14 +380,14 @@ void Get_code(int x1,int y1,char *name,char *judge)
 				break;
 			}
 		}
-		else if (mouse_press(450, 250, 850, 300)!=1) {
+		else if (!mouse_press(450, 250, 850, 300)) {
 			break;
 		}
 		hide_cursor(border,y1);	//隐藏光标
 	}
 }
 
-void Check_code(int x1,int y1,char *judge)
+void Check_code(int x1,int y1,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
@@ -395,7 +397,8 @@ void Check_code(int x1,int y1,char *judge)
 	y1=y1+5;//光标相较于输入框的偏移量
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(judge[0]=='\0') //如果输入框为空，则显示输入框
-		bar1(455, 415, 845, 455,0xffff);
+		//bar1(455, 415, 845, 455,0xffff);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xffff);
 	else
 	{
 		length=strlen(judge);
@@ -442,7 +445,7 @@ void Check_code(int x1,int y1,char *judge)
 				{
 					mouse_off(&mouse);
 					mouse_show(&mouse);
-					PrintCC(1,1,"输入密码超出长度限制",HEI,24,1,0xF800);
+					PrintCC(570,575,"输入密码超过长度限制",HEI,24,1,0XF800);
 				}
 			}
 			else

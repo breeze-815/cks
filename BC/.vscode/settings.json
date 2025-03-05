@@ -63,6 +63,7 @@
     "istream": "c",
     "typeinfo": "c",
     "EWCONIO.C": "cpp",
-    "SVGA.C": "cpp"
+    "SVGA.C": "cpp",
+    "HZK.C": "cpp"
   }
 }
