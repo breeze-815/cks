@@ -29,6 +29,45 @@ int mouse_shape[H][W] =    //鼠标形状二维数组
 		    			
 };
 
+// 光标形状（I型）
+int cursor_shape[H][W] = {
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0},
+    {0,0,0,0,1,1,0,0,0,0,0,0}
+};
+
+// 点击状态形状（手形）
+int click_shape[H][W] = {    //鼠标形状二维数组
+
+    {1,1,0,0,0,0,0,0,0,0,0,0},
+	{1,2,1,0,0,0,0,0,0,0,0,0},
+	{1,2,2,1,0,0,0,0,0,0,0,0},
+	{1,2,2,2,1,0,0,0,0,0,0,0},
+	{1,2,2,2,2,1,0,0,0,0,0,0},
+	{1,2,2,2,2,2,1,0,0,0,0,0},
+	{1,2,2,2,2,2,2,1,0,0,0,0},
+	{1,2,2,2,2,2,2,2,1,0,0,0},
+	{1,2,2,2,2,2,2,2,2,1,0,0},
+	{1,2,2,2,2,2,2,2,2,2,1,0},
+	{1,2,2,2,2,2,2,1,1,1,1,1},
+	{1,2,2,1,2,2,2,1,0,0,0,0},
+	{1,2,1,0,1,2,2,2,1,0,0,0},	
+	{1,1,0,0,0,1,2,2,2,1,0,0},	
+	{1,0,0,0,0,0,1,1,1,1,0,0},    			
+};
+
 unsigned int mouse_bk[20][20];           //存放被鼠标覆盖的区域
            
 /***鼠标初始化***/
@@ -194,7 +233,25 @@ int mouse_press(int x1, int y1, int x2, int y2)
 	}
 }
 
-/***鼠标显示***/
+// /***鼠标显示***/
+// void mouse_on(MOUSE mouse)
+// {
+// 	int i, j;
+// 	for (i = 0; i < H; i++)
+// 	{
+// 		for (j = 0; j < W; j++)
+// 		{
+			
+// 			mouse_bk[i][j] = Getpixel64k(j + mouse.x, i + mouse.y);  //存储鼠标覆盖区
+// 			/***画鼠标***/
+// 			if (mouse_shape[i][j] == 1)
+// 				Putpixel64k(mouse.x + j, mouse.y + i, 0);
+// 			else if (mouse_shape[i][j] == 2)
+// 				Putpixel64k(mouse.x + j, mouse.y + i, 0xffff);
+// 		}
+// 	}
+// }
+
 void mouse_on(MOUSE mouse)
 {
 	int i, j;
@@ -205,13 +262,12 @@ void mouse_on(MOUSE mouse)
 			
 			mouse_bk[i][j] = Getpixel64k(j + mouse.x, i + mouse.y);  //存储鼠标覆盖区
 			/***画鼠标***/
-			if (mouse_shape[i][j] == 1)
+			if (click_shape[i][j] == 1)
 				Putpixel64k(mouse.x + j, mouse.y + i, 0);
-			else if (mouse_shape[i][j] == 2)
+			else if (click_shape[i][j] == 2)
 				Putpixel64k(mouse.x + j, mouse.y + i, 0xffff);
 		}
 	}
-
 }
 
 
@@ -230,7 +286,8 @@ void mouse_show(MOUSE *mouse)
 		{
 			for (j = 0; j < W; j++)
 			{
-				if (mouse_shape[i][j] == 0)
+				// if (mouse_shape[i][j] == 0)
+				if (click_shape[i][j] == 0)
 					continue;
 				Putpixel64k(x + j, y + i, mouse_bk[i][j]);   //画出原鼠标覆盖区
 			}
@@ -249,7 +306,8 @@ void mouse_off(MOUSE *mouse)
 	for (i = 0; i <H; i++)
 		for (j = 0; j < W; j++)
 		{
-			if (mouse_shape[i][j] == 0)
+			// if (mouse_shape[i][j] == 0)
+			if (click_shape[i][j] == 0)
 				continue;
 			Putpixel64k(x + j, y + i, mouse_bk[i][j]);   //画出原鼠标覆盖区
 		}
@@ -280,10 +338,15 @@ void draw_mouse(int mx,int my)
 		for (j = 0; j < W; j++)
 		{
 			/***画鼠标***/
-			if (mouse_shape[i][j] == 1)
-				Putpixel64k(mx + j, my + i, 0);
-			else if (mouse_shape[i][j] == 2)
-				Putpixel64k(mx + j, my + i, 0xffff);
+			// if (mouse_shape[i][j] == 1)
+			// 	Putpixel64k(mx + j, my + i, 0);
+			// else if (mouse_shape[i][j] == 2)
+			// 	Putpixel64k(mx + j, my + i, 0xffff);
+			/***画鼠标***/
+			if (click_shape[i][j] == 1)
+			Putpixel64k(mx + j, my + i, 0);
+			else if (click_shape[i][j] == 2)
+			Putpixel64k(mx + j, my + i, 0xffff);
 		}
 	}
 }

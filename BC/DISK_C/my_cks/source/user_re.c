@@ -59,7 +59,7 @@ void user_register(int *page){
                         {
 				            if(save_user(users)==0)
                             {
-                                PrintCC(570,575,"注册成功",HEI,24,1,snow);
+                                PrintCC(570,575,"注册成功",HEI,24,1,0);
                                 delay(1500);
 				                bar1(570,575,800,600,snow);
                             }

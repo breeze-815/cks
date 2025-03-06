@@ -288,7 +288,7 @@ void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int 
 				}
 				else if(temp=='\t')
 				{
-					Get_code(455,340,users.code,judge,bar_x1, bar_y1, bar_x2, bar_y2);
+					Get_code(455,336,users.code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80);
 				}
 				else if(i>=10)
 				{
@@ -366,7 +366,7 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 				}
 				else if(temp=='\t')
 				{
-					Check_code(455,420,judge,bar_x1,bar_y1,bar_x2,bar_y2);
+					Check_code(455,416,judge,bar_x1,bar_y1+80,bar_x2,bar_y2+80);
 				}
 				else if(i>=10)
 				{
@@ -380,7 +380,11 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 				break;
 			}
 		}
-		else if (!mouse_press(450, 250, 850, 300)) {
+		//else if (mouse_press(450, 250, 850, 300)!=1) {
+			break;
+		//}
+		if(!mouse_press(450,250,850,300)&&MouseGet(&mouse))		//如果鼠标点击输入框外的部分，退出
+		{
 			break;
 		}
 		hide_cursor(border,y1);	//隐藏光标

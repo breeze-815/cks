@@ -66,6 +66,7 @@
     "time.h": "c",
     "EWCONIO.C": "cpp",
     "TIME.H": "cpp",
-    "typeinfo": "c"
+    "typeinfo": "c",
+    "CALLTEST.C": "cpp"
   }
 }
