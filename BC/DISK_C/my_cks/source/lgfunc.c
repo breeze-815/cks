@@ -43,14 +43,14 @@ int save_user(USER users)
 		delay(5000);
 		exit(1);
 	}
-	if(Check_info(UL,users.name,users.code)==-3)			//用户不存在 
+	if(Check_info(UL,users.name,users.code)==-3)			// 检查用户是否已存在 -3 代表用户不存在
 	{
 	    UListInsert(&UL,users);
 	    fseek(fp,0,SEEK_SET);
-	    rewind(fp);
-	    fwrite(&UL.length, sizeof(int), 1, fp);
-	    fwrite(&UL.listsize, sizeof(int), 1, fp);
-	    fwrite(UL.elem, sizeof(USER), UL.length, fp);
+	    rewind(fp);// 移动文件指针到开头
+	    fwrite(&UL.length, sizeof(int), 1, fp);// 1. 写入用户数量
+	    fwrite(&UL.listsize, sizeof(int), 1, fp);// 2. 写入列表大小
+	    fwrite(UL.elem, sizeof(USER), UL.length, fp);// 3. 写入用户数据
 	    fclose(fp);
 		DestroyUList(&UL);
 		delay(500);
@@ -380,11 +380,7 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 				break;
 			}
 		}
-		//else if (mouse_press(450, 250, 850, 300)!=1) {
-			break;
-		//}
-		if(!mouse_press(450,250,850,300)&&MouseGet(&mouse))		//如果鼠标点击输入框外的部分，退出
-		{
+		else if (!mouse_press(450, 250, 850, 300)) {
 			break;
 		}
 		hide_cursor(border,y1);	//隐藏光标

@@ -1,9 +1,9 @@
 #include "all_func.h"
 
-void user(int *page){
+void business(int *page){
     mouse_off(&mouse);
 	
-	draw_user();
+	draw_business();
 
 	mouse_on(mouse);
 
@@ -23,13 +23,11 @@ void user(int *page){
             break;
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
-            *page=7;
-            break;
         }
     }
 }
 
-void draw_user()
+void draw_business()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
     bar1(0, 0, 200, 768,0x0235);
@@ -49,11 +47,13 @@ void draw_user()
     PrintCC(75,454,"外卖",HEI,24,1,deepblue);
     PrintCC(75,617,"快递",HEI,24,1,deepblue);
 
-    PrintCC(250,50,"当前账号类型为：用户",HEI,24,1,deepblue);
+    PrintCC(250,50,"当前账号类型为：商家",HEI,24,1,deepblue);
+
+    Readbmp64k(200, 100, "bmp\\map.bmp");
     
 }
 
-void press1(int x){
+void press2(int x){
     mouse_off(&mouse);
     switch (x)
     {

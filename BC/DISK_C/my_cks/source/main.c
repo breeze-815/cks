@@ -35,12 +35,12 @@ int main()
             }
             case 3:
             {
-                //商家页面
+                business(&page);//商家页面
                 break;
             }
             case 4:
             {
-                //骑手页面
+                rider(&page);//骑手页面
                 break;
             }
             case 5:
@@ -51,11 +51,13 @@ int main()
             }
             case 6:
             {
+                user_takeout(&page);
                 //用户外卖页面
                 break;
             }
             case 7:
             {
+                user_deliver(&page);
                 //用户快递页面
                 break;
             }

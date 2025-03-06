@@ -1,9 +1,9 @@
 #include "all_func.h"
 
-void user_shop(int *page){
+void user_takeout(int *page){
     mouse_off(&mouse);
 	
-	draw_user_shop();
+	draw_user_takeout();
 
 	mouse_on(mouse);
 
@@ -43,7 +43,7 @@ void user_shop(int *page){
     }
 }
 
-void draw_user_shop(){
+void draw_user_takeout(){
     bar1(200, 0, 1024, 768,white);
 
     Line_Thick(200,50,1024,50,2,deepblue);
@@ -56,7 +56,7 @@ void draw_user_shop(){
     Line_Thick(800,0,800,50,2,deepblue);
     Line_Thick(920,0,920,50,2,deepblue);
 
-    PrintCC(210,15,"生活用品",HEI,24,1,grey);
+    PrintCC(210,15,"韵酒",HEI,24,1,grey);
     PrintCC(355,15,"文具",HEI,24,1,grey);
     PrintCC(475,15,"零食",HEI,24,1,grey);
     PrintCC(595,15,"饮料",HEI,24,1,grey);
@@ -90,7 +90,7 @@ void draw_user_shop(){
     
 }
 
-void press_item(int x){
+void press_canteen(int x){
     switch (x)
     {
         case 1:{

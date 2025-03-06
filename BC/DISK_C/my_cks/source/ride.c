@@ -1,9 +1,9 @@
 #include "all_func.h"
 
-void user(int *page){
+void rider(int *page){
     mouse_off(&mouse);
 	
-	draw_user();
+	draw_rider();
 
 	mouse_on(mouse);
 
@@ -29,7 +29,7 @@ void user(int *page){
     }
 }
 
-void draw_user()
+void draw_rider()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
     bar1(0, 0, 200, 768,0x0235);
@@ -49,11 +49,11 @@ void draw_user()
     PrintCC(75,454,"外卖",HEI,24,1,deepblue);
     PrintCC(75,617,"快递",HEI,24,1,deepblue);
 
-    PrintCC(250,50,"当前账号类型为：用户",HEI,24,1,deepblue);
+    PrintCC(250,50,"当前账号类型为：骑手",HEI,24,1,deepblue);
     
 }
 
-void press1(int x){
+void press3(int x){
     mouse_off(&mouse);
     switch (x)
     {
