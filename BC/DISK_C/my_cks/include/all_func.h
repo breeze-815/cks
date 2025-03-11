@@ -23,9 +23,11 @@
 #include "user_de.h"
 #include "busi.h"
 #include "ride.h"
+#include "busi_order.h"
 
 #include "HZK.h"
 #include "draw_shape.h"
+
 extern MOUSE mouse;
 extern USER users;
 

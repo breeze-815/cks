@@ -1,9 +1,10 @@
 #include "all_func.h"
 
-void user_shop(int *page){
+void user_shop(int *page,int *shop_type){
+
     mouse_off(&mouse);
 	
-	draw_user_shop();
+	draw_user_shop(shop_type);
 
 	mouse_on(mouse);
 
@@ -11,10 +12,24 @@ void user_shop(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
-			break;
+            *page=2;//返回用户首页
+            break;
 		}else if(mouse_press(40, 276, 160, 326)==1){
-            press1(1);//进入超市页面
+            draw_choice();
+            while(1){
+                mouse_show(&mouse);
+
+                if(mouse_press(200, 202, 430, 264)==1){
+                    *shop_type=1;
+                    break;
+                }else if(mouse_press(200, 266, 430, 334)==1){
+                    *shop_type=2;
+                    break;
+                }else if(mouse_press(200, 336, 430, 400)==1){
+                    *shop_type=3;
+                    break;
+                }
+            }
             *page=5;
             break;
         }else if(mouse_press(40, 439, 160, 489)==1){
@@ -24,6 +39,9 @@ void user_shop(int *page){
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
             *page=7;
+            break;
+        }else if(mouse_press(750, 650, 950, 700)==1){
+            *page=8;//购物车页面
             break;
         }else if(mouse_press(200, 0, 320, 50)==1){
             press_item(1);//生活用品
@@ -43,7 +61,7 @@ void user_shop(int *page){
     }
 }
 
-void draw_user_shop(){
+void draw_user_shop(int *shop_type){
     bar1(200, 0, 1024, 768,white);
 
     Line_Thick(200,50,1024,50,2,deepblue);
@@ -56,6 +74,8 @@ void draw_user_shop(){
     Line_Thick(800,0,800,50,2,deepblue);
     Line_Thick(920,0,920,50,2,deepblue);
 
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5,1,deepblue);//购物车按钮
+
     PrintCC(210,15,"生活用品",HEI,24,1,grey);
     PrintCC(355,15,"文具",HEI,24,1,grey);
     PrintCC(475,15,"零食",HEI,24,1,grey);
@@ -63,14 +83,8 @@ void draw_user_shop(){
     PrintCC(690,15,"运动用品",HEI,24,1,grey);
     PrintCC(835,15,"水果",HEI,24,1,grey);
     PrintCC(955,15,"文创",HEI,24,1,grey);
+    PrintCC(860,715,"购物车",HEI,24,1,deepblue);
 
-    //Draw_Rounded_Rectangle(270,100,390,220,30,1,deepblue);//120*120
-    //bar2(450,100,570,220,deepblue);
-    //bar2(630,100,750,220,deepblue);
-    //bar2(810,100,930,220,deepblue);
-
-    //bar2(270,280,390,400,deepblue);//120*120
-    //bar2(450,280,570,400,deepblue);
     bar2(630,280,750,400,deepblue);
     bar2(810,280,930,400,deepblue);
 
@@ -87,7 +101,13 @@ void draw_user_shop(){
     Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
     Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
     
-    
+    if(*shop_type==1){
+        PrintCC(220,700,"紫菘喻园超市",HEI,48,1,deepblue);
+    }else if(*shop_type==2){ 
+        PrintCC(220,700,"沁苑喻园超市",HEI,48,1,deepblue);
+    }else if(*shop_type==3){
+        PrintCC(220,700,"韵苑喻园超市",HEI,48,1,deepblue);
+    }
 }
 
 void press_item(int x){

@@ -62,13 +62,13 @@ int welcome(int *page){
 			if(i==-2)//密码输入错误 
 			{
 				PrintCC(430,560,"密码错误",HEI,24,1,0XF800);
-			    delay(1500);
+                delay(500);
 				bar1(430,560,580,590,snow);
 			}
 			if(i==-3)//用户不存在 
 			{
 				PrintCC(430,560,"用户不存在",HEI,24,1,0XF800);
-			    delay(1000);
+                delay(500);
 				bar1(430,560,580,590,snow);
 			} 
 		delay(15);
@@ -85,8 +85,8 @@ void draw_basic()
     
     Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//账号栏圆角矩形
     Draw_Rounded_Rectangle(300, 410, 700, 460, 5, 1,0xB71C);//密码栏圆角矩形
-    Fill_Rounded_Rectangle(300,490, 485, 540, 5,0x435c);//登录按钮
-    Draw_Rounded_Rectangle(515, 490, 700, 540, 5,1,0x0235);//注册按钮
+    Fill_Rounded_Rectangle(300,490, 485, 540, 5,0x435c);//登录按钮//长185，宽50
+    Draw_Rounded_Rectangle(515, 490, 700, 540, 5,1,0x0235);//注册按钮//圆角方框，两字，x65，y+13
     Draw_Rounded_Rectangle(950, 25, 1000, 75, 5,1,0x0235);//关闭按钮
 
     PrintCC(305,225,"校园外卖快递平台",HEI,48,1,0);

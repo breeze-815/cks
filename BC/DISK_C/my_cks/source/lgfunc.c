@@ -245,8 +245,7 @@ void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int 
 	y1=y1+5;//光标相较于输入框的偏移量
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(name[0]=='\0') //如果输入框为空，则显示输入框
-		//bar1(455, 255, 845, 295,0xFFFF);
-		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,snow);
 	else
 	{
 		length=strlen(name);
@@ -271,7 +270,7 @@ void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int 
 					hide_cursor(border,y1); //隐藏原光标
 					name[i]=temp;			//字符送入给定字符串，用于保存用户信息			
 					*showtemp=temp;  //temp转化为字符串
-					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1+5,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					i++;	//字符个数自增
 					name[i]='\0';		//标记字符串结尾
 					border+=8;	//光标横坐标右移8像素
@@ -283,7 +282,7 @@ void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int 
 					border-=8;	//光标左移8像素
 					i--;	//字符个数自减
 					name[i]='\0';	//将存储的字符用0覆盖
-					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					bar1(border,y1,border+8, y1+21, snow);	//清空原字符
 					cursor(border,y1);	//显示新光标
 				}
 				else if(temp=='\t')
@@ -321,7 +320,7 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(name[0]=='\0') //如果输入框为空，则显示输入框
 		//bar1(455, 335, 845, 375,0xffff);
-		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xffff);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,snow);
 	else
 	{
 		length=strlen(name);
@@ -346,10 +345,10 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 					hide_cursor(border,y1); //隐藏原光标
 					name[i]=temp;			//字符送入给定字符串，用于保存用户信息			
 					*showtemp=temp;  //temp转化为字符串
-					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1+5,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					delay(100);
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					Circlefill(border+4,y1+8,2,0);
+					bar1(border,y1,border+8, y1+21, snow);
+					Circlefill(border+4,y1+13,2,0);
 					i++;	//字符个数自增
 					name[i]='\0';		//标记字符串结尾
 					border+=8;	//光标横坐标右移8像素
@@ -361,7 +360,7 @@ void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar
 					border-=8;	//光标左移8像素
 					i--;	//字符个数自减
 					name[i]='\0';	//将存储的字符用0覆盖
-					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					bar1(border,y1,border+8, y1+21, snow);	//清空原字符
 					cursor(border,y1);	//显示新光标
 				}
 				else if(temp=='\t')
@@ -397,8 +396,7 @@ void Check_code(int x1,int y1,char *judge,int bar_x1,int bar_y1,int bar_x2,int b
 	y1=y1+5;//光标相较于输入框的偏移量
 	//每个字符占8个像素,每输入一个字符光标右移8个像素
 	if(judge[0]=='\0') //如果输入框为空，则显示输入框
-		//bar1(455, 415, 845, 455,0xffff);
-		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xffff);
+		bar1(bar_x1, bar_y1, bar_x2, bar_y2,snow);
 	else
 	{
 		length=strlen(judge);
@@ -423,10 +421,10 @@ void Check_code(int x1,int y1,char *judge,int bar_x1,int bar_y1,int bar_x2,int b
 					hide_cursor(border,y1); //隐藏原光标
 					judge[i]=temp;			//字符送入给定字符串，用于保存用户信息			
 					*showtemp=temp;  //temp转化为字符串
-					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1+5,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					delay(100);
-					bar1(border,y1,border+8, y1+16, 0xffff);
-					Circlefill(border+4,y1+8,2,0);
+					bar1(border,y1,border+8, y1+21, snow);
+					Circlefill(border+4,y1+13,2,0);
 					i++;	//字符个数自增
 					judge[i]='\0';		//标记字符串结尾
 					border+=8;	//光标横坐标右移8像素
@@ -438,7 +436,7 @@ void Check_code(int x1,int y1,char *judge,int bar_x1,int bar_y1,int bar_x2,int b
 					border-=8;	//光标左移8像素
 					i--;	//字符个数自减
 					judge[i]='\0';	//将存储的字符用0覆盖
-					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					bar1(border,y1,border+8, y1+21, snow);	//清空原字符
 					cursor(border,y1);	//显示新光标
 				}
 				else if(i>=10)

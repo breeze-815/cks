@@ -6,6 +6,8 @@ int main()
     
     int page = 0;//页面标志
 
+    int shop_type=0;//超市种类
+
     SetSVGA64k();//启动SVGA画图界面 
     
     mouse_init(); // 初始化鼠标
@@ -30,7 +32,7 @@ int main()
             }
             case 2:
             {
-                user(&page);//用户页面
+                user(&page,&shop_type);//用户页面
                 break;
             }
             case 3:
@@ -45,24 +47,22 @@ int main()
             }
             case 5:
             {   
-                user_shop(&page);
-                //用户超市页面
+                user_shop(&page,&shop_type);//用户超市页面               
                 break;
             }
             case 6:
             {
-                user_takeout(&page);
-                //用户外卖页面
+                user_takeout(&page,&shop_type);//用户外卖页面              
                 break;
             }
             case 7:
             {
-                user_deliver(&page);
-                //用户快递页面
+                user_deliver(&page,&shop_type);//用户快递页面  
                 break;
             }
             case 8:
             {
+                business_order(&page);//商家订单页面
                 break;
             }
         }

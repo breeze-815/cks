@@ -34,9 +34,8 @@ void user_register(int *page){
             press(3);//按下"骑手"
             users.type=3;
         }
-        else if(mouse_press(450, 250, 850, 300)==1)//输入账号
+        else if(mouse_press(450, 250, 850, 300)==1)//输入账号//x+5,y+6
         {
-            
             Get_account(455,256,users.name,judge,455,255,845,295);
 		}
         else if(mouse_press(450, 330, 850, 380)==1)//输入密码
@@ -60,41 +59,41 @@ void user_register(int *page){
 				            if(save_user(users)==0)
                             {
                                 PrintCC(570,575,"注册成功",HEI,24,1,lightred);
-                                delay(1500);
+                                delay(500);
 				                bar1(570,575,800,600,snow);
                             }
                             else
                             {
                                 PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
-                                delay(1500);
+                                delay(500);
 				                bar1(570,575,800,600,snow);
                             }
 			            }
 			            else
 			            {
                             PrintCC(570,575,"两次密码不相同",HEI,24,1,0XF800);
-				            delay(1500);
+                            delay(500);
 				            bar1(570,575,800,600,snow);
 			            }  
 				    }
 				    else
 				    {
 					    PrintCC(570,575,"密码为空",HEI,24,1,0XF800);
-				        delay(1500);
+                        delay(500);
 				        bar1(570,575,800,600,snow);
 				    }	
 			    }
 			    else
 			    {
 				    PrintCC(570,575,"用户名为空",HEI,24,1,0XF800);
-				    delay(1500);
+                    delay(500);
 				    bar1(570,575,800,600,snow);
 			    }	
             }
             else
             {
                 PrintCC(570,575,"未选择用户类型",HEI,24,1,0XF800);
-                delay(1500);
+                delay(500);
                 bar1(570,575,800,600,snow);
             }
 		}
@@ -111,9 +110,9 @@ void draw_register()
     Draw_Rounded_Rectangle(450, 330, 850, 380, 5, 1,0xB71C);//密码栏圆角矩形
     Draw_Rounded_Rectangle(450, 410, 850, 460, 5, 1,0xB71C);//确认密码栏圆角矩形
 
-    Draw_Rounded_Rectangle(230, 250, 350, 300, 25, 1,0x0235);//用户
-    Draw_Rounded_Rectangle(230, 330, 350, 380, 25, 1,0x0235);//商家
-    Draw_Rounded_Rectangle(230, 410, 350, 460, 25, 1,0x0235);//骑手
+    Draw_Rounded_Rectangle(230, 250, 350, 300, 25, 1,0x0235);//用户按钮
+    Draw_Rounded_Rectangle(230, 330, 350, 380, 25, 1,0x0235);//商家按钮
+    Draw_Rounded_Rectangle(230, 410, 350, 460, 25, 1,0x0235);//骑手按钮
     
     Fill_Rounded_Rectangle(450,490, 635, 540, 5,0x435c);//返回按钮
     Draw_Rounded_Rectangle(665, 490, 850, 540, 5,1,0x0235);//立即注册按钮

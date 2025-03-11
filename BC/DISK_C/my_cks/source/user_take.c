@@ -1,6 +1,7 @@
 #include "all_func.h"
 
-void user_takeout(int *page){
+void user_takeout(int *page,int *shop_type){
+
     mouse_off(&mouse);
 	
 	draw_user_takeout();
@@ -11,10 +12,24 @@ void user_takeout(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
+			*page=2;//返回首页
 			break;
 		}else if(mouse_press(40, 276, 160, 326)==1){
-            press1(1);//进入超市页面
+            draw_choice();
+            while(1){
+                mouse_show(&mouse);
+
+                if(mouse_press(200, 202, 430, 264)==1){
+                    *shop_type=1;
+                    break;
+                }else if(mouse_press(200, 266, 430, 334)==1){
+                    *shop_type=2;
+                    break;
+                }else if(mouse_press(200, 336, 430, 400)==1){
+                    *shop_type=3;
+                    break;
+                }
+            }
             *page=5;
             break;
         }else if(mouse_press(40, 439, 160, 489)==1){
@@ -56,7 +71,7 @@ void draw_user_takeout(){
     Line_Thick(800,0,800,50,2,deepblue);
     Line_Thick(920,0,920,50,2,deepblue);
 
-    PrintCC(210,15,"韵酒",HEI,24,1,grey);
+    PrintCC(210,15,"生活用品",HEI,24,1,grey);
     PrintCC(355,15,"文具",HEI,24,1,grey);
     PrintCC(475,15,"零食",HEI,24,1,grey);
     PrintCC(595,15,"饮料",HEI,24,1,grey);
@@ -64,13 +79,6 @@ void draw_user_takeout(){
     PrintCC(835,15,"水果",HEI,24,1,grey);
     PrintCC(955,15,"文创",HEI,24,1,grey);
 
-    //Draw_Rounded_Rectangle(270,100,390,220,30,1,deepblue);//120*120
-    //bar2(450,100,570,220,deepblue);
-    //bar2(630,100,750,220,deepblue);
-    //bar2(810,100,930,220,deepblue);
-
-    //bar2(270,280,390,400,deepblue);//120*120
-    //bar2(450,280,570,400,deepblue);
     bar2(630,280,750,400,deepblue);
     bar2(810,280,930,400,deepblue);
 
@@ -86,8 +94,6 @@ void draw_user_takeout(){
     Readbmp64k(810, 100, "bmp\\wan.bmp");//碗
     Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
     Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
-    
-    
 }
 
 void press_canteen(int x){

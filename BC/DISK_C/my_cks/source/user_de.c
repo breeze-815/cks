@@ -1,6 +1,7 @@
 #include "all_func.h"
 
-void user_deliver(int *page){
+void user_deliver(int *page,int *shop_type){
+
     mouse_off(&mouse);
 	
 	draw_user_deliver();
@@ -11,10 +12,24 @@ void user_deliver(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
+			*page=2;//返回首页
 			break;
 		}else if(mouse_press(40, 276, 160, 326)==1){
-            press1(1);//进入超市页面
+            draw_choice();
+            while(1){
+                mouse_show(&mouse);
+
+                if(mouse_press(200, 202, 430, 264)==1){
+                    *shop_type=1;
+                    break;
+                }else if(mouse_press(200, 266, 430, 334)==1){
+                    *shop_type=2;
+                    break;
+                }else if(mouse_press(200, 336, 430, 400)==1){
+                    *shop_type=3;
+                    break;
+                }
+            }
             *page=5;
             break;
         }else if(mouse_press(40, 439, 160, 489)==1){
@@ -46,48 +61,43 @@ void user_deliver(int *page){
 void draw_user_deliver(){
     bar1(200, 0, 1024, 768,white);
 
-    Line_Thick(200,50,1024,50,2,deepblue);
-    //Line_Thick(200,1,1024,1,2,deepblue);
+    PrintCC(250,50,"请输入取件码：",HEI,24,1,deepblue);
+    PrintCC(250,120,"请选择驿站：",HEI,24,1,deepblue);
 
-    Line_Thick(320,0,320,50,2,deepblue);
-    Line_Thick(440,0,440,50,2,deepblue);
-    Line_Thick(560,0,560,50,2,deepblue);
-    Line_Thick(680,0,680,50,2,deepblue);
-    Line_Thick(800,0,800,50,2,deepblue);
-    Line_Thick(920,0,920,50,2,deepblue);
-
-    PrintCC(210,15,"菜鸟",HEI,24,1,grey);
-    PrintCC(355,15,"文具",HEI,24,1,grey);
-    PrintCC(475,15,"零食",HEI,24,1,grey);
-    PrintCC(595,15,"饮料",HEI,24,1,grey);
-    PrintCC(690,15,"运动用品",HEI,24,1,grey);
-    PrintCC(835,15,"水果",HEI,24,1,grey);
-    PrintCC(955,15,"文创",HEI,24,1,grey);
-
-    //Draw_Rounded_Rectangle(270,100,390,220,30,1,deepblue);//120*120
-    //bar2(450,100,570,220,deepblue);
-    //bar2(630,100,750,220,deepblue);
-    //bar2(810,100,930,220,deepblue);
-
-    //bar2(270,280,390,400,deepblue);//120*120
-    //bar2(450,280,570,400,deepblue);
-    bar2(630,280,750,400,deepblue);
-    bar2(810,280,930,400,deepblue);
-
-    bar2(270,460,390,580,deepblue);//120*120
-    bar2(450,460,570,580,deepblue);
-    bar2(630,460,750,580,deepblue);
-    bar2(810,460,930,580,deepblue);
-
-    PrintCC(315,240,"盆",HEI,24,1,deepblue);
-    Readbmp64k(270, 100, "bmp\\pen.bmp");//盆
-    Readbmp64k(450, 100, "bmp\\saoba.bmp");//扫把
-    Readbmp64k(630, 100, "bmp\\canju.bmp");//餐具
-    Readbmp64k(810, 100, "bmp\\wan.bmp");//碗
-    Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
-    Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
+    Draw_Rounded_Rectangle(250, 200, 250+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,200+13,"韵苑学生食堂",HEI,24,1,0x0235);
     
-    
+    Draw_Rounded_Rectangle(500, 200, 500+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,200+13,"东园食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 200, 750+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,200+13,"东教工食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 300, 250+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,300+13,"学生一食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 300, 500+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,300+13,"学生二食堂",HEI,24,1,0x0235);  
+
+    Draw_Rounded_Rectangle(750, 300, 750+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,300+13,"紫荆园餐厅",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 400, 250+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,400+13,"东一食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 400, 500+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,400+13,"东三食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 400, 750+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,400+13,"喻园餐厅",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 500, 250+185, 500+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,500+13,"百景园",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 500, 500+185, 500+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,500+13,"西一食堂",HEI,24,1,0x0235);
+
+
 }
 
 void press_station(int x){

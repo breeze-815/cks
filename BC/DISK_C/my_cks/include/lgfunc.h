@@ -10,6 +10,8 @@ typedef struct USER
 	char code[12];//密码
 
 	int type;//用户类型 1为用户，2为商家，3为骑手
+	char number[12];//手机号
+	int address;//地址 1为紫菘，2为沁苑，3为韵苑
 
 }USER;
 
@@ -45,7 +47,6 @@ typedef struct PROJECT
 
 
 
-/*******************************************************************/
 typedef struct UserList
 {
 	struct USER* elem;    //存储空间基值
