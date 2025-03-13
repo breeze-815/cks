@@ -13,9 +13,12 @@ void user(){
 	while(1){
 		mouse_show_arrow(&mouse);
 
-		if(mouse_press(40, 113, 160, 163)==1){
+		if(mouse_press(40, 113, 160, 163)==1)
+        {
 			welcome();//首页
-		}else if(mouse_press(40, 276, 160, 326)==1){
+		}
+        else if(mouse_press(40, 276, 160, 326)==1)
+        {
             draw_choice();
             while(1){
                 mouse_show_arrow(&mouse);
@@ -32,30 +35,53 @@ void user(){
                 }
             }
             user_shop();//用户超市页面           
-        }else if(mouse_press(40, 439, 160, 489)==1){
+        }
+        else if(mouse_press(40, 439, 160, 489)==1)
+        {
             press1(2);//进入外卖页面
             user_takeout();//用户外卖页面 
             break;
-        }else if(mouse_press(40, 602, 160, 652)==1){
+        }
+        else if(mouse_press(40, 602, 160, 652)==1)
+        {
             press1(3);//进入快递页面
             user_deliver();//用户快递页面  
             break;
-        }else if(mouse_press(430, 105, 650, 155)==1){
-            Get_number(435, 111, users.number, 435, 110, 645, 150);
-        }else if(mouse_press(710, 105, 830, 155)==1){
-            save_user(users);
-            PrintCC(800,50,"保存成功",HEI,24,1,lightred);
-            delay(500);
-            bar1(800,50,1024,100,snow);
-        }else if(mouse_press(440, 180, 560, 230)==1){
+        }
+        else if(mouse_press(430, 105, 650, 155)==1)
+        {
+            number_mode(users.number, 435, 110, 645, 150);//输入手机号
+        }
+        else if(mouse_press(710, 105, 830, 155)==1)
+        {
+            if(strlen(users.number)==11)
+            {
+                save_user(users);
+                PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                delay(500);
+                bar1(800,50,1024,100,snow);
+            }
+            else
+            {
+                PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                delay(500);
+                bar1(800,50,1024,100,snow);
+            }
+        }
+        else if(mouse_press(440, 180, 560, 230)==1)
+        {
             press1(4);//紫菘
             users.address=1;
             save_user(users);
-        }else if(mouse_press(620, 180, 740, 230)==1){
+        }
+        else if(mouse_press(620, 180, 740, 230)==1)
+        {
             press1(5);//沁苑
             users.address=2;
             save_user(users);
-        }else if(mouse_press(800, 180, 920, 230)==1){
+        }
+        else if(mouse_press(800, 180, 920, 230)==1)
+        {
             press1(6);//韵苑
             users.address=3;
             save_user(users);
@@ -194,71 +220,86 @@ void press1(int x){
     mouse_on_arrow(mouse);
 }
 
-void Get_number(int x1,int y1,char *name,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
+void number_mode(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
 	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
-	int border=x1+4; //光标的横坐标	    
-	x1=x1+4;
-	y1=y1+5;//光标相较于输入框的偏移量
-	//每个字符占8个像素,每输入一个字符光标右移8个像素
-	if(name[0]=='\0') //如果输入框为空，则显示输入框
-		bar1(bar_x1, bar_y1, bar_x2, bar_y2,snow);
-	else
-	{
-		length=strlen(name);
-		i=length;
-		border+=8*i;
-		cursor(border,y1);
-		//光标定位至文本末尾
-	}
+	int border; //光标的横坐标	    
+	int x1,y1;
+	x1=bar_x1+4;
+	y1=bar_y1+5;//光标相较于输入框的偏移量
+	border=x1+4;//每个字符占8个像素,每输入一个字符光标右移8个像素
+	
+    if(number[0]=='\0') //如果账号为空，则显示输入框
+        bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
+    else
+    {            //光标定位至文本末尾
+        length=strlen(number);
+        i=length;
+        border+=8*i;
+        cursor(border,y1);
+    }	
+
 	while(1) 
     {
-		mouse_off_arrow(&mouse);
-	    cursor(border,y1);//光标闪烁 
-		mouse_show_arrow(&mouse);
+		cursor(border,y1);
+		if(mouse_location(455,255,845,295)==1 && mouse_location(455,335,845,375)==1 && mouse_location(455,415,845,455)==1)
+			mouse_show_cursor(&mouse);
+		else
+			mouse_show_arrow(&mouse);
 		if(bioskey(1)) //如果有键盘输入
 		{
 			temp=bioskey(0)&0x00ff; //获取键盘输入
-			mouse_show_arrow(&mouse); //显示鼠标
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
-				if(('0'<=temp&&temp<='9')&& i < 11)//检测为数字或字母，则记录
+				if(('0'<=temp&&temp<='9')&& i <11)//检测为数字或字母，则记录
 				{
 					hide_cursor(border,y1); //隐藏原光标
-					name[i]=temp;			//字符送入给定字符串，用于保存用户信息			
+					
+					number[i]=temp;//字符送入给定字符串，用于保存用户信息
+								
 					*showtemp=temp;  //temp转化为字符串
-					PrintText(border,y1+5,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
 					i++;	//字符个数自增
-					name[i]='\0';		//标记字符串结尾
+					
+					number[i]='\0';//标记字符串结尾
+							
 					border+=8;	//光标横坐标右移8像素
-					cursor(border,y1);	//显示新光标
+					draw_cursor(border,y1);
 				}
 				else if(temp=='\b'&&i>0)  //检测是否为退格键，是则消除前一个字符
 				{
 					hide_cursor(border,y1);	//隐藏原光标
 					border-=8;	//光标左移8像素
 					i--;	//字符个数自减
-					name[i]='\0';	//将存储的字符用0覆盖
-					bar1(border,y1,border+8, y1+21, snow);	//清空原字符
-					cursor(border,y1);	//显示新光标
+				
+					number[i]='\0';//将存储的字符用0覆盖
+					
+					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					draw_cursor(border,y1);
 				}
 				else if(i>=11)
 				{
 					mouse_off_arrow(&mouse);
 					mouse_show_arrow(&mouse);
-					PrintCC(570,575,"输入手机号超过长度限制",HEI,24,1,0XF800);
+					PrintCC(750,50,"长度超过限制",HEI,24,1,lightred);
+					delay(500);
+					bar1(750,50,900,75,snow);
 				}
 			}
 			else
 			{
+				
 				break;
 			}
 		}
-		else if (mouse_press(450, 250, 850, 300)!=1) {
+		else if (mouse_press(bar_x1,bar_y1,bar_x2,bar_y2)==2)  //点击框外
+		{
+			hide_cursor(border,y1);//隐藏光标
 			break;
-		}
-		hide_cursor(border,y1);	//隐藏光标
+		}	
+			
+	// hide_cursor(border,y1);	//隐藏光标
 	}
-}
+}	

@@ -36,7 +36,7 @@ int welcome(){
 		}
         else if(mouse_press(300, 410, 700, 460)==1)//µã»÷ÃÜÂë¿ò 
 		{
-			input_mode(name,code,judge1, 305, 415, 695, 455,1);
+			input_mode(name,code,judge1, 305, 415, 695, 455,2);
 		}
         else if(mouse_press(300,490, 485, 540)==1)//µã»÷µÇÂ¼
         {
