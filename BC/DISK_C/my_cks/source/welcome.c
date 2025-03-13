@@ -2,7 +2,7 @@
 //屏幕宽度1024，高度768
 
 
-int welcome(int *page){
+int welcome(){
 
     char name[10]="\0";
 	char code[10]="\0";
@@ -23,9 +23,9 @@ int welcome(int *page){
 
 		if(mouse_press(515, 490, 700, 540)==1)
         {
-			*page=1;//进入注册界面
-			break;
-		}else if(mouse_press(950, 25, 1000, 75)==1)
+			user_register();//注册
+		}
+        else if(mouse_press(950, 25, 1000, 75)==1)
         {
             CloseSVGA();//关闭SVGA画图界面
             exit(100);
@@ -43,21 +43,18 @@ int welcome(int *page){
             i=Check_info(UL,name,code);
             if(i>=0)
 			{
-			int user_type = UL.elem[i].type; // 获取用户类型
+                int user_type = UL.elem[i].type; // 获取用户类型
 
-            DestroyUList(&UL);
+                DestroyUList(&UL);
 
-            // 根据用户类型跳转到不同界面
-            if (user_type == 1) {
-                *page = 2; // 普通用户界面
-            } else if (user_type == 2) {
-                *page = 3; // 商家界面
-            } else if (user_type == 3) {
-                *page = 4; // 骑手界面
-            } else {
-                *page = 2; // 默认主界面（如果type值异常）
-            }
-            break;
+                // 根据用户类型跳转到不同界面
+                if (user_type == 1) {
+                    user();//用户页面
+                } else if (user_type == 2) {
+                    business();//商家页面
+                } else if (user_type == 3) {
+                    rider();//骑手页面
+                }
 			}
 			if(i==-2)//密码输入错误 
 			{

@@ -2,7 +2,7 @@
 //屏幕宽度1024，高度768
 struct USER users={0};//存储信息的用户结构体 
 
-void user_register(int *page){
+void user_register(){
     
 	char judge[10]="\0";//用于判断的密码 
 
@@ -16,8 +16,7 @@ void user_register(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(450,490, 635, 540)==1){
-			*page=0;//返回
-			break;
+			welcome();//首页
 		}
         else if(mouse_press(230, 250, 350, 300)==1)
         {

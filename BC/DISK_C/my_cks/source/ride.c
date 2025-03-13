@@ -1,6 +1,6 @@
 #include "all_func.h"
 
-void rider(int *page){
+void rider(){
     mouse_off(&mouse);
 	
 	draw_rider();
@@ -11,20 +11,16 @@ void rider(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
-			break;
+			welcome();//首页
 		}else if(mouse_press(40, 276, 160, 326)==1){
             press1(1);//进入超市页面
-            *page=5;
-            break;
+            user_shop();//用户超市页面 
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
-            *page=6;
-            break;
+            user_takeout();//用户外卖页面      
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
-            *page=7;
-            break;
+            user_deliver();//用户快递页面  
         }
     }
 }

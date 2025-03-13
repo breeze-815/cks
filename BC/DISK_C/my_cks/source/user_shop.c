@@ -1,6 +1,8 @@
 #include "all_func.h"
 
-void user_shop(int *page,int *shop_type){
+void user_shop(){
+
+    extern int shop_type;
 
     Product product[100];
 
@@ -18,37 +20,32 @@ void user_shop(int *page,int *shop_type){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-            *page=2;//返回用户首页
-            break;
+            user();//用户页面
 		}else if(mouse_press(40, 276, 160, 326)==1){
             draw_choice();
             while(1){
                 mouse_show(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
-                    *shop_type=1;
+                    shop_type=1;
                     break;
                 }else if(mouse_press(200, 266, 430, 334)==1){
-                    *shop_type=2;
+                    shop_type=2;
                     break;
                 }else if(mouse_press(200, 336, 430, 400)==1){
-                    *shop_type=3;
+                    shop_type=3;
                     break;
                 }
             }
-            *page=5;
-            break;
+            user_shop();//用户超市页面   
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
-            *page=6;
-            break;
+            user_takeout();//用户外卖页面    
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
-            *page=7;
-            break;
+            user_deliver();//用户快递页面  
         }else if(mouse_press(800, 700, 1000, 750)==1){
-            *page=9;//购物车页面
-            break;
+            user_cart();//用户购物车页面
         }else if(mouse_press(200, 0, 320, 50)==1){
             press_item(1);//生活用品
         }else if(mouse_press(320, 0, 440, 50)==1){
@@ -67,7 +64,9 @@ void user_shop(int *page,int *shop_type){
     }
 }
 
-void draw_user_shop(int *shop_type){
+void draw_user_shop(){
+    extern int shop_type;
+
     bar1(200, 0, 1024, 768,white);
 
     Line_Thick(200,50,1024,50,2,deepblue);
@@ -107,11 +106,11 @@ void draw_user_shop(int *shop_type){
     Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
     Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
     
-    if(*shop_type==1){
+    if(shop_type==1){
         PrintCC(220,700,"紫菘喻园超市",HEI,48,1,deepblue);
-    }else if(*shop_type==2){ 
+    }else if(shop_type==2){ 
         PrintCC(220,700,"沁苑喻园超市",HEI,48,1,deepblue);
-    }else if(*shop_type==3){
+    }else if(shop_type==3){
         PrintCC(220,700,"韵苑喻园超市",HEI,48,1,deepblue);
     }
 }

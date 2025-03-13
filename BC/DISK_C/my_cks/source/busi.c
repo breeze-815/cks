@@ -1,6 +1,6 @@
 #include "all_func.h"
 
-void business(int *page){
+void business(){
     mouse_off(&mouse);
 	
 	draw_business();
@@ -11,19 +11,16 @@ void business(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
-			break;
+			welcome();//首页
 		}else if(mouse_press(490, 100, 610, 150)==1){
             press2(1);//进入超市页面
             if(mouse_press(250, 200, 250+185, 200+50)==1){
-                *page=5;
-                break;
+                user_shop();//用户超市页面     
             }
         }else if(mouse_press(670, 100, 790, 150)==1){
             press2(2);//进入餐厅页面
         }else if(mouse_press(40, 602, 160, 652)==1){
-            *page=8;//确认
-            break;
+            business_order();//商家订单页面
         }
     }
 }

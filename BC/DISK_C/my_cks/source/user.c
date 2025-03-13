@@ -1,6 +1,8 @@
 #include "all_func.h"
 
-void user(int *page,int *shop_type){
+int shop_type;
+
+void user(){
     mouse_off(&mouse);
 	
 	draw_user();
@@ -11,33 +13,31 @@ void user(int *page,int *shop_type){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=0;//返回首页
-			break;
+			welcome();//首页
 		}else if(mouse_press(40, 276, 160, 326)==1){
             draw_choice();
             while(1){
                 mouse_show(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
-                    *shop_type=1;
+                    shop_type=1;
                     break;
                 }else if(mouse_press(200, 266, 430, 334)==1){
-                    *shop_type=2;
+                    shop_type=2;
                     break;
                 }else if(mouse_press(200, 336, 430, 400)==1){
-                    *shop_type=3;
+                    shop_type=3;
                     break;
                 }
             }
-            *page=5;
-            break;
+            user_shop();//用户超市页面           
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
-            *page=6;
+            user_takeout();//用户外卖页面 
             break;
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
-            *page=7;
+            user_deliver();//用户快递页面  
             break;
         }else if(mouse_press(430, 105, 650, 155)==1){
             Get_number(435, 111, users.number, 435, 110, 645, 150);

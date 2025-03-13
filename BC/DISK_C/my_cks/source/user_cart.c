@@ -1,6 +1,6 @@
 #include "all_func.h"
 
-void user_cart(int *page){
+void user_cart(){
     mouse_off(&mouse);
 	
 	draw_user_cart();
@@ -11,8 +11,7 @@ void user_cart(int *page){
 		mouse_show(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			*page=2;//返回首页
-			break;
+			user();//用户页面
 		}
     }
 }

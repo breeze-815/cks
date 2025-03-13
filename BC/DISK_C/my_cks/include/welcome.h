@@ -1,7 +1,7 @@
 #ifndef __DRAW_H__
 #define __DRAW_H__
 
-int welcome(int *page);
+int welcome();
 void draw_basic();
 
 
