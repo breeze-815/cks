@@ -2,6 +2,12 @@
 
 void user_shop(int *page,int *shop_type){
 
+    Product product[100];
+
+    int productCount = 0;
+
+    init_Products(product,&productCount);
+
     mouse_off(&mouse);
 	
 	draw_user_shop(shop_type);
@@ -40,8 +46,8 @@ void user_shop(int *page,int *shop_type){
             press1(3);//进入快递页面
             *page=7;
             break;
-        }else if(mouse_press(750, 650, 950, 700)==1){
-            *page=8;//购物车页面
+        }else if(mouse_press(800, 700, 1000, 750)==1){
+            *page=9;//购物车页面
             break;
         }else if(mouse_press(200, 0, 320, 50)==1){
             press_item(1);//生活用品
@@ -184,4 +190,16 @@ void press_item(int x){
             break;
         }
     }
+}
+
+void init_Products(Product product[], int *productCount){ 
+    strcpy(product[0].name, "Product 1");
+    product[0].price = 10.0;
+    product[0].id = 1;
+
+    strcpy(product[1].name, "Product 2");
+    product[1].price = 20.0;
+    product[1].id = 2;
+
+    *productCount = 2;
 }

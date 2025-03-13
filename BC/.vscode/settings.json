@@ -65,6 +65,10 @@
     "EWCONIO.C": "cpp",
     "SVGA.C": "cpp",
     "HZK.C": "cpp",
-    "all_func.h": "c"
+    "all_func.h": "c",
+    "welcome.h": "c",
+    "lgfunc.h": "c",
+    "user_shop.h": "c",
+    "ride.h": "c"
   }
 }

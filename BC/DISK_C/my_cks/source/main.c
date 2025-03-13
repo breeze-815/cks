@@ -22,12 +22,12 @@ int main()
         {
             case 0:
             {
-                welcome(&page);
+                welcome(&page);//首页
                 break;
             }
             case 1:
             {
-                user_register(&page);
+                user_register(&page);//注册
                 break;
             }
             case 2:
@@ -63,6 +63,11 @@ int main()
             case 8:
             {
                 business_order(&page);//商家订单页面
+                break;
+            }
+            case 9:
+            {
+                user_cart(&page);//用户购物车页面
                 break;
             }
         }
