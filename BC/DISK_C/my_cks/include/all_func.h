@@ -14,6 +14,7 @@
 
 #include "mouse.h"
 #include "SVGA.H"
+
 #include "user_re.h"
 #include "welcome.h"
 #include "lgfunc.h"
@@ -35,6 +36,7 @@
 
 extern MOUSE mouse;
 extern USER users;
+extern Shop shops;
 
 #define white 0xFFFF
 #define snow 0xFFDF

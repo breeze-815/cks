@@ -1,9 +1,6 @@
 #include "all_func.h"
 
 void user_shop(){
-
-    extern int shop_type;
-
     Product product[100];
 
     int productCount = 0;
@@ -12,7 +9,7 @@ void user_shop(){
 
     mouse_off(&mouse);
 	
-	draw_user_shop(shop_type);
+	draw_user_shop();
 
 	mouse_on(mouse);
 
@@ -27,13 +24,13 @@ void user_shop(){
                 mouse_show(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
-                    shop_type=1;
+                    shops.type=1;
                     break;
                 }else if(mouse_press(200, 266, 430, 334)==1){
-                    shop_type=2;
+                    shops.type=2;
                     break;
                 }else if(mouse_press(200, 336, 430, 400)==1){
-                    shop_type=3;
+                    shops.type=3;
                     break;
                 }
             }
@@ -106,11 +103,11 @@ void draw_user_shop(){
     Readbmp64k(270, 280, "bmp\\shuibei.bmp");//Ë®±­
     Readbmp64k(450, 280, "bmp\\yijia.bmp");//ÒÂ¼Ü
     
-    if(shop_type==1){
+    if(shops.type==1){
         PrintCC(220,700,"×ÏÝ¿Ó÷Ô°³¬ÊÐ",HEI,48,1,deepblue);
-    }else if(shop_type==2){ 
+    }else if(shops.type==2){ 
         PrintCC(220,700,"ÇßÔ·Ó÷Ô°³¬ÊÐ",HEI,48,1,deepblue);
-    }else if(shop_type==3){
+    }else if(shops.type==3){
         PrintCC(220,700,"ÔÏÔ·Ó÷Ô°³¬ÊÐ",HEI,48,1,deepblue);
     }
 }

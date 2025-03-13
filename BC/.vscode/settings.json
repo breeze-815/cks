@@ -69,6 +69,7 @@
     "welcome.h": "c",
     "lgfunc.h": "c",
     "user_shop.h": "c",
-    "ride.h": "c"
+    "ride.h": "c",
+    "user.h": "c"
   }
 }

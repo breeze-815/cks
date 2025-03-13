@@ -1,8 +1,9 @@
 #include "all_func.h"
 
-int shop_type;
+struct Shop shops={0};//存储信息的商店结构体 
 
 void user(){
+    
     mouse_off(&mouse);
 	
 	draw_user();
@@ -20,13 +21,13 @@ void user(){
                 mouse_show(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
-                    shop_type=1;
+                    shops.type=1;
                     break;
                 }else if(mouse_press(200, 266, 430, 334)==1){
-                    shop_type=2;
+                    shops.type=2;
                     break;
                 }else if(mouse_press(200, 336, 430, 400)==1){
-                    shop_type=3;
+                    shops.type=3;
                     break;
                 }
             }
