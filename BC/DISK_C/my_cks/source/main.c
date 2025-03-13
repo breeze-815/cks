@@ -8,11 +8,11 @@ int main()
     
     mouse_init(); // 初始化鼠标
 
-    mouse_on(mouse);
+    mouse_on_arrow(mouse);
 
     while (1)
     {
-        mouse_show(&mouse);// 更新鼠标位置
+        mouse_show_arrow(&mouse);// 更新鼠标位置
 
         welcome();//首页
              

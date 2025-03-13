@@ -12,14 +12,14 @@ int welcome(){
     UserList UL={0};
 	InitUList(&UL);
 	ReadAllUser(&UL);
-	mouse_off(&mouse);
+	mouse_off_arrow(&mouse);
 	
 	draw_basic();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(515, 490, 700, 540)==1)
         {
@@ -32,11 +32,11 @@ int welcome(){
         }
         else if(mouse_press(300, 330, 700, 380)==1)//µã»÷ÕËºÅ¿ò 
 		{
-			Get_account(305, 336,name,judge1, 305, 335, 695, 375);
+			input_mode(name,code,judge1, 305, 335, 695, 375,1);
 		}
         else if(mouse_press(300, 410, 700, 460)==1)//µã»÷ÃÜÂë¿ò 
 		{
-			Get_code(305, 416,code,judge1, 305, 415, 695, 455);
+			input_mode(name,code,judge1, 305, 415, 695, 455,1);
 		}
         else if(mouse_press(300,490, 485, 540)==1)//µã»÷µÇÂ¼
         {

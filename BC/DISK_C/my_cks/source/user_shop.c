@@ -1,27 +1,25 @@
 #include "all_func.h"
-
+Product product[100];
 void user_shop(){
-    Product product[100];
-
     int productCount = 0;
 
-    init_Products(product,&productCount);
+    init_Products(&productCount);
 
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_user_shop();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
             user();//”√ªß“≥√Ê
 		}else if(mouse_press(40, 276, 160, 326)==1){
             draw_choice();
             while(1){
-                mouse_show(&mouse);
+                mouse_show_arrow(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
                     shops.type=1;
@@ -188,7 +186,7 @@ void press_item(int x){
     }
 }
 
-void init_Products(Product product[], int *productCount){ 
+void init_Products(int *productCount){ 
     strcpy(product[0].name, "Product 1");
     product[0].price = 10.0;
     product[0].id = 1;

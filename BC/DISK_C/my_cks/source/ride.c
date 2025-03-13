@@ -1,14 +1,14 @@
 #include "all_func.h"
 
 void rider(){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_rider();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
 			welcome();//Ê×Ò³
@@ -50,7 +50,7 @@ void draw_rider()
 }
 
 void press3(int x){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
     switch (x)
     {
         case 1:{
@@ -90,5 +90,5 @@ void press3(int x){
             break;
         }
     }
-    mouse_on(mouse);
+    mouse_on_arrow(mouse);
 }

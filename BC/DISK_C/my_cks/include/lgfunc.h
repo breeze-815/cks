@@ -74,17 +74,12 @@ int Userposition(UserList UL,USER e);
 //显示光标
 void show_gb(int x,int y);
 //得到显示信息
-void Get_account(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2);
-//得到密码
-void Get_code(int x1,int y1,char *name,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2);
-//检查密码
-void Check_code(int x1,int y1,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2);
+void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode);
 //保存用户信息
 int save_user(USER temp);
 
 void ReadAllUser(UserList *UL);
 
 void UpdataUser(USER user);
-
 
 #endif

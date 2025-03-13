@@ -1,19 +1,19 @@
 #include "all_func.h"
 //屏幕宽度1024，高度768
-struct USER users={0};//存储信息的用户结构体 
+USER users={0};//存储信息的用户结构体 
 
 void user_register(){
     
 	char judge[10]="\0";//用于判断的密码 
 
-	mouse_off(&mouse);
+	mouse_off_arrow(&mouse);
 	
 	draw_register();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(450,490, 635, 540)==1){
 			welcome();//首页
@@ -35,15 +35,15 @@ void user_register(){
         }
         else if(mouse_press(450, 250, 850, 300)==1)//输入账号//x+5,y+6
         {
-            Get_account(455,256,users.name,judge,455,255,845,295);
+            input_mode(users.name,users.code,judge,455,255,845,295,1);
 		}
         else if(mouse_press(450, 330, 850, 380)==1)//输入密码
         {   
-			Get_code(455,336,users.code,judge,455,335,845,375);
+			input_mode(users.name,users.code,judge,455,335,845,375,2);
 		}
 		else if(mouse_press(450, 410, 850, 460)==1)//重新输入密码
         {   
-			Check_code(455,416,judge,455,415,845,455);
+			input_mode(users.name,users.code,judge,455,415,845,455,3);
 		}
         if(mouse_press(665, 490, 850, 540)==1)//点击确认键
         {   
@@ -127,7 +127,7 @@ void draw_register()
 }
 
 void press(int x){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
     switch (x)
     {
         case 1:{
@@ -167,5 +167,5 @@ void press(int x){
             break;
         }
     }
-    mouse_on(mouse);
+    mouse_on_arrow(mouse);
 }

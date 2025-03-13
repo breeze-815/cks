@@ -1,14 +1,14 @@
 #include "all_func.h"
 
 void user_cart(){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_user_cart();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
 			user();//”√ªß“≥√Ê

@@ -2,21 +2,21 @@
 
 void user_deliver(){
 
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_user_deliver();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
 			user();//”√ªß“≥√Ê
 		}else if(mouse_press(40, 276, 160, 326)==1){
             draw_choice();
             while(1){
-                mouse_show(&mouse);
+                mouse_show_arrow(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
                     shops.type=1;

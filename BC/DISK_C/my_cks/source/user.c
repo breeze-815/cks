@@ -1,24 +1,24 @@
 #include "all_func.h"
 
-struct Shop shops={0};//存储信息的商店结构体 
+Shop shops={0};//存储信息的商店结构体 
 
 void user(){
     
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_user();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
 			welcome();//首页
 		}else if(mouse_press(40, 276, 160, 326)==1){
             draw_choice();
             while(1){
-                mouse_show(&mouse);
+                mouse_show_arrow(&mouse);
 
                 if(mouse_press(200, 202, 430, 264)==1){
                     shops.type=1;
@@ -115,7 +115,7 @@ void draw_choice(){
 }
 
 void press1(int x){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
     switch (x)
     {
         case 1:{
@@ -191,7 +191,7 @@ void press1(int x){
             break;
         }
     }
-    mouse_on(mouse);
+    mouse_on_arrow(mouse);
 }
 
 void Get_number(int x1,int y1,char *name,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
@@ -215,13 +215,13 @@ void Get_number(int x1,int y1,char *name,int bar_x1,int bar_y1,int bar_x2,int ba
 	}
 	while(1) 
     {
-		mouse_off(&mouse);
+		mouse_off_arrow(&mouse);
 	    cursor(border,y1);//光标闪烁 
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 		if(bioskey(1)) //如果有键盘输入
 		{
 			temp=bioskey(0)&0x00ff; //获取键盘输入
-			mouse_show(&mouse); //显示鼠标
+			mouse_show_arrow(&mouse); //显示鼠标
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
 				if(('0'<=temp&&temp<='9')&& i < 11)//检测为数字或字母，则记录
@@ -246,8 +246,8 @@ void Get_number(int x1,int y1,char *name,int bar_x1,int bar_y1,int bar_x2,int ba
 				}
 				else if(i>=11)
 				{
-					mouse_off(&mouse);
-					mouse_show(&mouse);
+					mouse_off_arrow(&mouse);
+					mouse_show_arrow(&mouse);
 					PrintCC(570,575,"输入手机号超过长度限制",HEI,24,1,0XF800);
 				}
 			}

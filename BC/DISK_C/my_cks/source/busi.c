@@ -1,14 +1,14 @@
 #include "all_func.h"
 
 void business(){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
 	
 	draw_business();
 
-	mouse_on(mouse);
+	mouse_on_arrow(mouse);
 
 	while(1){
-		mouse_show(&mouse);
+		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
 			welcome();//首页
@@ -53,7 +53,7 @@ void draw_business()
 }
 
 void press2(int x){
-    mouse_off(&mouse);
+    mouse_off_arrow(&mouse);
     switch (x)
     {
         case 1:{//进入选择超市页面
@@ -151,5 +151,5 @@ void press2(int x){
 
         }
     }
-    mouse_on(mouse);
+    mouse_on_arrow(mouse);
 }

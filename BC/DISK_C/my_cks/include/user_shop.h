@@ -4,7 +4,7 @@
 void user_shop();
 void draw_user_shop();
 void press_item(int x);
-void init_Products();
+void init_Products(int *productCount);
 
 typedef struct CART
 {
@@ -20,6 +20,10 @@ typedef struct Product
     int id;
     char name[20];
     float price;
+    int x1;
+    int x2;
+    int y1;
+    int y2;
 
 } Product;
 
