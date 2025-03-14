@@ -32,38 +32,45 @@ int Check_info(UserList UL,char name[10],char code[10])
 参数说明：用户结构体 
 返回值说明:0：保存成功   -1： 保存失败 
 **********************/
-int save_user(USER users)
-{
-	UserList UL={0};
-	FILE *fp=NULL;
-	ReadAllUser(&UL);
-	if((fp=fopen("userinfo.dat","rb+"))==NULL)		//首次使用时应创建文件
-	{
-		//prt_hz24(400,400,"无法打开文件！",10,"HZK\\Hzk24h");
-		delay(5000);
-		exit(1);
-	}
-	if(Check_info(UL,users.name,users.code)==-3)			// 检查用户是否已存在 -3 代表用户不存在
-	{
-	    UListInsert(&UL,users);
-	    fseek(fp,0,SEEK_SET);
-	    rewind(fp);// 移动文件指针到开头
-	    fwrite(&UL.length, sizeof(int), 1, fp);// 1. 写入用户数量
-	    fwrite(&UL.listsize, sizeof(int), 1, fp);// 2. 写入列表大小
-	    fwrite(UL.elem, sizeof(USER), UL.length, fp);// 3. 写入用户数据
-	    fclose(fp);
-		DestroyUList(&UL);
-		delay(500);
-		return 0;
-	}
-	else
-	{
-		DestroyUList(&UL);
-		delay(500);		
-		fclose(fp);
-		return -1;
-	}
+int save_user(USER users) {
+	int i = 0;
+    UserList UL = {0};
+    FILE *fp = NULL;
+    
+    ReadAllUser(&UL);
+
+    if ((fp = fopen("userinfo.dat", "rb+")) == NULL) {
+        fp = fopen("userinfo.dat", "wb");
+        if (fp == NULL) {
+            printf("无法打开文件！\n");
+            return -1;
+        }
+    }
+
+    if (Check_info(UL, users.name, users.code) == -3) {
+        UListInsert(&UL, users);
+
+        // 重新写入数据
+        rewind(fp);
+        fwrite(&UL.length, sizeof(int), 1, fp);
+        fwrite(&UL.listsize, sizeof(int), 1, fp);
+        
+        // 逐个写入用户数据，防止错误
+        // for (i = 0; i < UL.length; i++) {
+        //     fwrite(&UL.elem[i], sizeof(USER), 1, fp);
+        // }
+		fwrite(&users, sizeof(USER), 1, fp);
+
+        fclose(fp);
+        DestroyUList(&UL);
+        return 0;
+    } else {
+        fclose(fp);
+        DestroyUList(&UL);
+        return -1;
+    }
 }
+
 
 
 /*******************
@@ -71,36 +78,44 @@ int save_user(USER users)
 参数说明：用户线性表地址 
 返回值：无 
 *******************/
-void ReadAllUser(UserList *UL)
-{
-	int length=0;//接收线性表长度 
-	int listsize=U_LIST_INIT_SIZE;//线性表初始长度 
-	FILE *fp=NULL;
-	if((fp=fopen("userinfo.dat","rb+"))==NULL)			//检测文件打开是否正常
-	{
-		fp=fopen("userinfo.dat","wb");
-		rewind(fp);
-		fwrite(&length, sizeof(int), 1, fp);
-		fwrite(&listsize, sizeof(int), 1, fp);
-	}								
-    else
-    {
-       fseek(fp,0,SEEK_SET);
-	   fread(&length, sizeof(int), 1, fp);
-	   fread(&listsize, sizeof(int), 1, fp);
-	   UL->length = length;
-	   UL->listsize = listsize;
-	   if((UL->elem = (USER*)malloc(listsize* sizeof(USER)))==NULL)//构建用户线性表 
-	   {
-		 CloseSVGA();
-		 printf("No enough memory!\n");
-		 getch();
-		 exit(-1);
-	   } 
-	  fread(UL->elem, sizeof(USER),length, fp);//读取文件的所有用户到线性表中 
+void ReadAllUser(UserList *UL) {
+	int i=0;
+    int length = 0;
+    int listsize = U_LIST_INIT_SIZE;
+    FILE *fp = NULL;
+
+    if ((fp = fopen("userinfo.dat", "rb")) == NULL) {
+        fp = fopen("userinfo.dat", "wb");
+        if (fp == NULL) {
+            printf("无法创建文件！\n");
+            return;
+        }
+        fwrite(&length, sizeof(int), 1, fp);
+        fwrite(&listsize, sizeof(int), 1, fp);
+        fclose(fp);
+    } else {
+        fread(&length, sizeof(int), 1, fp);
+        fread(&listsize, sizeof(int), 1, fp);
+        
+        UL->length = length;
+        UL->listsize = listsize;
+        UL->elem = (USER *)malloc(listsize * sizeof(USER));
+
+        if (UL->elem == NULL) {
+            printf("No enough memory!\n");
+            fclose(fp);
+            exit(-1);
+        }
+
+        // 逐个读取用户数据
+        for (i = 0; i < length; i++) {
+            fread(&UL->elem[i], sizeof(USER), 1, fp);
+        }
+
+        fclose(fp);
     }
-	fclose(fp);
 }
+
 
 
 /*******************
@@ -109,27 +124,41 @@ void ReadAllUser(UserList *UL)
 返回值：无 
 *******************/
 
-void UpdataUser(USER user)
-{
-	int usernum=0;//用户位置 
-	UserList UL={0};//用户线性表 
-	FILE *fp=NULL;
-	ReadAllUser(&UL);//获取所有用户到线性表 
-	if((fp=fopen("userinfo.dat","rb+"))==NULL)
-	{
-		//prt_hz24(400,400,"无法打开文件！",10,"HZK\\Hzk24h");
-		delay(5000);
-		exit(1);
-	}
-	usernum=Userposition(UL,user);//得到用户在线性表中的位置 
-	UL.elem[usernum]=user;//更新线性表中用户信息 
-	fseek(fp,0,SEEK_SET);
-	fwrite(&UL.length, sizeof(int), 1, fp);
-	fwrite(&UL.listsize, sizeof(int), 1, fp);
-	fwrite(UL.elem, sizeof(USER), UL.length, fp);
-	fclose(fp);
-	DestroyUList(&UL);//销毁线性表 
+void UpdataUser(USER user) {
+    int i = 0;
+	UserList UL = {0};
+    FILE *fp = NULL;
+
+	int usernum = Userposition(UL, user);
+    
+    ReadAllUser(&UL);
+    
+    if ((fp = fopen("userinfo.dat", "rb+")) == NULL) {
+        printf("无法打开文件！\n");
+        return;
+    }
+    
+    if (usernum == -1) {
+        printf("用户不存在，无法更新！\n");
+        fclose(fp);
+        return;
+    }
+    
+    UL.elem[usernum] = user;
+
+    rewind(fp);
+    fwrite(&UL.length, sizeof(int), 1, fp);
+    fwrite(&UL.listsize, sizeof(int), 1, fp);
+    
+    // 逐个写入用户数据
+    for ( i = 0; i < UL.length; i++) {
+        fwrite(&UL.elem[i], sizeof(USER), 1, fp);
+    }
+
+    fclose(fp);
+    DestroyUList(&UL);
 }
+
 
 /****************************
 功能说明：建立一个线性表 
@@ -237,7 +266,7 @@ int Userposition(UserList UL,USER e)
 //输入模式
 void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode)
 {
-	int length;
+	int length;//用于记录输入的字符个数，便于光标移动至末尾
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
 	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
 	int border; //光标的横坐标	    
@@ -293,7 +322,6 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 		if(bioskey(1)) //如果有键盘输入
 		{
 			temp=bioskey(0)&0x00ff; //获取键盘输入
-			//mouse_show_arrow(&mouse); //显示鼠标
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
 				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <10)//检测为数字或字母，则记录
@@ -418,7 +446,5 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 			hide_cursor(border,y1);//隐藏光标
 			break;
 		}	
-			
-	// hide_cursor(border,y1);	//隐藏光标
 	}
 }	

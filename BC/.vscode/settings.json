@@ -70,6 +70,10 @@
     "lgfunc.h": "c",
     "user_shop.h": "c",
     "ride.h": "c",
-    "user.h": "c"
+    "user.h": "c",
+    "string": "c",
+    "string_view": "c",
+    "ostream": "c",
+    "sstream": "c"
   }
 }

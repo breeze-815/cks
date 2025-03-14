@@ -1,5 +1,6 @@
 #include "all_func.h"
-Product product[100];
+Product products[100];
+
 void user_shop(){
     int productCount = 0;
 
@@ -14,9 +15,12 @@ void user_shop(){
 	while(1){
 		mouse_show_arrow(&mouse);
 
-		if(mouse_press(40, 113, 160, 163)==1){
+		if(mouse_press(40, 113, 160, 163)==1)
+        {
             user();//用户页面
-		}else if(mouse_press(40, 276, 160, 326)==1){
+		}
+        else if(mouse_press(40, 276, 160, 326)==1)
+        {
             draw_choice();
             while(1){
                 mouse_show_arrow(&mouse);
@@ -33,27 +37,47 @@ void user_shop(){
                 }
             }
             user_shop();//用户超市页面   
-        }else if(mouse_press(40, 439, 160, 489)==1){
+        }
+        else if(mouse_press(40, 439, 160, 489)==1)
+        {
             press1(2);//进入外卖页面
             user_takeout();//用户外卖页面    
-        }else if(mouse_press(40, 602, 160, 652)==1){
+        }
+        else if(mouse_press(40, 602, 160, 652)==1)
+        {
             press1(3);//进入快递页面
             user_deliver();//用户快递页面  
-        }else if(mouse_press(800, 700, 1000, 750)==1){
+        }
+        else if(mouse_press(800, 700, 1000, 750)==1)
+        {
             user_cart();//用户购物车页面
-        }else if(mouse_press(200, 0, 320, 50)==1){
+        }
+        else if(mouse_press(200, 0, 320, 50)==1)
+        {
             press_item(1);//生活用品
-        }else if(mouse_press(320, 0, 440, 50)==1){
+        }
+        else if(mouse_press(320, 0, 440, 50)==1)
+        {
             press_item(2);//文具
-        }else if(mouse_press(440, 0, 560, 50)==1){
+        }
+        else if(mouse_press(440, 0, 560, 50)==1)
+        {
             press_item(3);//零食
-        }else if(mouse_press(560, 0, 680, 50)==1){
+        }
+        else if(mouse_press(560, 0, 680, 50)==1)
+        {
             press_item(4);//饮料
-        }else if(mouse_press(680, 0, 800, 50)==1){
+        }
+        else if(mouse_press(680, 0, 800, 50)==1)
+        {
             press_item(5);//运动用品
-        }else if(mouse_press(800, 0, 920, 50)==1){
+        }
+        else if(mouse_press(800, 0, 920, 50)==1)
+        {
             press_item(6);//水果
-        }else if(mouse_press(920, 0, 1024, 50)==1){
+        }
+        else if(mouse_press(920, 0, 1024, 50)==1)
+        {
             press_item(7);//文创
         }
     }
@@ -65,7 +89,6 @@ void draw_user_shop(){
     bar1(200, 0, 1024, 768,white);
 
     Line_Thick(200,50,1024,50,2,deepblue);
-    //Line_Thick(200,1,1024,1,2,deepblue);
 
     Line_Thick(320,0,320,50,2,deepblue);
     Line_Thick(440,0,440,50,2,deepblue);
@@ -187,13 +210,13 @@ void press_item(int x){
 }
 
 void init_Products(int *productCount){ 
-    strcpy(product[0].name, "Product 1");
-    product[0].price = 10.0;
-    product[0].id = 1;
+    strcpy(products[0].name, "盆");
+    products[0].price = 10.0;
+    products[0].id = 1;
 
-    strcpy(product[1].name, "Product 2");
-    product[1].price = 20.0;
-    product[1].id = 2;
+    strcpy(products[1].name, "Product 2");
+    products[1].price = 20.0;
+    products[1].id = 2;
 
     *productCount = 2;
 }
