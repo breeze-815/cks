@@ -1,6 +1,6 @@
 #include "all_func.h"
 
-void rider(){
+void rider(int user_pos){
     mouse_off_arrow(&mouse);
 	
 	draw_rider();

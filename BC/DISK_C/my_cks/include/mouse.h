@@ -1,10 +1,6 @@
 #ifndef MOUSE_H
 #define MOUSE_H
 
-
-
-
-
 typedef struct {
     int x;
     int y;

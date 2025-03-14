@@ -17,7 +17,7 @@ void user_shop(){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            user();//用户页面
+            //user();//用户页面
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {

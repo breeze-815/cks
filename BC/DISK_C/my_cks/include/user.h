@@ -1,7 +1,7 @@
 #ifndef __USER_H__
 #define __USER_H__
 
-void user();
+void user(int user_pos);
 void draw_user();
 void draw_choice();
 void press1(int x);

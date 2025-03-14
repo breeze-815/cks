@@ -11,7 +11,7 @@ void business_order(){
 		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			business();//商家页面
+			//business();//商家页面
 		}else if(mouse_press(490, 100, 610, 150)==1){
             press2(1);//进入超市页面
             if(mouse_press(250, 200, 250+185, 200+50)==1){

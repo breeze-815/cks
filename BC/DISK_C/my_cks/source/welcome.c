@@ -2,12 +2,12 @@
 //屏幕宽度1024，高度768
 
 
-int welcome(){
+int welcome() {
 
     char name[10]="\0";
 	char code[10]="\0";
     char judge1[10]="\0";//用于判断的密码
-    int i=-5;
+    int current=-5;//判断登陆结果
 
     UserList UL={0};
 	InitUList(&UL);
@@ -40,29 +40,29 @@ int welcome(){
 		}
         else if(mouse_press(300,490, 485, 540)==1)//点击登录
         {
-            i=Check_info(UL,name,code);
-            if(i>=0)
+            current=Check_info(UL,name,code);
+            if(current>=0)
 			{
-                int user_type = UL.elem[i].type; // 获取用户类型
+                int user_type = UL.elem[current].type; // 获取用户类型
 
                 DestroyUList(&UL);
 
-                // 根据用户类型跳转到不同界面
+                // 根据用户类型跳转到不同界面，并传入用户位置
                 if (user_type == 1) {
-                    user();//用户页面
+                    user(current); // 用户页面
                 } else if (user_type == 2) {
-                    business();//商家页面
+                    business(current); // 商家页面
                 } else if (user_type == 3) {
-                    rider();//骑手页面
+                    rider(current); // 骑手页面
                 }
 			}
-			if(i==-2)//密码输入错误 
+			if(current==-2)//密码输入错误 
 			{
 				PrintCC(430,560,"密码错误",HEI,24,1,0XF800);
                 delay(500);
 				bar1(430,560,580,590,snow);
 			}
-			if(i==-3)//用户不存在 
+			if(current==-3)//用户不存在 
 			{
 				PrintCC(430,560,"用户不存在",HEI,24,1,0XF800);
                 delay(500);

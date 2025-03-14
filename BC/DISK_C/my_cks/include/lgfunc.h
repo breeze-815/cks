@@ -9,49 +9,17 @@ typedef struct USER
 	char name[12];//账户 
 	char code[12];//密码
 
-	int type;//用户类型 1为用户，2为商家，3为骑手
-	char number[12];//手机号
-	int address;//地址 1为紫菘，2为沁苑，3为韵苑
+	char type;//用户类型 1为用户，2为商家，3为骑手
+	char number[15];//手机号
+	char address;//地址 1为紫菘，2为沁苑，3为韵苑
 
 }USER;
 
-typedef struct path
-{
-    int length;
-    int node[20];
-    int start;
-    int end;
-} path;
-
-typedef struct ADMIN
-{
-	int esptic[9];//特殊项目票张数
-	int normaltic[4];//普通票的总票
-
-	int esptic_now[9];
-	int normaltic_now[4];
-}ADMIN;
-
-
-typedef struct PROJECT
-{
-	int num;//编号
-	char pname[30];//名称
-	char open_close;//o为开放，c为不开放
-	char type;//1刺激，2亲子，3娱乐，0特殊项目
-	int play_time;//项目预设游玩时间
-	int wait_people;//正在等待的游客人数
-}PROJECT;
-
-
-
-
-
 typedef struct UserList
 {
-	struct USER* elem;    //存储空间基值
-	int length;  //当前长度
-	int listsize;  //当前分配存储空间容量
+	struct USER* elem;    //存储空间基址
+	short length;  //当前长度，改为 short
+	short listsize;  //当前存储空间容量，改为 short
 }UserList;//用户线性表 
 
 

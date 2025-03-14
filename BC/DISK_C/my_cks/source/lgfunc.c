@@ -5,26 +5,25 @@
 /**********************
 功能说明：登录信息对比校验函数 
 参数说明：用户线性表，用户名，密码 
-返回值说明:i：用户在线性表中的位置   -2： 密码错误   -3：用户不存在 
+返回值说明:i：用户在线性表中的位置  -2:密码错误 -3：用户不存在 
 **********************/
-int Check_info(UserList UL,char name[10],char code[10])
-{
-	int i=0;
-	for(i=0;i<UL.length;i++)
+int Check_info(UserList UL, char name[10], char code[10]) {
+    int i = 0;
+    for (i = 0; i < UL.length; i++)
 	{
-		if(strcmp(UL.elem[i].name,name)==0)
+        if (strcmp(UL.elem[i].name, name) == 0) 
 		{
-			if(strcmp(UL.elem[i].code,code)==0)
+            if (strcmp(UL.elem[i].code, code) == 0) 
 			{
-				return i;
-			}
-			else
+                return i; // 用户名和密码都匹配，返回用户位置
+            }
+			else 
 			{
-				return -2;
-			}
-		}
-	}
-	return -3;
+                return -2; // 用户名匹配但密码不匹配，返回密码错误
+            }
+        }
+    }
+    return -3; // 用户不存在
 }
 
 /**********************
@@ -33,12 +32,15 @@ int Check_info(UserList UL,char name[10],char code[10])
 返回值说明:0：保存成功   -1： 保存失败 
 **********************/
 int save_user(USER users) {
-	int i = 0;
+    int i = 0;
     UserList UL = {0};
-    FILE *fp = NULL;
-    
-    ReadAllUser(&UL);
+	int user_pos;
+	FILE *fp = NULL;
 
+	ReadAllUser(&UL);
+
+	user_pos = Check_info(UL, users.name, users.code);// 获取用户位置
+    
     if ((fp = fopen("userinfo.dat", "rb+")) == NULL) {
         fp = fopen("userinfo.dat", "wb");
         if (fp == NULL) {
@@ -47,28 +49,28 @@ int save_user(USER users) {
         }
     }
 
-    if (Check_info(UL, users.name, users.code) == -3) {
-        UListInsert(&UL, users);
-
-        // 重新写入数据
-        rewind(fp);
-        fwrite(&UL.length, sizeof(int), 1, fp);
-        fwrite(&UL.listsize, sizeof(int), 1, fp);
-        
-        // 逐个写入用户数据，防止错误
-        // for (i = 0; i < UL.length; i++) {
-        //     fwrite(&UL.elem[i], sizeof(USER), 1, fp);
-        // }
-		fwrite(&users, sizeof(USER), 1, fp);
-
-        fclose(fp);
-        DestroyUList(&UL);
-        return 0;
-    } else {
-        fclose(fp);
-        DestroyUList(&UL);
-        return -1;
+    if (user_pos == -3) // 用户不存在
+	{ 
+        UListInsert(&UL, users); // 插入新用户
+    } 
+	else if(user_pos!=-2) // 用户存在
+	{ 
+        UL.elem[user_pos] = users;// 更新用户信息
     }
+
+    // 重新写入数据
+    rewind(fp);
+    fwrite(&UL.length, sizeof(int), 1, fp);
+    fwrite(&UL.listsize, sizeof(int), 1, fp);
+    
+    // 逐个写入用户数据
+    for (i = 0; i < UL.length; i++) {
+        fwrite(&UL.elem[i], sizeof(USER), 1, fp);
+    }
+
+    fclose(fp);
+    DestroyUList(&UL);
+    return 0;
 }
 
 
@@ -79,9 +81,9 @@ int save_user(USER users) {
 返回值：无 
 *******************/
 void ReadAllUser(UserList *UL) {
-	int i=0;
-    int length = 0;
-    int listsize = U_LIST_INIT_SIZE;
+    int i = 0;
+    short length = 0; // 改为 short
+    short listsize = U_LIST_INIT_SIZE; // 改为 short
     FILE *fp = NULL;
 
     if ((fp = fopen("userinfo.dat", "rb")) == NULL) {
@@ -90,30 +92,31 @@ void ReadAllUser(UserList *UL) {
             printf("无法创建文件！\n");
             return;
         }
-        fwrite(&length, sizeof(int), 1, fp);
-        fwrite(&listsize, sizeof(int), 1, fp);
+        fwrite(&length, sizeof(short), 1, fp); // 改为 short
+        fwrite(&listsize, sizeof(short), 1, fp); // 改为 short
         fclose(fp);
-    } else {
-        fread(&length, sizeof(int), 1, fp);
-        fread(&listsize, sizeof(int), 1, fp);
-        
-        UL->length = length;
-        UL->listsize = listsize;
-        UL->elem = (USER *)malloc(listsize * sizeof(USER));
-
-        if (UL->elem == NULL) {
-            printf("No enough memory!\n");
-            fclose(fp);
-            exit(-1);
-        }
-
-        // 逐个读取用户数据
-        for (i = 0; i < length; i++) {
-            fread(&UL->elem[i], sizeof(USER), 1, fp);
-        }
-
-        fclose(fp);
+        return;
     }
+
+    fread(&length, sizeof(short), 1, fp); // 改为 short
+    fread(&listsize, sizeof(short), 1, fp); // 改为 short
+
+    UL->length = length;
+    UL->listsize = listsize;
+    UL->elem = (USER *)malloc(listsize * sizeof(USER));
+
+    if (UL->elem == NULL) {
+        printf("No enough memory!\n");
+        fclose(fp);
+        exit(-1);
+    }
+
+    // 逐个读取用户数据
+    for (i = 0; i < length; i++) {
+        fread(&UL->elem[i], sizeof(USER), 1, fp);
+    }
+
+    fclose(fp);
 }
 
 

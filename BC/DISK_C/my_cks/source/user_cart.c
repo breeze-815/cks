@@ -11,7 +11,6 @@ void user_cart(){
 		mouse_show_arrow(&mouse);
 
 		if(mouse_press(40, 113, 160, 163)==1){
-			user();//”√ªß“≥√Ê
 		}
     }
 }

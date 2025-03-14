@@ -1,6 +1,6 @@
 #include "all_func.h"
 
-void business(){
+void business(int user_pos){
     mouse_off_arrow(&mouse);
 	
 	draw_business();

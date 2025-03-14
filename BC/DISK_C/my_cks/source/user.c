@@ -2,7 +2,14 @@
 
 Shop shops={0};//存储信息的商店结构体 
 
-void user(){
+void user(int user_pos){
+    
+    UserList UL = {0};
+    USER *currentUser;
+
+    ReadAllUser(&UL); // 读取用户列表
+
+    currentUser=&UL.elem[user_pos];// 获取当前用户信息
     
     mouse_off_arrow(&mouse);
 	
@@ -50,13 +57,13 @@ void user(){
         }
         else if(mouse_press(430, 105, 650, 155)==1)
         {
-            number_mode(users.number, 435, 110, 645, 150);//输入手机号
+            number_mode(currentUser->number, 435, 110, 645, 150); // 输入手机号
         }
         else if(mouse_press(710, 105, 830, 155)==1)
         {
-            if(strlen(users.number)==11)
+            if(strlen(currentUser->number)==11)
             {
-                save_user(users);
+                save_user(*currentUser);
                 PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
                 bar1(800,50,1024,100,snow);
@@ -71,20 +78,20 @@ void user(){
         else if(mouse_press(440, 180, 560, 230)==1)
         {
             press1(4);//紫菘
-            users.address=1;
-            save_user(users);
+            currentUser->address = 1; 
+            save_user(*currentUser);
         }
         else if(mouse_press(620, 180, 740, 230)==1)
         {
             press1(5);//沁苑
-            users.address=2;
-            save_user(users);
+            currentUser->address = 2; 
+            save_user(*currentUser);
         }
         else if(mouse_press(800, 180, 920, 230)==1)
         {
             press1(6);//韵苑
-            users.address=3;
-            save_user(users);
+            currentUser->address = 3; 
+            save_user(*currentUser);
         }
     }
 }
