@@ -1,14 +1,17 @@
 #include "all_func.h"
-Product products[100];
+
+Product products[20];
+CART carts[20];
 
 void user_shop(){
-    int productCount = 0;
+    int productCount = 0;//超市里商品数量初始化
+    int cartCount = 0;//购物车内商品数量初始化
 
-    init_Products(&productCount);
+    init_Products(&productCount);//初始化商品所有信息
 
     mouse_off_arrow(&mouse);
 	
-	draw_user_shop();
+	draw_user_shop(products, productCount);//绘制用户超市页面
 
 	mouse_on_arrow(mouse);
 
@@ -23,8 +26,8 @@ void user_shop(){
         {
             draw_choice();
             while(1){
-                mouse_show_arrow(&mouse);
 
+                mouse_show_arrow(&mouse);
                 if(mouse_press(200, 202, 430, 264)==1){
                     shops.type=1;
                     break;
@@ -80,11 +83,19 @@ void user_shop(){
         {
             press_item(7);//文创
         }
+        else {
+            int mx, my;
+            if (mouse_press(mx, my, mx, my) == 1) {
+                AddSub(mx, my, productCount, products, carts, cartCount);
+            }
+        }
     }
 }
 
-void draw_user_shop(){
-    extern int shop_type;
+void draw_user_shop(Product products[],int productCount){
+    int i=0;
+    int j=0;
+    int cnt=0;
 
     bar1(200, 0, 1024, 768,white);
 
@@ -108,22 +119,22 @@ void draw_user_shop(){
     PrintCC(955,15,"文创",HEI,24,1,grey);
     PrintCC(860,715,"购物车",HEI,24,1,deepblue);
 
-    bar2(630,280,750,400,deepblue);
-    bar2(810,280,930,400,deepblue);
+    for(i=0;i<4;i++){
+    	for(j=0;j<3;j++){
+    		Line_Thick(270+200*i, 235+200*j, 290+200*i, 235+200*j, 1, deepblue);//减号
 
-    bar2(270,460,390,580,deepblue);//120*120
-    bar2(450,460,570,580,deepblue);
-    bar2(630,460,750,580,deepblue);
-    bar2(810,460,930,580,deepblue);
+            Line_Thick(390+200*i, 235+200*j, 370+200*i, 235+200*j, 1, deepblue);//加号
+            Line_Thick(380+200*i, 225+200*j, 380+200*i, 245+200*j, 1, deepblue);
 
-    PrintCC(315,240,"盆",HEI,24,1,deepblue);
-    Readbmp64k(270, 100, "bmp\\pen.bmp");//盆
-    Readbmp64k(450, 100, "bmp\\saoba.bmp");//扫把
-    Readbmp64k(630, 100, "bmp\\canju.bmp");//餐具
-    Readbmp64k(810, 100, "bmp\\wan.bmp");//碗
-    Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
-    Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
-    
+            PrintCC(270+200*i,75+200*j,products[cnt].name,HEI,24,1,black);//显示商品名称
+            PrintText(270+22+200*i, 220+3+200*j, products[cnt].price, HEI, 24, 0, black);//显示商品价格
+
+            Readbmp64k(270+200*i, 100+200*j, products[cnt].photo);//显示商品图片
+            cnt++;
+    	}
+    }
+
+
     if(shops.type==1){
         PrintCC(220,700,"紫菘喻园超市",HEI,48,1,deepblue);
     }else if(shops.type==2){ 
@@ -211,12 +222,73 @@ void press_item(int x){
 
 void init_Products(int *productCount){ 
     strcpy(products[0].name, "盆");
-    products[0].price = 10.0;
+    strcpy(products[0].price, "10.00");
     products[0].id = 1;
+    strcpy(products[0].photo, "bmp\\pen.bmp");
+    
 
-    strcpy(products[1].name, "Product 2");
-    products[1].price = 20.0;
+    strcpy(products[1].name, "扫把");
+    strcpy(products[1].price, "15.00");
     products[1].id = 2;
+    strcpy(products[1].photo, "bmp\\saoba.bmp");
+    
+    strcpy(products[2].name, "餐具");
+    strcpy(products[2].price, "12.00");
+    products[2].id = 3;
+    strcpy(products[2].photo, "bmp\\canju.bmp");
 
-    *productCount = 2;
+    strcpy(products[3].name, "碗");
+    strcpy(products[3].price, "5.00");
+    products[3].id = 4;
+    strcpy(products[3].photo, "bmp\\wan.bmp");
+
+    strcpy(products[4].name, "水杯");
+    strcpy(products[4].price, "25.00");
+    products[4].id = 5;
+    strcpy(products[4].photo, "bmp\\shuibei.bmp");
+
+    strcpy(products[5].name, "衣架");
+    strcpy(products[5].price, "10.00");
+    products[5].id = 6;
+    strcpy(products[5].photo, "bmp\\yijia.bmp");
+
+    *productCount = 6;
+}
+
+// 处理加减按钮点击事件
+void AddSub(int x, int y, int productCount, Product *products, CART *cart, int cartCount) {
+    int i=0;
+    for (i = 0; i < productCount; i++) {
+        int px = 270 + i * 180;
+        int py = 220;
+        // 减号按钮点击
+        if (x >= px && x <= px + 30 && y >= py + 30 && y <= py + 60) {
+            int j = 0;
+            for (j = 0; j < cartCount; j++) {
+                if (cart[j].productId == products[i].id) {
+                    if (cart[j].quantity > 0) {
+                        cart[j].quantity--;
+                    }
+                    break;
+                }
+            }
+        }
+        // 加号按钮点击
+        if (x >= px + 150 && x <= px + 180 && y >= py + 30 && y <= py + 60) {
+            int found = 0;
+            int j = 0;
+            for (j = 0; j < cartCount; j++) {
+                if (cart[j].productId == products[i].id) {
+                    cart[j].quantity++;
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found) {
+                cart[cartCount].productId = products[i].id;
+                cart[cartCount].quantity = 1;
+                cartCount++;
+            }
+        }
+    }
 }

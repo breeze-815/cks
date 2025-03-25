@@ -41,6 +41,7 @@ int welcome() {
         else if(mouse_press(300,490, 485, 540)==1)//点击登录
         {
             current=Check_info(UL,name,code);
+            
             if(current>=0)
 			{
                 int user_type = UL.elem[current].type; // 获取用户类型

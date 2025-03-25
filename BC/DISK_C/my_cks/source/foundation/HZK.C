@@ -229,122 +229,163 @@ Remark:
 		SONG(宋体)
 		SONG_BOLD(粗宋体)
 		TRADITIONAL(繁宋体)
-	4.size可选值为12/16
+	4.size可选值为12/16/24/32/48
 	5.12号字只可选择宋体，16号字六种字体均可选择
 	6.ASCII字符的字体样式不随font的取值而改变
 	7.为了排版的整体效果，12号英文整体下移1px，16号英文整体下移2px
 ***********************************************/
-void PrintText(int x0,int y0,unsigned char str[],int font,int size,int tracking,int color)
+void PrintText(int x0, int y0, unsigned char str[], int font, int size, int tracking, int color)
 {
-	FILE *fpASC=NULL;
-	FILE *fpHZK=NULL;
-	//根据参数打开对应的字库文件
-	//目前支持的字库列表(字体大小:支持的字体名称)
-	//12:ASC12,SONG(宋体)
-	//16:ASC16,FANGSONG(仿宋),HEI(黑体),KAI(楷体),SONG(宋体),SONG_BOLD(粗宋体),TRADITIONAL(繁宋体)
-	if(size==12&&font==SONG)
-	{
-		fpASC=fopen(".\\font\\ASC12","rb");
-		fpHZK=fopen(".\\font\\HZK12S","rb");
-	}
-	else if(size==16)
-	{
-		fpASC=fopen(".\\font\\ASC16","rb");
-		if(font==FANGSONG)
-		{
-			fpHZK=fopen(".\\font\\HZK16F","rb");
-		}
-		else if(font==HEI)
-		{
-			fpHZK=fopen(".\\font\\HZK16H","rb");
-		}
-		else if(font==KAI)
-		{
-			fpHZK=fopen(".\\font\\HZK16K","rb");
-		}
-		else if(font==SONG)
-		{
-			fpHZK=fopen(".\\font\\HZK16S","rb");
-		}
-		else if(font==SONG_BOLD)
-		{
-			fpHZK=fopen(".\\font\\HZK16S_B","rb");
-		}
-		else if(font==TRADITIONAL)
-		{
-			fpHZK=fopen(".\\font\\HZK16S_T","rb");	
-		}
-	}
-	if(fpASC!=NULL&&fpHZK!=NULL)
-	{
-		int i,x,y;
-		int Q,W;//当前汉字的区位码
-		int BytePerCC=2*size;//储存每个汉字所用字节数
-		int BytePerChar=size;//储存每个ASCII字符所用字节数 
-		long offset;//当前字符在字库文件中的位置偏移量
-		BYTE fontMatrix[32];//字体点阵信息
-		for(i=0;str[i];i++)
-		{
-			int isChar;//当前字符是ASCII字符则值为1 
-			int width,height;
-			//每个字符的宽高，其中高必为size，宽可能为size或者size/2
-			height=size;
-			//根据字符种类不同(汉字/ASCII字符)确定相应变量
-			//小于128的是ASCII字符 
-			if(str[i]<128)
-			{
-				isChar=1;
-				//ASC12库中没有控制字符，从偏移量中减去32个字符的大小 
-				offset=(long)str[i]*BytePerChar-32*12*(size==12);
-				fseek(fpASC,offset,SEEK_SET);
-				fread(fontMatrix,1,BytePerChar,fpASC);
-				width=size/2;
-			}
-			//否则为汉字 
-			else
-			{
-				isChar=0;
-				Q=str[i]-0xA0;
-				W=str[++i]-0xA0;//汉字要读两个字符 
-				Q--,W--;
-				offset=(long)(Q*94+W)*BytePerCC;
-				fseek(fpHZK,offset,SEEK_SET);
-				fread(fontMatrix,1,BytePerCC,fpHZK);
-				width=size;
-			}
-			for(y=0;y<height;y++)
-			{
-				for(x=0;x<width;x++)
-				{
-					int pos=(isChar?8:16)*y+x;
-					//判定出界
-					if(fontMatrix[pos/8]&(128>>(pos%8)))
-					if(0<=x0+x&&x0+x<640&&0<=y0+y&&y0+y<480)
-					{
-						//为了中英混排的整体效果，将ASCII字符向下平移1px或2px
-						if(!isChar)
-							Putpixel64k(x0+x,y0+y,color);
-						else if(isChar&&size==12)
-							Putpixel64k(x0+x,y0+y+1,color);
-						else if(isChar&&size==16)
-							Putpixel64k(x0+x,y0+y+2,color);
-					}
-				}
-			}
-			//ASCII字符宽度为size的一半 
-			if(isChar)
-			{
-				x0+=size/2;
-				x0+=tracking/2;
-			}
-			else
-			{
-				x0+=size;
-				x0+=tracking;
-			}
-		}
-		fclose(fpASC); 
-		fclose(fpHZK); 
-	}
-	return;
+    FILE *fpASC = NULL;
+    FILE *fpHZK = NULL;
+
+    char ascPath[64];
+    char hzkPath[64];
+
+    int width_char, width_hanzi;
+    int height;
+    int BytePerChar, BytePerCC;
+
+    unsigned char fontMatrix[512]; // 足够容纳最大点阵
+    int i, x, y;
+    int isChar;
+    int charWidth;
+    int bytes;
+    long offset;
+    int ch, Q, W;
+    int pos, draw_y;
+
+    // 构造 ASCII 字体路径
+    sprintf(ascPath, ".\\font\\ASC%d", size);
+
+    // 构造 HZK 路径
+    if (size == 12 && font == SONG)
+        sprintf(hzkPath, ".\\font\\HZK12S");
+    else if (size == 16)
+    {
+        if (font == FANGSONG) sprintf(hzkPath, ".\\font\\HZK16F");
+        else if (font == HEI) sprintf(hzkPath, ".\\font\\HZK16H");
+        else if (font == KAI) sprintf(hzkPath, ".\\font\\HZK16K");
+        else if (font == SONG) sprintf(hzkPath, ".\\font\\HZK16S");
+        else if (font == SONG_BOLD) sprintf(hzkPath, ".\\font\\HZK16S_B");
+        else if (font == TRADITIONAL) sprintf(hzkPath, ".\\font\\HZK16S_T");
+        else return;
+    }
+    else if (size == 24)
+    {
+        if (font == FANGSONG) sprintf(hzkPath, ".\\font\\HZK24F");
+        else if (font == HEI) sprintf(hzkPath, ".\\font\\HZK24H");
+        else if (font == KAI) sprintf(hzkPath, ".\\font\\HZK24K");
+        else if (font == SONG) sprintf(hzkPath, ".\\font\\HZK24S");
+        else return;
+    }
+    else if (size == 32)
+    {
+        if (font == FANGSONG) sprintf(hzkPath, ".\\font\\HZK32F");
+        else if (font == HEI) sprintf(hzkPath, ".\\font\\HZK32H");
+        else if (font == KAI) sprintf(hzkPath, ".\\font\\HZK32K");
+        else if (font == SONG) sprintf(hzkPath, ".\\font\\HZK32S");
+        else return;
+    }
+    else if (size == 48)
+    {
+        if (font == FANGSONG) sprintf(hzkPath, ".\\font\\HZK48F");
+        else if (font == HEI) sprintf(hzkPath, ".\\font\\HZK48H");
+        else if (font == KAI) sprintf(hzkPath, ".\\font\\HZK48K");
+        else if (font == SONG) sprintf(hzkPath, ".\\font\\HZK48S");
+        else return;
+    }
+    else
+    {
+        return; // 不支持字号
+    }
+
+    // 打开字体文件
+    fpASC = fopen(ascPath, "rb");
+    fpHZK = fopen(hzkPath, "rb");
+    if (!fpASC || !fpHZK)
+    {
+        if (fpASC) fclose(fpASC);
+        if (fpHZK) fclose(fpHZK);
+        return;
+    }
+
+    // 计算字体参数
+    width_char = size / 2;
+	if (size == 24)
+    {
+        width_char = 16; // ASC24: 16*24 点阵字库
+    }
+    else if (size == 32)
+    {
+        width_char = 24; // ASC32: 24*32 点阵字库
+    }
+    else if (size == 48)
+    {
+        width_char = 32; // ASC48: 32*48 点阵字库
+    }
+    width_hanzi = size;
+    height = size;
+    BytePerChar = (width_char * height) / 8;
+    BytePerCC = (width_hanzi * height) / 8;
+
+    // 遍历字符
+    for (i = 0; str[i]; i++)
+    {
+        isChar = (str[i] < 128);
+        charWidth = isChar ? width_char : width_hanzi;
+        bytes = isChar ? BytePerChar : BytePerCC;
+
+        offset = 0;
+
+        if (isChar)
+        {
+            ch = str[i];
+            if (size == 12) ch -= 32;
+            offset = (long)ch * BytePerChar;
+            fseek(fpASC, offset, SEEK_SET);
+            fread(fontMatrix, 1, BytePerChar, fpASC);
+        }
+        else
+        {
+            Q = str[i] - 0xA0;
+            i++;
+            W = str[i] - 0xA0;
+            Q--; W--;
+            offset = (long)(Q * 94 + W) * BytePerCC;
+            fseek(fpHZK, offset, SEEK_SET);
+            fread(fontMatrix, 1, BytePerCC, fpHZK);
+        }
+
+        // 显示点阵
+        for (y = 0; y < height; y++)
+        {
+            for (x = 0; x < charWidth; x++)
+            {
+                pos = charWidth * y + x;
+                if (fontMatrix[pos / 8] & (0x80 >> (pos % 8)))
+                {
+                    draw_y = y0 + y;
+                    if (isChar)
+                    {
+                        if (size == 12) draw_y += 1;
+                        else if (size == 16) draw_y += 2;
+                    }
+
+                    if (0 <= x0 + x && x0 + x < 1024 && 0 <= draw_y && draw_y < 768)
+                    {
+                        Putpixel64k(x0 + x, draw_y, color);
+                    }
+                }
+            }
+        }
+
+        // 更新位置
+        x0 += charWidth + (isChar ? tracking / 2 : tracking);
+    }
+
+    fclose(fpASC);
+    fclose(fpHZK);
 }
+
+

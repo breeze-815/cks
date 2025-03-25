@@ -41,8 +41,8 @@ int save_user(USER users) {
 
 	user_pos = Check_info(UL, users.name, users.code);// 获取用户位置
     
-    if ((fp = fopen("userinfo.dat", "rb+")) == NULL) {
-        fp = fopen("userinfo.dat", "wb");
+    if ((fp = fopen("data\\userinfo.dat", "rb+")) == NULL) {
+        fp = fopen("data\\userinfo.dat", "wb");
         if (fp == NULL) {
             printf("无法打开文件！\n");
             return -1;
@@ -86,8 +86,8 @@ void ReadAllUser(UserList *UL) {
     short listsize = U_LIST_INIT_SIZE; // 改为 short
     FILE *fp = NULL;
 
-    if ((fp = fopen("userinfo.dat", "rb")) == NULL) {
-        fp = fopen("userinfo.dat", "wb");
+    if ((fp = fopen("data\\userinfo.dat", "rb")) == NULL) {
+        fp = fopen("data\\userinfo.dat", "wb");
         if (fp == NULL) {
             printf("无法创建文件！\n");
             return;
@@ -136,7 +136,7 @@ void UpdataUser(USER user) {
     
     ReadAllUser(&UL);
     
-    if ((fp = fopen("userinfo.dat", "rb+")) == NULL) {
+    if ((fp = fopen("data\\userinfo.dat", "rb+")) == NULL) {
         printf("无法打开文件！\n");
         return;
     }

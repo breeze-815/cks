@@ -2,53 +2,53 @@
 #include <stdlib.h>
 #include <string.h>
 
-// å®šä¹‰ç”¨æˆ·ç»“æ„ä½“
+// ¶¨ÒåÓÃ»§½á¹¹Ìå
 typedef struct {
-    char name[12];  // ç”¨æˆ·å
-    char code[12];  // å¯†ç 
-    char type;       // ç”¨æˆ·ç±»å‹
-    char number[15];// æ‰‹æœºå·
-    char address;    // åœ°å€
+    char name[12];  // ÓÃ»§Ãû
+    char code[12];  // ÃÜÂë
+    char type;       // ÓÃ»§ÀàĞÍ
+    char number[15];// ÊÖ»úºÅ
+    char address;    // µØÖ·
 } USER;
 
-// å®šä¹‰ç”¨æˆ·çº¿æ€§è¡¨ç»“æ„ä½“
+// ¶¨ÒåÓÃ»§ÏßĞÔ±í½á¹¹Ìå
 typedef struct {
-    USER *elem;     // ç”¨æˆ·æ•°ç»„
-    short length;     // å½“å‰ç”¨æˆ·æ•°é‡
-    short listsize;   // çº¿æ€§è¡¨å®¹é‡
+    USER *elem;     // ÓÃ»§Êı×é
+    short length;     // µ±Ç°ÓÃ»§ÊıÁ¿
+    short listsize;   // ÏßĞÔ±íÈİÁ¿
 } UserList;
 
-// æ˜¾ç¤ºæ‰€æœ‰ç”¨æˆ·ä¿¡æ¯
+// ÏÔÊ¾ËùÓĞÓÃ»§ĞÅÏ¢
 void DisplayAllUsers() {
     FILE *fp = fopen("C:\\Users\\xianyuh\\Documents\\GitHub\\cks\\BC\\DISK_C\\my_cks\\userinfo.dat", "rb");
     if (fp == NULL) {
-        printf("æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼\n");
+        printf("ÎŞ·¨´ò¿ªÎÄ¼ş£¡\n");
         return;
     }
 
     int length, listsize;
-    fread(&length, sizeof(short), 1, fp);    // è¯»å–ç”¨æˆ·æ•°é‡
-    fread(&listsize, sizeof(short), 1, fp);  // è¯»å–çº¿æ€§è¡¨å®¹é‡
+    fread(&length, sizeof(short), 1, fp);    // ¶ÁÈ¡ÓÃ»§ÊıÁ¿
+    fread(&listsize, sizeof(short), 1, fp);  // ¶ÁÈ¡ÏßĞÔ±íÈİÁ¿
 
-    printf("ç”¨æˆ·æ•°é‡: %d\n", length);
-    printf("çº¿æ€§è¡¨å®¹é‡: %d\n", listsize);
+    printf("ÓÃ»§ÊıÁ¿: %d\n", length);
+    printf("ÏßĞÔ±íÈİÁ¿: %d\n", listsize);
     printf("--------------------------------\n");
 
     USER user;
     for (int i = 0; i < length; i++) {
-        // ç¡®ä¿æ­£ç¡®è¯»å–å­—ç¬¦ä¸²æ•°æ®
+        // È·±£ÕıÈ·¶ÁÈ¡×Ö·û´®Êı¾İ
         fread(user.name, sizeof(char), 12, fp);
         fread(user.code, sizeof(char), 12, fp);
         fread(&user.type, sizeof(char), 1, fp);
         fread(user.number, sizeof(char), 15, fp);
         fread(&user.address, sizeof(char), 1, fp);
         
-        printf("ç”¨æˆ· %d:\n", i + 1);
-        printf("  ç”¨æˆ·å: %s\n", user.name);
-        printf("  å¯†ç : %s\n", user.code);
-        printf("  ç”¨æˆ·ç±»å‹: %d\n", user.type);
-        printf("  æ‰‹æœºå·: %s\n", user.number);
-        printf("  åœ°å€: %d\n", user.address);
+        printf("ÓÃ»§ %d:\n", i + 1);
+        printf("  ÓÃ»§Ãû: %s\n", user.name);
+        printf("  ÃÜÂë: %s\n", user.code);
+        printf("  ÓÃ»§ÀàĞÍ: %d\n", user.type);
+        printf("  ÊÖ»úºÅ: %s\n", user.number);
+        printf("  µØÖ·: %d\n", user.address);
         printf("--------------------------------\n");
     }
 
