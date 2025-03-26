@@ -36,20 +36,6 @@ void user_takeout(){
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
             user_deliver();//用户快递页面  
-        }else if(mouse_press(200, 0, 320, 50)==1){
-            press_item(1);//生活用品
-        }else if(mouse_press(320, 0, 440, 50)==1){
-            press_item(2);//文具
-        }else if(mouse_press(440, 0, 560, 50)==1){
-            press_item(3);//零食
-        }else if(mouse_press(560, 0, 680, 50)==1){
-            press_item(4);//饮料
-        }else if(mouse_press(680, 0, 800, 50)==1){
-            press_item(5);//运动用品
-        }else if(mouse_press(800, 0, 920, 50)==1){
-            press_item(6);//水果
-        }else if(mouse_press(920, 0, 1024, 50)==1){
-            press_item(7);//文创
         }
     }
 }

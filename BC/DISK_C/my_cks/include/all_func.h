@@ -37,6 +37,9 @@
 extern MOUSE mouse;
 extern USER users;
 extern Shop shops;
+extern Product products[20];
+extern CartItem carts[20];
+extern ShoppingCart cart;
 
 #define white 0xFFFF
 #define snow 0xFFDF
