@@ -38,8 +38,8 @@
 extern MOUSE mouse;
 extern USER users;
 extern Shop shops;
-extern Product products[20];
-extern CartItem carts[20];
+extern Product products[50];
+extern CartItem carts[50];
 extern ShoppingCart cart;
 
 #define white 0xFFFF

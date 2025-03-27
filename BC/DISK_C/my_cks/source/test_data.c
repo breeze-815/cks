@@ -2,53 +2,53 @@
 #include <stdlib.h>
 #include <string.h>
 
-// ¶¨ÒåÓÃ»§½á¹¹Ìå
+// å®šä¹‰ç”¨æˆ·ç»“æ„ä½“
 typedef struct {
-    char name[12];  // ÓÃ»§Ãû
-    char code[12];  // ÃÜÂë
-    char type;       // ÓÃ»§ÀàĞÍ
-    char number[15];// ÊÖ»úºÅ
-    char address;    // µØÖ·
+    char name[12];  // ç”¨æˆ·å
+    char code[12];  // å¯†ç 
+    char type;       // ç”¨æˆ·ç±»å‹
+    char number[15];// æ‰‹æœºå·
+    char address[5];    // åœ°å€
 } USER;
 
-// ¶¨ÒåÓÃ»§ÏßĞÔ±í½á¹¹Ìå
+// å®šä¹‰ç”¨æˆ·çº¿æ€§è¡¨ç»“æ„ä½“
 typedef struct {
-    USER *elem;     // ÓÃ»§Êı×é
-    short length;     // µ±Ç°ÓÃ»§ÊıÁ¿
-    short listsize;   // ÏßĞÔ±íÈİÁ¿
+    USER *elem;     // ç”¨æˆ·æ•°ç»„
+    short length;     // å½“å‰ç”¨æˆ·æ•°é‡
+    short listsize;   // çº¿æ€§è¡¨å®¹é‡
 } UserList;
 
-// ÏÔÊ¾ËùÓĞÓÃ»§ĞÅÏ¢
+// æ˜¾ç¤ºæ‰€æœ‰ç”¨æˆ·ä¿¡æ¯
 void DisplayAllUsers() {
-    FILE *fp = fopen("C:\\Users\\xianyuh\\Documents\\GitHub\\cks\\BC\\DISK_C\\my_cks\\userinfo.dat", "rb");
+    FILE *fp = fopen("C:\\Users\\xianyuh\\Documents\\GitHub\\cks\\BC\\DISK_C\\my_cks\\data\\userinfo.dat", "rb");
     if (fp == NULL) {
-        printf("ÎŞ·¨´ò¿ªÎÄ¼ş£¡\n");
+        printf("æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼\n");
         return;
     }
 
     int length, listsize;
-    fread(&length, sizeof(short), 1, fp);    // ¶ÁÈ¡ÓÃ»§ÊıÁ¿
-    fread(&listsize, sizeof(short), 1, fp);  // ¶ÁÈ¡ÏßĞÔ±íÈİÁ¿
+    fread(&length, sizeof(short), 1, fp);    // è¯»å–ç”¨æˆ·æ•°é‡
+    fread(&listsize, sizeof(short), 1, fp);  // è¯»å–çº¿æ€§è¡¨å®¹é‡
 
-    printf("ÓÃ»§ÊıÁ¿: %d\n", length);
-    printf("ÏßĞÔ±íÈİÁ¿: %d\n", listsize);
+    printf("ç”¨æˆ·æ•°é‡: %d\n", length);
+    printf("çº¿æ€§è¡¨å®¹é‡: %d\n", listsize);
     printf("--------------------------------\n");
 
     USER user;
     for (int i = 0; i < length; i++) {
-        // È·±£ÕıÈ·¶ÁÈ¡×Ö·û´®Êı¾İ
+        // ç¡®ä¿æ­£ç¡®è¯»å–å­—ç¬¦ä¸²æ•°æ®
         fread(user.name, sizeof(char), 12, fp);
         fread(user.code, sizeof(char), 12, fp);
         fread(&user.type, sizeof(char), 1, fp);
         fread(user.number, sizeof(char), 15, fp);
-        fread(&user.address, sizeof(char), 1, fp);
+        fread(&user.address, sizeof(char), 5, fp);
         
-        printf("ÓÃ»§ %d:\n", i + 1);
-        printf("  ÓÃ»§Ãû: %s\n", user.name);
-        printf("  ÃÜÂë: %s\n", user.code);
-        printf("  ÓÃ»§ÀàĞÍ: %d\n", user.type);
-        printf("  ÊÖ»úºÅ: %s\n", user.number);
-        printf("  µØÖ·: %d\n", user.address);
+        printf("ç”¨æˆ· %d:\n", i + 1);
+        printf("  ç”¨æˆ·å: %s\n", user.name);
+        printf("  å¯†ç : %s\n", user.code);
+        printf("  ç”¨æˆ·ç±»å‹: %d\n", user.type);
+        printf("  æ‰‹æœºå·: %s\n", user.number);
+        printf("  åœ°å€: %s\n", user.address);
         printf("--------------------------------\n");
     }
 

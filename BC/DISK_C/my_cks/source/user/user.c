@@ -26,21 +26,7 @@ void user(int user_pos){
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
-            draw_choice();
-            while(1){
-                mouse_show_arrow(&mouse);
-
-                if(mouse_press(200, 202, 430, 264)==1){
-                    shops.type=1;
-                    break;
-                }else if(mouse_press(200, 266, 430, 334)==1){
-                    shops.type=2;
-                    break;
-                }else if(mouse_press(200, 336, 430, 400)==1){
-                    shops.type=3;
-                    break;
-                }
-            }
+            press1(1);//½øÈë³¬ÊĞÒ³Ãæ
             user_shop();//ÓÃ»§³¬ÊĞÒ³Ãæ           
         }
         else if(mouse_press(40, 439, 160, 489)==1)
@@ -78,19 +64,19 @@ void user(int user_pos){
         else if(mouse_press(440, 180, 560, 230)==1)
         {
             press1(4);//×Ïİ¿
-            currentUser->address = 1; 
+            currentUser->address=1;//×Ïİ¿
             save_user(*currentUser);
         }
         else if(mouse_press(620, 180, 740, 230)==1)
         {
             press1(5);//ÇßÔ·
-            currentUser->address = 2; 
+            currentUser->address=2;//ÇßÔ·
             save_user(*currentUser);
         }
         else if(mouse_press(800, 180, 920, 230)==1)
         {
             press1(6);//ÔÏÔ·
-            currentUser->address = 3; 
+            currentUser->address=3;//ÔÏÔ·
             save_user(*currentUser);
         }
     }

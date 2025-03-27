@@ -14,21 +14,7 @@ void user_takeout(){
 		if(mouse_press(40, 113, 160, 163)==1){
 			user(users.pos);//用户页面
 		}else if(mouse_press(40, 276, 160, 326)==1){
-            draw_choice();
-            while(1){
-                mouse_show_arrow(&mouse);
-
-                if(mouse_press(200, 202, 430, 264)==1){
-                    shops.type=1;
-                    break;
-                }else if(mouse_press(200, 266, 430, 334)==1){
-                    shops.type=2;
-                    break;
-                }else if(mouse_press(200, 336, 430, 400)==1){
-                    shops.type=3;
-                    break;
-                }
-            }
+            press1(1);//进入超市页面
             user_shop();//用户超市页面   
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
