@@ -7,7 +7,7 @@ int welcome() {
     char name[10]="\0";
 	char code[10]="\0";
     char judge1[10]="\0";//用于判断的密码
-    int current=-5;//判断登陆结果
+    int current=-5;//判断登陆结果,-5表示未登录,-2表示密码错误，-3表示用户不存在，>=0表示登录成功，返回用户位置
 
     UserList UL={0};
 	InitUList(&UL);
@@ -45,16 +45,17 @@ int welcome() {
             if(current>=0)
 			{
                 int user_type = UL.elem[current].type; // 获取用户类型
+                users.pos=current;//记录用户位置
 
                 DestroyUList(&UL);
 
                 // 根据用户类型跳转到不同界面，并传入用户位置
                 if (user_type == 1) {
-                    user(current); // 用户页面
+                    user(users.pos); // 用户页面
                 } else if (user_type == 2) {
-                    business(current); // 商家页面
+                    business(users.pos); // 商家页面
                 } else if (user_type == 3) {
-                    rider(current); // 骑手页面
+                    rider(users.pos); // 骑手页面
                 }
 			}
 			if(current==-2)//密码输入错误 

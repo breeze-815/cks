@@ -286,7 +286,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 		{            //光标定位至文本末尾
 			length=strlen(name);
 			i=length;
-			border+=8*i;
+			border+=12*i;
 			cursor(border,y1);
 		}
 		break;
@@ -297,7 +297,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 		{
 		length=strlen(code);
 		i=length;
-		border+=8*i;
+		border+=12*i;
 		cursor(border,y1);
 		}
 	case 3:
@@ -307,7 +307,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 	{
 		length=strlen(judge);
 		i=length;
-		border+=8*i;
+		border+=12*i;
 		cursor(border,y1);
 	}
 	default:
@@ -345,7 +345,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 							break;
 					}				
 					*showtemp=temp;  //temp转化为字符串
-					PrintText(border,y1-2,showtemp,HEI,16,1,0); //显示新的字符串达到画面与实际输入的同步
+					PrintText(border,y1+2,showtemp,HEI,24,1,0); //显示新的字符串达到画面与实际输入的同步
 					i++;	//字符个数自增
 					switch (mode)
 					{
@@ -360,13 +360,13 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 						default:
 							break;
 					}			
-					border+=8;	//光标横坐标右移8像素
+					border+=12;	//光标横坐标右移12像素
 					draw_cursor(border,y1);
 				}
 				else if(temp=='\b'&&i>0)  //检测是否为退格键，是则消除前一个字符
 				{
 					hide_cursor(border,y1);	//隐藏原光标
-					border-=8;	//光标左移8像素
+					border-=12;	//光标左移12像素
 					i--;	//字符个数自减
 					switch (mode)
 					{
@@ -381,7 +381,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 						default:
 							break;
 					}	
-					bar1(border,y1,border+8, y1+16, 0xffff);	//清空原字符
+					bar1(border,y1,border+12, y1+26, 0xffff);	//清空原字符
 					draw_cursor(border,y1);
 				}
 				else if(temp=='\t')

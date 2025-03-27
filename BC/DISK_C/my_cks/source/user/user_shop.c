@@ -21,7 +21,7 @@ void user_shop(){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            //user();//用户页面
+            user(users.pos);//用户页面
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
@@ -110,7 +110,18 @@ void draw_user_shop(Product products[],int productCount,int currentpage){
     Line_Thick(800,0,800,50,2,deepblue);
     Line_Thick(920,0,920,50,2,deepblue);
 
+    Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//填色
+    Fill_Rounded_Rectangle(40, 439, 160, 489, 25,white);//填色
+    Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);//填色
+
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5,1,deepblue);//购物车按钮
+    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);//超市按钮
+    Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);//外卖按钮
+    Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//快递按钮
+
+    PrintCC(75,291,"超市",HEI,24,1,deepblue);
+    PrintCC(75,454,"外卖",HEI,24,1,deepblue);
+    PrintCC(75,617,"快递",HEI,24,1,deepblue);
 
     PrintCC(210,15,"生活用品",HEI,24,1,grey);
     PrintCC(355,15,"文具",HEI,24,1,grey);

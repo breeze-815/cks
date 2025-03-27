@@ -1,7 +1,7 @@
 #include "all_func.h"
 
 void user_cart() {
-    int page = 0;
+    int page = 0;// 初始页码
     int totalPage = (cart.itemCount + 3) / 4; // 向上取整
     mouse_off_arrow(&mouse);
 
@@ -17,6 +17,11 @@ void user_cart() {
             user_shop();
             return;
         }
+		else if (mouse_press(800, 700, 1000, 750) == 1)
+		{
+			user_order();
+			return;
+		}
         else if (mouse_press(220, 700, 340, 750) == 1) 
 		{
             if (page > 0) {
@@ -24,9 +29,9 @@ void user_cart() {
                 draw_user_cart(carts, cart.itemCount, page);
             } else {
                 // 提示：已是第一页
-                PrintCC(600, 700, "已是第一页", HEI, 24, 1, lightred);
+                PrintCC(550, 25, "已是第一页", HEI, 24, 1, lightred);
 				delay(500);
-				bar1(600, 700, 790, 740, white);
+				bar1(550, 25, 700, 60, white);
             }
         }
 		else if (mouse_press(420, 700, 540, 750) == 1) 
@@ -36,9 +41,9 @@ void user_cart() {
 				draw_user_cart(carts, cart.itemCount, page);
 			} else {
 				// 提示：已是最后一页
-				PrintCC(600, 700, "已是最后一页", HEI, 24, 1, lightred);
+				PrintCC(550, 25, "已是最后一页", HEI, 24, 1, lightred);
 				delay(500);
-				bar1(600, 700, 790, 740, white);
+				bar1(550, 25, 700, 60, white);
 			}
 		}
 		else if(mouse_press(270, 0, 1024, 680) == 1) {
@@ -55,6 +60,8 @@ void draw_user_cart(CartItem carts[], int cartCount, int page) {
     int i;
     int start = page * 4;
     int end = start + 4;
+    float sum=0;
+    char sum_str[20];
     if (end > cartCount) end = cartCount;
 
     bar1(200, 0, 1024, 768, white);
@@ -68,14 +75,15 @@ void draw_user_cart(CartItem carts[], int cartCount, int page) {
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 生成订单
     PrintCC(850, 715, "生成订单", HEI, 24, 1, deepblue);
 
-    for (i = start; i < end; i++) {
-        char total_str[50];
-        char quantity_str[20];
-        char type_str[20];
-        int y = 10 + 170 * (i - start);
-        int productIndex = carts[i].index_in_products;
-        int quantity = products[productIndex].quantity;
-
+    for (i = start; i < end; i++) {//显示商品信息
+        char total_str[50];//商品总价
+        char quantity_str[20];//商品数量
+        char type_str[20];//超市名
+        int y = 10 + 170 * (i - start);//商品框的y坐标
+        int productIndex = carts[i].index_in_products;//商品索引
+        int quantity = products[productIndex].quantity;//商品数量
+        sum+=products[productIndex].price * quantity;//计算总价
+        
         switch (shops.type) {
             case 1: strcpy(type_str, "紫菘喻园超市"); break;
             case 2: strcpy(type_str, "沁苑喻园超市"); break;
@@ -83,15 +91,15 @@ void draw_user_cart(CartItem carts[], int cartCount, int page) {
             default: strcpy(type_str, "未知超市"); break;
         }
 
-        sprintf(total_str, "总价:%.2f", products[productIndex].price * quantity);
-        sprintf(quantity_str, "x%d", quantity);
+        sprintf(total_str, "金额:%.2f", products[productIndex].price * quantity);//将金额转换为字符串
+        sprintf(quantity_str, "x%d", quantity);//将数量转换为字符串
 
-        Draw_Rounded_Rectangle(220, y, 1000, y + 150, 30, 1, 0x6B4D);
-        Readbmp64k(240, y + 15, carts[i].photo);
+        Draw_Rounded_Rectangle(220, y, 1000, y + 150, 30, 1, 0x6B4D);//商品框
+        Readbmp64k(240, y + 15, carts[i].photo);//显示商品图片
 
         PrintCC(370, y + 15, carts[i].name, HEI, 32, 1, 0x0000);//显示商品名
         PrintCC(370, y + 110, type_str, HEI, 24, 1, 0x0000);//显示超市名
-        PrintText(760, y + 15, (unsigned char*)total_str, HEI, 32, 1, 0x0000);//显示总价
+        PrintText(760, y + 15, (unsigned char*)total_str, HEI, 32, 1, 0x0000);//显示金额
         PrintText(920, y + 60, (unsigned char*)quantity_str, HEI, 32, 1, 0x0000);//显示数量
 
         Line_Thick(840, y + 120, 860, y + 120, 1, black); // 减号
@@ -100,25 +108,43 @@ void draw_user_cart(CartItem carts[], int cartCount, int page) {
         Line_Thick(940, y + 120, 960, y + 120, 1, black); // 加号横
         Line_Thick(950, y + 110, 950, y + 130, 1, black); // 加号竖
     }
+
+    sprintf(sum_str, "总价:%.2f", sum);
+    PrintText(560,710, (unsigned char*)sum_str, HEI, 32, 1, 0x0000);//显示金额
 }
 
 
 void draw_user_cart_quantity(CartItem carts[], int index, int y) {
     char total_str[50];
     char quantity_str[20];
+    char sum_str[20];
+    float sum = 0;
+    int i;
 
     int productIndex = carts[index].index_in_products;
     int quantity = products[productIndex].quantity;
 
-    sprintf(total_str, "总价:%.2f", products[productIndex].price * quantity);
+    sprintf(total_str, "金额:%.2f", products[productIndex].price * quantity);
     sprintf(quantity_str, "x%d", quantity);
 
-    bar1(760, y + 15, 990, y + 60, white); // 清除总价区域
-    bar1(920, y + 60, 990, y + 90, white); // 清除数量区域
+    // === 重新计算整个购物车总价 ===
+    for (i = 0; i < cart.itemCount; i++) {
+        int pIndex = carts[i].index_in_products;
+        sum += products[pIndex].price * products[pIndex].quantity;
+    }
+    sprintf(sum_str, "总价:%.2f", sum);
 
-    PrintText(760, y + 15, (unsigned char*)total_str, HEI, 32, 1, 0x0000);
-    PrintText(920, y + 60, (unsigned char*)quantity_str, HEI, 32, 1, 0x0000);
+    // === 清除原有数值显示区域 ===
+    bar1(760, y + 15, 990, y + 60, white); // 金额区域
+    bar1(920, y + 60, 990, y + 90, white); // 数量区域
+    bar1(560, 710, 790, 750, white);       // 总价区域
+
+    // === 显示新数值 ===
+    PrintText(760, y + 15, (unsigned char*)total_str, HEI, 32, 1, 0x0000);     // 显示该商品金额
+    PrintText(920, y + 60, (unsigned char*)quantity_str, HEI, 32, 1, 0x0000);  // 显示该商品数量
+    PrintText(560, 710, (unsigned char*)sum_str, HEI, 32, 1, 0x0000);          // 显示整个购物车总价
 }
+
 
 
 void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPage) {

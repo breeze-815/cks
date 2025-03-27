@@ -12,6 +12,7 @@ typedef struct USER
 	char type;//用户类型 1为用户，2为商家，3为骑手
 	char number[15];//手机号
 	char address;//地址 1为紫菘，2为沁苑，3为韵苑
+	int pos;//用户在列表中位置
 
 }USER;
 
