@@ -10,7 +10,7 @@ typedef struct USER
 	char code[12];//密码
 
 	char type;//用户类型 1为用户，2为商家，3为骑手
-	char number[15];//手机号
+	char number[12];//手机号
 	char address;//地址 1紫菘，2沁苑，2韵苑
 	int pos;//用户在列表中位置
 

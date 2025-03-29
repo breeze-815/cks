@@ -79,6 +79,8 @@
     "user_re.h": "c",
     "user_take.h": "c",
     "user_de.h": "c",
-    "user_cart.h": "c"
-  }
+    "user_cart.h": "c",
+    "FREAD.C": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

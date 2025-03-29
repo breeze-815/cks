@@ -58,7 +58,7 @@ int save_user(USER users) {
         UL.elem[user_pos] = users;// 更新用户信息
     }
 
-    // 重新写入数据
+    // 重新写入列表数据
     rewind(fp);
     fwrite(&UL.length, sizeof(int), 1, fp);
     fwrite(&UL.listsize, sizeof(int), 1, fp);
@@ -118,50 +118,6 @@ void ReadAllUser(UserList *UL) {
 
     fclose(fp);
 }
-
-
-
-/*******************
-功能说明：更新用户信息 
-参数说明：用户结构体 
-返回值：无 
-*******************/
-
-void UpdataUser(USER user) {
-    int i = 0;
-	UserList UL = {0};
-    FILE *fp = NULL;
-
-	int usernum = Userposition(UL, user);
-    
-    ReadAllUser(&UL);
-    
-    if ((fp = fopen("data\\userinfo.dat", "rb+")) == NULL) {
-        printf("无法打开文件！\n");
-        return;
-    }
-    
-    if (usernum == -1) {
-        printf("用户不存在，无法更新！\n");
-        fclose(fp);
-        return;
-    }
-    
-    UL.elem[usernum] = user;
-
-    rewind(fp);
-    fwrite(&UL.length, sizeof(int), 1, fp);
-    fwrite(&UL.listsize, sizeof(int), 1, fp);
-    
-    // 逐个写入用户数据
-    for ( i = 0; i < UL.length; i++) {
-        fwrite(&UL.elem[i], sizeof(USER), 1, fp);
-    }
-
-    fclose(fp);
-    DestroyUList(&UL);
-}
-
 
 /****************************
 功能说明：建立一个线性表 
