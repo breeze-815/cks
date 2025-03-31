@@ -3,6 +3,8 @@
 
 void business(int user_pos);
 void draw_business();
-void press2(int x);
+void press_type(int x);
+void draw_market();
+void draw_canteen();
 
 #endif

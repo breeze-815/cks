@@ -13,7 +13,7 @@ void user(int user_pos){
     
     mouse_off_arrow(&mouse);
 	
-	draw_user();
+	draw_user(currentUser);
 
 	mouse_on_arrow(mouse);
 
@@ -43,7 +43,7 @@ void user(int user_pos){
         }
         else if(mouse_press(430, 105, 650, 155)==1)
         {
-            number_mode(currentUser->number, 435, 110, 645, 150); // 输入手机号
+            number_input(currentUser->number, 435, 110, 645, 150); // 输入手机号
         }
         else if(mouse_press(710, 105, 830, 155)==1)
         {
@@ -52,13 +52,13 @@ void user(int user_pos){
                 save_user(*currentUser);
                 PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,snow);
+                bar1(800,50,1024,100,white);
             }
             else
             {
                 PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,snow);
+                bar1(800,50,1024,100,white);
             }
         }
         else if(mouse_press(440, 180, 560, 230)==1)
@@ -82,7 +82,7 @@ void user(int user_pos){
     }
 }
 
-void draw_user()
+void draw_user(USER *currentUser)
 {
     bar1(0, 0, 1024, 768,0xFFFF);
     bar1(0, 0, 200, 768,0x0235);
@@ -115,22 +115,9 @@ void draw_user()
     PrintCC(250,50,"当前账号类型为：用户",HEI,24,1,deepblue);
     PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
     PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
-    
+   
     Readbmp64k(201, 257, "bmp\\map.bmp");
     
-}
-
-void draw_choice(){
-    Fill_Rounded_Rectangle(200, 202, 430, 400, 30,snow);//填色
-    Draw_Rounded_Rectangle(200, 202, 430, 400, 30, 2,deepblue);//最外围灰色圆角矩形
-
-    Line_Thick(220, 265, 400, 265, 1,deepblue);
-    Line_Thick(220, 335, 400, 335, 1,deepblue);
-    
-    PrintCC(240,225,"紫菘喻园超市",HEI,24,1,deepblue);
-    PrintCC(240,290,"沁苑喻园超市",HEI,24,1,deepblue);
-    PrintCC(240,355,"韵苑喻园超市",HEI,24,1,deepblue);
-
 }
 
 void press1(int x){
@@ -213,7 +200,7 @@ void press1(int x){
     mouse_on_arrow(mouse);
 }
 
-void number_mode(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
+void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
@@ -230,7 +217,7 @@ void number_mode(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
     {            //光标定位至文本末尾
         length=strlen(number);
         i=length;
-        border+=8*i;
+        border+=12*i;
         cursor(border,y1);
     }	
 
@@ -278,7 +265,7 @@ void number_mode(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 					mouse_show_arrow(&mouse);
 					PrintCC(750,50,"长度超过限制",HEI,24,1,lightred);
 					delay(500);
-					bar1(750,50,900,75,snow);
+					bar1(750,50,900,75,white);
 				}
 			}
 			else

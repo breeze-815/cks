@@ -41,6 +41,7 @@ extern Shop shops;
 extern Product products[50];
 extern CartItem carts[50];
 extern ShoppingCart cart;
+extern Deliver deliver;
 
 #define white 0xFFFF
 #define snow 0xFFDF
@@ -53,11 +54,3 @@ extern ShoppingCart cart;
 
 #endif
 
-//0 首页
-//1 注册
-//2 用户
-//3 商家
-//4 骑手
-//5 用户超市
-//6 用户外卖
-//7 用户快递

@@ -2,6 +2,7 @@
 #define _BUSI_ORDER_H
 
 void business_order();
-void draw_business_order();
+void draw_business_order(int page,OrderList *OL);
+
 
 #endif
