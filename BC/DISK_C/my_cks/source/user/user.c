@@ -22,7 +22,8 @@ void user(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-			welcome();//Ê×Ò³
+            return;
+			//welcome();//Ê×Ò³
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {

@@ -11,8 +11,6 @@ void business_order(){
 	
 	draw_business_order(page,&OL);
 
-    mouse_on_arrow(mouse);
-
 	mouse_on_arrow(mouse);
 
 	while(1){
@@ -20,7 +18,9 @@ void business_order(){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-			business(users.pos);//首页
+            DestroyOList(&OL); // 释放订单列表内存
+            return;
+			//business(users.pos);
 		}
         else if(mouse_press(490, 100, 610, 150)==1)
         {
@@ -58,12 +58,19 @@ void business_order(){
 			}
 		}
         else if(mouse_press(200, 0, 1024, 680) == 1) {
-			// MouseGet(&mouse);
-            // int order_index = (mouse.y - 25) / 120 + page * 5; // 根据点击位置计算订单索引
-            // if (order_index >= 0 && order_index < OL.length) {
-            //     show_order(&OL.elem[order_index]); // 显示订单详情
-            //     draw_business_order(page, &OL); // 返回后重新绘制订单列表
-            // }
+            int order_index = (mouse.y - 25) / 120 + page * 5; // 根据点击位置计算订单索引
+
+			MouseGet(&mouse);
+
+            if (order_index >= 0 && order_index < OL.length) 
+            {
+                business_detail(order_index); // 显示订单详情
+
+                mouse_off_arrow(&mouse);
+                bar1(200, 0, 1024, 768, white); // 清除订单详情界面残留
+                draw_business_order(page,&OL); // 重新绘制订单列表
+                mouse_on_arrow(mouse);
+            }
 		}
     }
 }
@@ -89,9 +96,9 @@ void draw_business_order(int page,OrderList *OL){
 
     
     for (i = start_index; i < end_index; i++) {
-        char order_id[20]; // 订单ID字符串
-        char user_info[50]; // 用户信息字符串
-        char total_price[50];// 总价字符串
+        char order_id[10]; // 订单ID字符串
+        char user_info[16]; // 用户信息字符串
+        char total_price[10];// 总价字符串
 
         Order order = OL->elem[i]; // 获取当前订单
 

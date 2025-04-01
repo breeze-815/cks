@@ -28,6 +28,7 @@
 
 #include "busi.h"
 #include "busi_order.h"
+#include "busi_det.h"
 
 #include "ride.h"
 
@@ -42,6 +43,7 @@ extern Product products[50];
 extern CartItem carts[50];
 extern ShoppingCart cart;
 extern Deliver deliver;
+extern Order orders;
 
 #define white 0xFFFF
 #define snow 0xFFDF

@@ -20,7 +20,11 @@ void user_cart() {
 		else if (mouse_press(800, 700, 1000, 750) == 1)
 		{
 			user_order();
-			return;
+			
+            mouse_off_arrow(&mouse);
+            bar1(200, 0, 1024, 768, white); // Çå³ı×¢²á½çÃæ²ĞÁô
+            draw_user_cart(carts, cart.itemCount, page);
+            mouse_on_arrow(mouse);
 		}
         else if (mouse_press(220, 700, 340, 750) == 1) 
 		{

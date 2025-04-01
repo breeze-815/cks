@@ -161,6 +161,8 @@ void draw_user_order(int page){
             int productIndex = carts[i].index_in_products;
             int quantity = products[productIndex].quantity;
             total_amount += products[productIndex].price * quantity;
+            carts[i].quantity = quantity; // 记录购物车商品数量
+            carts[i].price = products[productIndex].price; // 记录商品价格
         }
 
         sprintf(total_str, "总金额：%.2f 元", total_amount);
@@ -171,6 +173,7 @@ void draw_user_order(int page){
     strcpy(orders.order_time, current_time); // 下单时间
     strcpy(orders.user_name, currentUser->name); // 用户名
     strcpy(orders.user_phone, currentUser->number); // 用户手机号
+    orders.address=currentUser->address; // 用户手机号
     for (i = 0; i < cart.itemCount; i++) {
         orders.item[i] = carts[i]; // 购物车内商品信息
     }

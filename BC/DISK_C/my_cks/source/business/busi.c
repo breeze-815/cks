@@ -21,7 +21,9 @@ void business(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-			welcome();//首页
+            DestroyUList(&UL); // 释放用户列表内存
+            return;
+			//welcome();//首页
 		}
         else if(mouse_press(490, 260, 610, 310)==1)
         {
@@ -37,6 +39,12 @@ void business(int user_pos){
         else if(mouse_press(40, 602, 160, 652)==1)//查看订单
         {
             business_order();//商家订单页面
+
+            mouse_off_arrow(&mouse);
+            bar1(0, 0, 1024, 768, white); // 清除注册界面残留
+            draw_business();
+            mouse_on_arrow(mouse);
+
         }
         else if(mouse_press(430, 110, 650, 160)==1)//输入手机号
         {

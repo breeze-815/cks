@@ -23,7 +23,13 @@ int welcome() {
 
 		if(mouse_press(515, 490, 700, 540)==1)
         {
-			user_register();//注册
+			user_register();//进入注册页面
+            //return后从这开始
+
+            mouse_off_arrow(&mouse);
+            bar1(0, 0, 1024, 768, white); // 清除注册界面残留
+	        draw_basic();
+	        mouse_on_arrow(mouse);
 		}
         else if(mouse_press(950, 25, 1000, 75)==1)
         {
@@ -50,13 +56,23 @@ int welcome() {
                 DestroyUList(&UL);
 
                 // 根据用户类型跳转到不同界面，并传入用户位置
-                if (user_type == 1) {
+                if (user_type == 1) 
+                {
                     user(users.pos); // 用户页面
-                } else if (user_type == 2) {
+                } 
+                else if (user_type == 2) 
+                {
                     business(users.pos); // 商家页面
-                } else if (user_type == 3) {
+                } 
+                else if (user_type == 3) 
+                {
                     rider(users.pos); // 骑手页面
                 }
+                //return后从这开始
+                mouse_off_arrow(&mouse);
+                bar1(0, 0, 1024, 768, white); // 清除注册界面残留
+                draw_basic();
+                mouse_on_arrow(mouse);
 			}
 			if(current==-2)//密码输入错误 
 			{

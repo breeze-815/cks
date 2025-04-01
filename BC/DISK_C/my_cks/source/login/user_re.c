@@ -16,7 +16,8 @@ void user_register(){
 		mouse_show_arrow(&mouse);
 
 		if(mouse_press(450,490, 635, 540)==1){
-			welcome();//Ê×Ò³
+            return;
+            //welcome();//Ê×Ò³
 		}
         else if(mouse_press(230, 250, 350, 300)==1)
         {

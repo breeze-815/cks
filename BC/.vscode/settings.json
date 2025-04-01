@@ -80,7 +80,8 @@
     "user_take.h": "c",
     "user_de.h": "c",
     "user_cart.h": "c",
-    "FREAD.C": "cpp"
+    "FREAD.C": "cpp",
+    "busi_detail.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
