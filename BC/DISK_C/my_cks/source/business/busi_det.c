@@ -86,8 +86,8 @@ void draw_business_detail(OrderList *OL ,int order_index,int page) {
     PrintCC(245, 715, "上一页", HEI, 24, 1, deepblue);
     PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
 
-    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 确认并支付
-    PrintCC(830, 715, "确认并支付", HEI, 24, 1, deepblue);
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 开始备货
+    PrintCC(850, 715, "开始备货", HEI, 24, 1, deepblue);
 
     // 页头信息只在第一页显示
     if (page == 0) {

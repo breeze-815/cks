@@ -1,13 +1,11 @@
 #include "all_func.h"
 
-
-
 /**********************
 功能说明：登录信息对比校验函数 
 参数说明：用户线性表，用户名，密码 
 返回值说明:i：用户在线性表中的位置  -2:密码错误 -3：用户不存在 
 **********************/
-int Check_info(UserList UL, char name[10], char code[10]) {
+int Check_info(UserList UL, char name[12], char code[12]) {
     int i = 0;
     for (i = 0; i < UL.length; i++)
 	{
@@ -19,7 +17,7 @@ int Check_info(UserList UL, char name[10], char code[10]) {
             }
 			else 
 			{
-                return -2; // 用户名匹配但密码不匹配，返回密码错误
+                return -2; // 用户名匹配但密码不匹配，返回密码错误，用户已存在
             }
         }
     }
@@ -29,7 +27,7 @@ int Check_info(UserList UL, char name[10], char code[10]) {
 /**********************
 功能说明：保存用户信息函数 
 参数说明：用户结构体 
-返回值说明:0：保存成功   -1： 保存失败 
+返回值说明:0：保存成功   -1： 保存失败 -2：用户已存在
 **********************/
 int save_user(USER users) {
     int i = 0;
@@ -53,7 +51,7 @@ int save_user(USER users) {
 	{ 
         UListInsert(&UL, users); // 插入新用户
     } 
-	else if(user_pos!=-2) // 用户存在
+	else if(user_pos != -3) // 用户存在
 	{ 
         UL.elem[user_pos] = users;// 更新用户信息
     }
@@ -70,7 +68,15 @@ int save_user(USER users) {
 
     fclose(fp);
     DestroyUList(&UL);
-    return 0;
+
+	if(user_pos != -3)//用户已存在
+	{ 
+		return -2;
+	}
+	else
+	{
+		return 0;//用户不存在
+	}
 }
 
 
@@ -220,14 +226,17 @@ int Userposition(UserList UL,USER e)
 }
 
 
-
-
 //输入模式
 void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode)
 {
 	int length;//用于记录输入的字符个数，便于光标移动至末尾
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
 	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
+	
+	char name_temp[12]="\0";
+	char code_temp[12]="\0";
+	char judge_temp[12]="\0";
+
 	int border; //光标的横坐标	    
 	int x1,y1;
 	x1=bar_x1+4;
@@ -236,32 +245,32 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 	switch (mode)
 	{
 	case 1:
-		if(name[0]=='\0') //如果账号为空，则显示输入框
+		if(name_temp[0]=='\0') //如果账号为空，则显示输入框
 			bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 		else
 		{            //光标定位至文本末尾
-			length=strlen(name);
+			length=strlen(name_temp);
 			i=length;
 			border+=12*i;
 			cursor(border,y1);
 		}
 		break;
 	case 2:
-		if(code[0]=='\0') //如果密码为空，则显示输入框
+		if(code_temp[0]=='\0') //如果密码为空，则显示输入框
 			bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 		else
 		{
-		length=strlen(code);
-		i=length;
-		border+=12*i;
-		cursor(border,y1);
+			length=strlen(code_temp);
+			i=length;
+			border+=12*i;
+			cursor(border,y1);
 		}
 	case 3:
-	if(judge[0]=='\0') //如果输入框为空，则显示输入框
+	if(judge_temp[0]=='\0') //如果输入框为空，则显示输入框
 		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 	else
 	{
-		length=strlen(judge);
+		length=strlen(judge_temp);
 		i=length;
 		border+=12*i;
 		cursor(border,y1);
@@ -283,19 +292,22 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 			temp=bioskey(0)&0x00ff; //获取键盘输入
 			if(temp!='\r'&&temp!='\n')	//检测输入不为回车键，则继续，否则输入结束
 			{
-				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <10)//检测为数字或字母，则记录
+				if((('0'<=temp&&temp<='9')||('a'<=temp&&temp<='z')||('A'<=temp && temp<='Z'))&& i <12)//检测为数字或字母，则记录
 				{
 					hide_cursor(border,y1); //隐藏原光标
 					switch (mode)
 					{
 						case 1:
 							name[i]=temp;//字符送入给定字符串，用于保存用户信息
+							name_temp[i]=temp;
 							break;	
 						case 2:
 							code[i]=temp;//字符送入给定字符串，用于保存用户信息
+							code_temp[i]=temp;
 							break;
 						case 3:
 							judge[i]=temp;//字符送入给定字符串，用于保存用户信息
+							judge_temp[i]=temp;
 							break;
 						default:
 							break;
@@ -307,11 +319,15 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 					{
 						case 1:
 							name[i]='\0';//标记字符串结尾
+							name_temp[i]='\0';//标记字符串结尾
 							break;	
 						case 2:
 							code[i]='\0';//标记字符串结尾
+							code_temp[i]='\0';//标记字符串结尾
+							break;
 						case 3:
 							judge[i]='\0';//标记字符串结尾
+							judge_temp[i]='\0';//标记字符串结尾
 							break;
 						default:
 							break;
@@ -328,11 +344,15 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 					{
 						case 1:
 							name[i]='\0';//将存储的字符用0覆盖
+							name_temp[i]='\0';//将存储的字符用0覆盖
 							break;	
 						case 2:
 							code[i]='\0';//将存储的字符用0覆盖
+							code_temp[i]='\0';//将存储的字符用0覆盖
+							break;
 						case 3:
 							judge[i]='\0';//将存储的字符用0覆盖
+							judge_temp[i]='\0';//将存储的字符用0覆盖
 							break;
 						default:
 							break;

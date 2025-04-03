@@ -24,6 +24,8 @@ typedef struct OrderList
 
 void user_order();
 void draw_user_order(int page);
+void draw_info();
+
 char* get_current_time();
 
 void InitOList(OrderList*OL);

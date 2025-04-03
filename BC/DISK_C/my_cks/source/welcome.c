@@ -3,15 +3,16 @@
 
 
 int welcome() {
+    int i;
 
-    char name[10]="\0";
-	char code[10]="\0";
-    char judge1[10]="\0";//用于判断的密码
+    char name[12]="\0";
+	char code[12]="\0";
+    char judge1[12]="\0";//用于判断的密码
     int current=-5;//判断登陆结果,-5表示未登录,-2表示密码错误，-3表示用户不存在，>=0表示登录成功，返回用户位置
 
     UserList UL={0};
-	InitUList(&UL);
 	ReadAllUser(&UL);
+
 	mouse_off_arrow(&mouse);
 	
 	draw_basic();
@@ -23,9 +24,11 @@ int welcome() {
 
 		if(mouse_press(515, 490, 700, 540)==1)
         {
+            DestroyUList(&UL);
 			user_register();//进入注册页面
             //return后从这开始
 
+            ReadAllUser(&UL);
             mouse_off_arrow(&mouse);
             bar1(0, 0, 1024, 768, white); // 清除注册界面残留
 	        draw_basic();
@@ -53,7 +56,7 @@ int welcome() {
                 int user_type = UL.elem[current].type; // 获取用户类型
                 users.pos=current;//记录用户位置
 
-                DestroyUList(&UL);
+                DestroyUList(&UL);//销毁线性表
 
                 // 根据用户类型跳转到不同界面，并传入用户位置
                 if (user_type == 1) 
@@ -69,10 +72,15 @@ int welcome() {
                     rider(users.pos); // 骑手页面
                 }
                 //return后从这开始
+                ReadAllUser(&UL);
                 mouse_off_arrow(&mouse);
                 bar1(0, 0, 1024, 768, white); // 清除注册界面残留
                 draw_basic();
                 mouse_on_arrow(mouse);
+
+                for (i = 0; i < sizeof(name); i++) name[i] = '\0';
+                for (i = 0; i < sizeof(code); i++) code[i] = '\0';
+                for (i = 0; i < sizeof(judge1); i++) judge1[i] = '\0';
 			}
 			if(current==-2)//密码输入错误 
 			{
