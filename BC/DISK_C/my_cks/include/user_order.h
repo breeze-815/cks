@@ -23,8 +23,17 @@ typedef struct OrderList
 }OrderList;//订单线性表 
 
 void user_order();
+
+void draw_page_header(USER *currentUser, int order_id, char *current_time);
+void draw_pagination_buttons();
+void draw_order_items(int startIdx, int endIdx, int item_y);
+void draw_total_amount(int item_y);
+void store_order_data(char *current_time, USER *currentUser, float total_amount);
 void draw_user_order(int page);
 void draw_info();
+
+void draw_user_order(int page);
+
 
 char* get_current_time();
 

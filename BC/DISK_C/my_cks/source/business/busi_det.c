@@ -52,65 +52,91 @@ void business_detail(int order_index) {
     }
 }
 
-void draw_business_detail(OrderList *OL ,int order_index,int page) {
-    int i;
-    Order currentOrder ; 
+//绘制订单信息页面
+void draw_b_order_info(Order currentOrder) {
+    char time_str[100], user_name[100], user_phone[100], order_number_str[20];
 
-    char current_time[20]; // 获取当前时间
-    char time_str[100]; // 打印下单时间
-    char user_name[100]; // 打印用户名
-    char user_phone[100]; // 打印用户手机号
-    char order_number; // 打印订单号
-
-    int startIdx = 0;// 起始商品索引
-    int itemsPerPage = 0;// 每页商品数量
-    int endIdx = 0;// 结束商品索引
-    int item_y = 0;// 商品框的y坐标
-
-    float total_amount = 0.0; // 总金额
-    char total_str[20]; // 总金额字符串
-    int fullPageItemCount = 0; // 满页商品数量
-
-    currentOrder = OL->elem[order_index]; // 当前订单
-    strcpy(current_time, currentOrder.order_time);
-
-    sprintf(time_str, "下单时间：%s", current_time);
+    sprintf(order_number_str, "订单号：%d", currentOrder.id);
+    sprintf(time_str, "下单时间：%s", currentOrder.order_time);
     sprintf(user_name, "用户名：%s", currentOrder.user_name);
     sprintf(user_phone, "手机号：%s", currentOrder.user_phone);
 
-    bar1(200, 0, 1024, 768, white); // 清空屏幕
+    PrintText(250, 50, order_number_str, HEI, 24, 1, black);
+    PrintText(250, 100, time_str, HEI, 24, 1, black);
+    PrintText(250, 150, user_name, HEI, 24, 1, black);
+    PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-    // 分页按钮
-    Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue); // 上一页
-    Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue); // 下一页
+    switch (currentOrder.address) {
+        case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
+        case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
+        case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
+        default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
+    }
+
+    PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);
+    PrintCC(750, 300, "数量：", HEI, 24, 1, black);
+    PrintCC(900, 300, "金额：", HEI, 24, 1, black);
+    PrintText(250, 320, "-------------------------------", HEI, 32, 1, black);
+}
+
+//绘制分页按钮
+void draw_b_pagination_buttons() {
+    Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue);
+    Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue);
     PrintCC(245, 715, "上一页", HEI, 24, 1, deepblue);
     PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
 
-    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 开始备货
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue);
     PrintCC(850, 715, "开始备货", HEI, 24, 1, deepblue);
+}
 
-    // 页头信息只在第一页显示
+//绘制订单商品信息
+void draw_b_order_items(Order currentOrder, int startIdx, int endIdx, int item_y) {
+    int i;
+    char total_str[50], quantity_str[20];
+    int quantity;
+    float price;
+
+    for (i = startIdx; i < endIdx; i++) {
+        quantity = currentOrder.item[i].quantity;
+        price = currentOrder.item[i].price;
+
+        sprintf(total_str, "%.2f", price * quantity);
+        sprintf(quantity_str, "x%d", quantity);
+
+        PrintCC(250, item_y, currentOrder.item[i].name, HEI, 24, 1, black);
+        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);
+        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);
+
+        item_y += 50;
+    }
+}
+
+//绘制总金额
+void draw_b_total_amount(Order currentOrder, int item_y) {
+    int i;
+    float total_amount;
+    char total_str[20];
+
+    total_amount = 0.0;
+    for (i = 0; i < currentOrder.itemCount; i++) {
+        total_amount += currentOrder.item[i].price * currentOrder.item[i].quantity;
+    }
+
+    PrintText(250, item_y - 30, "-------------------------------", HEI, 32, 1, black);
+    sprintf(total_str, "总金额：%.2f 元", total_amount);
+    PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
+}
+
+//绘制订单详情页面
+void draw_business_detail(OrderList *OL, int order_index, int page) {
+    Order currentOrder;
+    int startIdx, itemsPerPage, endIdx, item_y;
+    int fullPageItemCount;
+
+    currentOrder = OL->elem[order_index];
+
     if (page == 0) {
-        char order_number_str[20]; // 订单号字符串
-        sprintf(order_number_str, "订单号：%d", currentOrder.id); // 订单号
-        PrintText(250, 50, order_number_str, HEI, 24, 1, black);
-        PrintText(250, 100, time_str, HEI, 24, 1, black);
-        PrintText(250, 150, user_name, HEI, 24, 1, black);
-        PrintText(250, 200, user_phone, HEI, 24, 1, black);
-
-        switch(currentOrder.address){// 根据用户地址显示地址
-            case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
-            case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
-            case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
-            default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
-        }
-
-        // 表头
-        PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);
-        PrintCC(750, 300, "数量：", HEI, 24, 1, black);
-        PrintCC(900, 300, "金额：", HEI, 24, 1, black);
-        PrintText(250, 320, "-------------------------------", HEI, 32, 1, black);// 分隔线
-
         startIdx = 0;
         itemsPerPage = 6;
     } else {
@@ -118,44 +144,27 @@ void draw_business_detail(OrderList *OL ,int order_index,int page) {
         itemsPerPage = 12;
     }
 
-    endIdx = startIdx + itemsPerPage;
-    if (endIdx > currentOrder.itemCount)// 防止越界
+    if (startIdx + itemsPerPage > currentOrder.itemCount) {
         endIdx = currentOrder.itemCount;
-
-    item_y = (page == 0) ? 350 : 50;
-    for (i = startIdx; i < endIdx; i++) {
-        char total_str[50]; // 商品总价
-        char quantity_str[20]; // 商品数量
-        int quantity = currentOrder.item[i].quantity; // 商品数量
-        float price = currentOrder.item[i].price; // 商品价格
-
-        sprintf(total_str, "%.2f", price * quantity);
-        sprintf(quantity_str, "x%d", quantity);
-
-        PrintCC(250, item_y, currentOrder.item[i].name, HEI, 24, 1, black); // 商品名
-        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);
-        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);
-
-        item_y += 50;
+    } else {
+        endIdx = startIdx + itemsPerPage;
     }
 
-    // 判断是否需要在此页显示总金额（当前页没有满）
-    fullPageItemCount = (page == 0) ? 6 : 12;// 第一页显示6个商品，其余页显示12个商品
-    if ((endIdx - startIdx) < fullPageItemCount||endIdx==currentOrder.itemCount) {// 当前页商品数量不满一页或最后一个商品刚好满页都要打印出总金额
-        //如果不是最后一个商品但是满页就不打印总金额
-        // 打印分隔线
-        PrintText(250, item_y - 30, "-------------------------------", HEI, 32, 1, black);
+    if (page == 0) {
+        item_y = 350;
+    } else {
+        item_y = 50;
+    }
 
-        // 计算总金额
-        total_amount = 0.0;
-        for (i = 0; i < currentOrder.itemCount; i++) {
-            int quantity = currentOrder.item[i].quantity; // 商品数量
-            float price = currentOrder.item[i].price; // 商品价格
-            total_amount += price * quantity;
-        }
+    fullPageItemCount = (page == 0) ? 6 : 12;
 
-        sprintf(total_str, "总金额：%.2f 元", total_amount);
-        PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
-    
+    bar1(200, 0, 1024, 768, white);//清空画布
+    draw_b_pagination_buttons();//绘制分页按钮
+    if (page == 0) draw_b_order_info(currentOrder);//绘制订单信息
+    draw_b_order_items(currentOrder, startIdx, endIdx, item_y);//绘制订单商品信息
+
+    if ((endIdx - startIdx) < fullPageItemCount || endIdx == currentOrder.itemCount) {
+        draw_b_total_amount(currentOrder, item_y);//绘制总金额
     }
 }
+
