@@ -4,7 +4,7 @@ USER users={0};//存储信息的用户结构体
 
 void user_register(){
     
-	char judge[12]="\0";//用于判断的密码 
+	char judge[10]="\0";//用于判断的密码 
 
 	mouse_off_arrow(&mouse);
 	
@@ -62,7 +62,7 @@ void user_register(){
                                 delay(500);
 				                bar1(570,575,800,600,snow);
                             }
-                            else if(save_user(users)==-2)//用户名已存在
+                            else
                             {
                                 PrintCC(570,575,"用户名已被注册",HEI,24,1,0XF800);
                                 delay(500);

@@ -10,8 +10,6 @@ void user(int user_pos){
     ReadAllUser(&UL); // 读取用户列表
 
     currentUser=&UL.elem[user_pos];// 获取当前用户信息
-
-    DestroyUList(&UL); // 释放用户列表空间
     
     mouse_off_arrow(&mouse);
 	
@@ -30,35 +28,19 @@ void user(int user_pos){
         else if(mouse_press(40, 276, 160, 326)==1)
         {
             press1(1);//进入超市页面
-            user_shop();//用户超市页面 
-            
-            //return后从这开始 
-            mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
-	        mouse_on_arrow(mouse);
+            user_shop();//用户超市页面           
         }
         else if(mouse_press(40, 439, 160, 489)==1)
         {
             press1(2);//进入外卖页面
             user_takeout();//用户外卖页面 
-
-            //return后从这开始 
-            mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
-	        mouse_on_arrow(mouse);
+            break;
         }
         else if(mouse_press(40, 602, 160, 652)==1)
         {
             press1(3);//进入快递页面
-            user_deliver();//用户快递页面 
-            
-            //return后从这开始 
-            mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
-	        mouse_on_arrow(mouse);
+            user_deliver();//用户快递页面  
+            break;
         }
         else if(mouse_press(430, 105, 650, 155)==1)
         {
@@ -222,7 +204,6 @@ void press1(int x){
 void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
-    char number_temp[12]={'\0'};//重新进入该页面时输入框清零
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
 	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
 	int border; //光标的横坐标	    
@@ -231,11 +212,11 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 	y1=bar_y1+5;//光标相较于输入框的偏移量
 	border=x1+4;//每个字符占8个像素,每输入一个字符光标右移8个像素
 	
-    if(number_temp[0]=='\0') //如果账号为空，则显示输入框
+    if(number[0]=='\0') //如果账号为空，则显示输入框
         bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
     else
     {            //光标定位至文本末尾
-        length=strlen(number_temp);
+        length=strlen(number);
         i=length;
         border+=12*i;
         cursor(border,y1);
@@ -257,15 +238,13 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 				{
 					hide_cursor(border,y1); //隐藏原光标
 					
-					number_temp[i]=temp;//字符送入给定字符串，用于保存用户信息
-					number[i]=temp;
+					number[i]=temp;//字符送入给定字符串，用于保存用户信息
 								
 					*showtemp=temp;  //temp转化为字符串
 					PrintText(border,y1+2,showtemp,HEI,24,1,0); //显示新的字符串达到画面与实际输入的同步
 					i++;	//字符个数自增
 					
-					number_temp[i]='\0';//标记字符串结尾
-                    number[i]='\0';
+					number[i]='\0';//标记字符串结尾
 							
 					border+=12;	//光标横坐标右移12像素
 					draw_cursor(border,y1);
@@ -276,8 +255,7 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 					border-=12;	//光标左移12像素
 					i--;	//字符个数自减
 				
-					number_temp[i]='\0';//将存储的字符用0覆盖
-                    number[i]='\0';
+					number[i]='\0';//将存储的字符用0覆盖
 					
 					bar1(border,y1,border+10, y1+24, 0xffff);	//清空原字符
 					draw_cursor(border,y1);

@@ -15,26 +15,22 @@ void user_deliver(){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            return;
-			//welcome();//首页
+			user(users.pos);//用户页面
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
             press1(1);//进入超市页面
-            user_shop();//用户超市页面 
-            return;
+            user_shop();//用户超市页面  
         }
         else if(mouse_press(40, 439, 160, 489)==1)
         {
             press1(2);//进入外卖页面
-            user_takeout();//用户外卖页面 
-            return;
+            user_takeout();//用户外卖页面    
         }
         else if(mouse_press(40, 602, 160, 652)==1)
         {
             press1(3);//进入快递页面
-            user_deliver();//用户快递页面 
-            return;
+            user_deliver();//用户快递页面  
         }
         else if(mouse_press(440, 35, 660, 85)==1)
         {
@@ -50,32 +46,42 @@ void draw_user_deliver(){
     Draw_Rounded_Rectangle(730, 35, 850, 85, 25, 1,deepblue);//保存按钮
 
     PrintCC(250,50,"请输入取件码：",HEI,24,1,deepblue);
-    PrintCC(250,120,"请选择服务提供商：",HEI,24,1,deepblue);
+    PrintCC(250,120,"请选择驿站：",HEI,24,1,deepblue);
     PrintCC(765,50,"保存",HEI,24,1,deepblue);
 
-    Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,0x0235);//注册按钮
-    PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 200, 250+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,200+13,"韵苑学生食堂",HEI,24,1,0x0235);
     
-    Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,0x0235);//注册按钮
-    PrintCC(500+40,175+13,"韵达快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(500, 200, 500+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,200+13,"东园食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,0x0235);//注册按钮
-    PrintCC(750+40,175+13,"申通快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(750, 200, 750+185, 200+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,200+13,"东教工食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,0x0235);//注册按钮
-    PrintCC(250+40,250+13,"中通快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(250, 300, 250+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,300+13,"学生一食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,0x0235);//注册按钮
-    PrintCC(500+40,250+13,"京东快递",HEI,24,1,0x0235);  
+    Draw_Rounded_Rectangle(500, 300, 500+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,300+13,"学生二食堂",HEI,24,1,0x0235);  
 
-    Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,0x0235);//注册按钮
-    PrintCC(750+40,250+13,"邮政快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(750, 300, 750+185, 300+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,300+13,"紫荆园餐厅",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,0x0235);//注册按钮
-    PrintCC(250+40,325+13,"圆通快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(250, 400, 250+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,400+13,"东一食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,0x0235);//注册按钮
-    PrintCC(500+40,325+13,"其他快递",HEI,24,1,0x0235);
+    Draw_Rounded_Rectangle(500, 400, 500+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,400+13,"东三食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 400, 750+185, 400+50, 5,1,0x0235);//注册按钮
+    PrintCC(750+17,400+13,"喻园餐厅",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 500, 250+185, 500+50, 5,1,0x0235);//注册按钮
+    PrintCC(250+17,500+13,"百景园",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 500, 500+185, 500+50, 5,1,0x0235);//注册按钮
+    PrintCC(500+17,500+13,"西一食堂",HEI,24,1,0x0235);
 }
 
 void press_station(int x){

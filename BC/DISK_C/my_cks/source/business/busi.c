@@ -5,7 +5,6 @@ void business(int user_pos){
     UserList UL = {0};
     USER *currentUser;
     int shop_type=0;//商店类型，1为超市，2为餐厅
-    int code[12]={0};//绑定码
 
     ReadAllUser(&UL); // 读取用户列表
 
@@ -39,12 +38,10 @@ void business(int user_pos){
         }
         else if(mouse_press(40, 602, 160, 652)==1)//查看订单
         {
-            
             business_order();//商家订单页面
-            
-            //return后从这开始
+
             mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+            bar1(0, 0, 1024, 768, white); // 清除注册界面残留
             draw_business();
             mouse_on_arrow(mouse);
 
@@ -52,26 +49,6 @@ void business(int user_pos){
         else if(mouse_press(430, 110, 650, 160)==1)//输入手机号
         {
             number_input(currentUser->number, 435, 115, 645, 155); // 输入手机号
-        }
-        else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
-        {
-            if(strlen(currentUser->number)==11)
-            {
-                save_user(*currentUser);
-                PrintCC(800,50,"保存成功",HEI,24,1,lightred);
-                delay(500);
-                bar1(800,50,1024,100,white);
-            }
-            else
-            {
-                PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
-                delay(500);
-                bar1(800,50,1024,100,white);
-            }
-        }
-        else if(mouse_press(430, 185, 650, 235)==1)//输入绑定码
-        {
-            number_input(code, 435, 190, 645, 230); // 输入绑定码
         }
         else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
         {

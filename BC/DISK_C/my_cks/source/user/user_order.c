@@ -4,17 +4,8 @@ Order orders = {0}; // 订单
 
 void user_order(){
 
-    UserList UL = {0};
-    USER *currentUser;
-
     int page = 0;// 初始页码
     int totalPage =(cart.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
-    
-    ReadAllUser(&UL); // 读取用户列表
-
-    currentUser=&UL.elem[users.pos];// 获取当前用户信息
-
-    DestroyUList(&UL); // 释放用户列表空间
 
     mouse_off_arrow(&mouse);
 
@@ -27,7 +18,7 @@ void user_order(){
 
         if (mouse_press(40, 113, 160, 163) == 1) 
         {
-            //user_cart();// 返回用户购物车页面
+            user_cart();// 返回用户购物车页面
             return;
         }
         else if (mouse_press(220, 700, 340, 750) == 1) 
@@ -56,17 +47,10 @@ void user_order(){
 		}
         else if(mouse_press(800, 700, 1000, 750) == 1)
         { 
-            if (currentUser->address == '\0' || strlen(currentUser->number) == 0)
-            {
-                draw_info();
-            }
-            else
-            {
-                save_order(orders); // 保存订单
-                PrintCC(800, 50, "订单已保存", HEI, 24, 1, lightred);
-                delay(500);
-                bar1(800, 50, 1024, 100, white);
-            }
+            save_order(orders); // 保存订单
+            PrintCC(800, 50, "订单已保存", HEI, 24, 1, lightred);
+            delay(500);
+            bar1(800, 50, 1024, 100, white);
         }
     }
 }
@@ -201,24 +185,6 @@ void draw_user_order(int page) {
     store_order_data(current_time, currentUser, total_amount);
 }
 
-void draw_info(){
-
-    Fill_Rounded_Rectangle(225, 25, 1000, 250, 30,snow);//填色
-    Draw_Rounded_Rectangle(225, 25, 1000, 250, 30, 2,0x6B4D);//最外围灰色圆角矩形框
-
-    PrintCC(250, 50, "请先完善个人信息", HEI, 24, 1, lightred);
-
-    Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);//紫菘按钮
-    Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);//沁苑按钮
-    Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);//韵苑按钮
-
-    Draw_Rounded_Rectangle(430, 105, 650, 155, 5, 1,deepblue);//手机号输入框 
-    Draw_Rounded_Rectangle(710, 105, 830, 155, 25, 1,deepblue);//保存按钮
-
-    PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
-    PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
-    PrintCC(745,120,"保存",HEI,24,1,deepblue);
-}
 // 获取当前时间并转换为字符串
 char* get_current_time() {
     time_t rawtime;

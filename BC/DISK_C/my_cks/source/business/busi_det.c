@@ -86,6 +86,7 @@ void draw_b_pagination_buttons() {
     PrintCC(245, 715, "ÉÏÒ»Ò³", HEI, 24, 1, deepblue);
     PrintCC(445, 715, "ÏÂÒ»Ò³", HEI, 24, 1, deepblue);
 
+<<<<<<< HEAD
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue);
     PrintCC(850, 715, "¿ªÊ¼±¸»õ", HEI, 24, 1, deepblue);
 }
@@ -135,6 +136,10 @@ void draw_business_detail(OrderList *OL, int order_index, int page) {
     int fullPageItemCount;
 
     currentOrder = OL->elem[order_index];
+=======
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // È·ÈÏ²¢Ö§¸¶
+    PrintCC(830, 715, "È·ÈÏ²¢Ö§¸¶", HEI, 24, 1, deepblue);
+>>>>>>> parent of 36a1d1b (æ›´æ”¹è¾“å…¥æ¡†)
 
     if (page == 0) {
         startIdx = 0;

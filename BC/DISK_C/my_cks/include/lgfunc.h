@@ -51,6 +51,4 @@ void ReadAllUser(UserList *UL);
 
 void UpdataUser(USER user);
 
-int Check_info(UserList UL, char name[12], char code[12]);
-
 #endif

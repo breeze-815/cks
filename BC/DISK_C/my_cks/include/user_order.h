@@ -30,11 +30,14 @@ void draw_order_items(int startIdx, int endIdx, int item_y);
 void draw_total_amount(int item_y);
 void store_order_data(char *current_time, USER *currentUser, float total_amount);
 void draw_user_order(int page);
+<<<<<<< HEAD
 void draw_info();
 
 void draw_user_order(int page);
 
 
+=======
+>>>>>>> parent of 36a1d1b (更改输入框)
 char* get_current_time();
 
 void InitOList(OrderList*OL);
