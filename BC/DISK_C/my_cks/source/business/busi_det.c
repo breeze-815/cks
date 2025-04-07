@@ -52,96 +52,65 @@ void business_detail(int order_index) {
     }
 }
 
-//»æÖÆ¶©µ¥ĞÅÏ¢Ò³Ãæ
-void draw_b_order_info(Order currentOrder) {
-    char time_str[100], user_name[100], user_phone[100], order_number_str[20];
+void draw_business_detail(OrderList *OL ,int order_index,int page) {
+    int i;
+    Order currentOrder ; 
 
-    sprintf(order_number_str, "¶©µ¥ºÅ£º%d", currentOrder.id);
-    sprintf(time_str, "ÏÂµ¥Ê±¼ä£º%s", currentOrder.order_time);
+    char current_time[20]; // »ñÈ¡µ±Ç°Ê±¼ä
+    char time_str[100]; // ´òÓ¡ÏÂµ¥Ê±¼ä
+    char user_name[100]; // ´òÓ¡ÓÃ»§Ãû
+    char user_phone[100]; // ´òÓ¡ÓÃ»§ÊÖ»úºÅ
+    char order_number; // ´òÓ¡¶©µ¥ºÅ
+
+    int startIdx = 0;// ÆğÊ¼ÉÌÆ·Ë÷Òı
+    int itemsPerPage = 0;// Ã¿Ò³ÉÌÆ·ÊıÁ¿
+    int endIdx = 0;// ½áÊøÉÌÆ·Ë÷Òı
+    int item_y = 0;// ÉÌÆ·¿òµÄy×ø±ê
+
+    float total_amount = 0.0; // ×Ü½ğ¶î
+    char total_str[20]; // ×Ü½ğ¶î×Ö·û´®
+    int fullPageItemCount = 0; // ÂúÒ³ÉÌÆ·ÊıÁ¿
+
+    currentOrder = OL->elem[order_index]; // µ±Ç°¶©µ¥
+    strcpy(current_time, currentOrder.order_time);
+
+    sprintf(time_str, "ÏÂµ¥Ê±¼ä£º%s", current_time);
     sprintf(user_name, "ÓÃ»§Ãû£º%s", currentOrder.user_name);
     sprintf(user_phone, "ÊÖ»úºÅ£º%s", currentOrder.user_phone);
 
-    PrintText(250, 50, order_number_str, HEI, 24, 1, black);
-    PrintText(250, 100, time_str, HEI, 24, 1, black);
-    PrintText(250, 150, user_name, HEI, 24, 1, black);
-    PrintText(250, 200, user_phone, HEI, 24, 1, black);
+    bar1(200, 0, 1024, 768, white); // Çå¿ÕÆÁÄ»
 
-    switch (currentOrder.address) {
-        case 1: PrintText(250, 250, "µØÖ·£º×Ïİ¿Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
-        case 2: PrintText(250, 250, "µØÖ·£ºÇßÔ·Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
-        case 3: PrintText(250, 250, "µØÖ·£ºÔÏÔ·Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
-        default: PrintText(250, 250, "µØÖ·£ºÎ´Öª", HEI, 24, 1, black); break;
-    }
-
-    PrintCC(250, 300, "ÉÌÆ·ÏêÇé£º", HEI, 24, 1, black);
-    PrintCC(750, 300, "ÊıÁ¿£º", HEI, 24, 1, black);
-    PrintCC(900, 300, "½ğ¶î£º", HEI, 24, 1, black);
-    PrintText(250, 320, "-------------------------------", HEI, 32, 1, black);
-}
-
-//»æÖÆ·ÖÒ³°´Å¥
-void draw_b_pagination_buttons() {
-    Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue);
-    Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue);
+    // ·ÖÒ³°´Å¥
+    Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue); // ÉÏÒ»Ò³
+    Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue); // ÏÂÒ»Ò³
     PrintCC(245, 715, "ÉÏÒ»Ò³", HEI, 24, 1, deepblue);
     PrintCC(445, 715, "ÏÂÒ»Ò³", HEI, 24, 1, deepblue);
 
-<<<<<<< HEAD
-    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue);
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // ¿ªÊ¼±¸»õ
     PrintCC(850, 715, "¿ªÊ¼±¸»õ", HEI, 24, 1, deepblue);
-}
 
-//»æÖÆ¶©µ¥ÉÌÆ·ĞÅÏ¢
-void draw_b_order_items(Order currentOrder, int startIdx, int endIdx, int item_y) {
-    int i;
-    char total_str[50], quantity_str[20];
-    int quantity;
-    float price;
-
-    for (i = startIdx; i < endIdx; i++) {
-        quantity = currentOrder.item[i].quantity;
-        price = currentOrder.item[i].price;
-
-        sprintf(total_str, "%.2f", price * quantity);
-        sprintf(quantity_str, "x%d", quantity);
-
-        PrintCC(250, item_y, currentOrder.item[i].name, HEI, 24, 1, black);
-        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);
-        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);
-
-        item_y += 50;
-    }
-}
-
-//»æÖÆ×Ü½ğ¶î
-void draw_b_total_amount(Order currentOrder, int item_y) {
-    int i;
-    float total_amount;
-    char total_str[20];
-
-    total_amount = 0.0;
-    for (i = 0; i < currentOrder.itemCount; i++) {
-        total_amount += currentOrder.item[i].price * currentOrder.item[i].quantity;
-    }
-
-    PrintText(250, item_y - 30, "-------------------------------", HEI, 32, 1, black);
-    sprintf(total_str, "×Ü½ğ¶î£º%.2f Ôª", total_amount);
-    PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
-}
-
-//»æÖÆ¶©µ¥ÏêÇéÒ³Ãæ
-void draw_business_detail(OrderList *OL, int order_index, int page) {
-    Order currentOrder;
-    int startIdx, itemsPerPage, endIdx, item_y;
-    int fullPageItemCount;
-
-    currentOrder = OL->elem[order_index];
-=======
-    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // È·ÈÏ²¢Ö§¸¶
-    PrintCC(830, 715, "È·ÈÏ²¢Ö§¸¶", HEI, 24, 1, deepblue);
->>>>>>> parent of 36a1d1b (æ›´æ”¹è¾“å…¥æ¡†)
-
+    // Ò³Í·ĞÅÏ¢Ö»ÔÚµÚÒ»Ò³ÏÔÊ¾
     if (page == 0) {
+        char order_number_str[20]; // ¶©µ¥ºÅ×Ö·û´®
+        sprintf(order_number_str, "¶©µ¥ºÅ£º%d", currentOrder.id); // ¶©µ¥ºÅ
+        PrintText(250, 50, order_number_str, HEI, 24, 1, black);
+        PrintText(250, 100, time_str, HEI, 24, 1, black);
+        PrintText(250, 150, user_name, HEI, 24, 1, black);
+        PrintText(250, 200, user_phone, HEI, 24, 1, black);
+
+        switch(currentOrder.address){// ¸ù¾İÓÃ»§µØÖ·ÏÔÊ¾µØÖ·
+            case 1: PrintText(250, 250, "µØÖ·£º×Ïİ¿Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
+            case 2: PrintText(250, 250, "µØÖ·£ºÇßÔ·Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
+            case 3: PrintText(250, 250, "µØÖ·£ºÔÏÔ·Ñ§Éú¹«Ô¢", HEI, 24, 1, black); break;
+            default: PrintText(250, 250, "µØÖ·£ºÎ´Öª", HEI, 24, 1, black); break;
+        }
+
+        // ±íÍ·
+        PrintCC(250, 300, "ÉÌÆ·ÏêÇé£º", HEI, 24, 1, black);
+        PrintCC(750, 300, "ÊıÁ¿£º", HEI, 24, 1, black);
+        PrintCC(900, 300, "½ğ¶î£º", HEI, 24, 1, black);
+        PrintText(250, 320, "-------------------------------", HEI, 32, 1, black);// ·Ö¸ôÏß
+
         startIdx = 0;
         itemsPerPage = 6;
     } else {
@@ -149,27 +118,44 @@ void draw_business_detail(OrderList *OL, int order_index, int page) {
         itemsPerPage = 12;
     }
 
-    if (startIdx + itemsPerPage > currentOrder.itemCount) {
+    endIdx = startIdx + itemsPerPage;
+    if (endIdx > currentOrder.itemCount)// ·ÀÖ¹Ô½½ç
         endIdx = currentOrder.itemCount;
-    } else {
-        endIdx = startIdx + itemsPerPage;
+
+    item_y = (page == 0) ? 350 : 50;
+    for (i = startIdx; i < endIdx; i++) {
+        char total_str[50]; // ÉÌÆ·×Ü¼Û
+        char quantity_str[20]; // ÉÌÆ·ÊıÁ¿
+        int quantity = currentOrder.item[i].quantity; // ÉÌÆ·ÊıÁ¿
+        float price = currentOrder.item[i].price; // ÉÌÆ·¼Û¸ñ
+
+        sprintf(total_str, "%.2f", price * quantity);
+        sprintf(quantity_str, "x%d", quantity);
+
+        PrintCC(250, item_y, currentOrder.item[i].name, HEI, 24, 1, black); // ÉÌÆ·Ãû
+        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);
+        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);
+
+        item_y += 50;
     }
 
-    if (page == 0) {
-        item_y = 350;
-    } else {
-        item_y = 50;
-    }
+    // ÅĞ¶ÏÊÇ·ñĞèÒªÔÚ´ËÒ³ÏÔÊ¾×Ü½ğ¶î£¨µ±Ç°Ò³Ã»ÓĞÂú£©
+    fullPageItemCount = (page == 0) ? 6 : 12;// µÚÒ»Ò³ÏÔÊ¾6¸öÉÌÆ·£¬ÆäÓàÒ³ÏÔÊ¾12¸öÉÌÆ·
+    if ((endIdx - startIdx) < fullPageItemCount||endIdx==currentOrder.itemCount) {// µ±Ç°Ò³ÉÌÆ·ÊıÁ¿²»ÂúÒ»Ò³»ò×îºóÒ»¸öÉÌÆ·¸ÕºÃÂúÒ³¶¼Òª´òÓ¡³ö×Ü½ğ¶î
+        //Èç¹û²»ÊÇ×îºóÒ»¸öÉÌÆ·µ«ÊÇÂúÒ³¾Í²»´òÓ¡×Ü½ğ¶î
+        // ´òÓ¡·Ö¸ôÏß
+        PrintText(250, item_y - 30, "-------------------------------", HEI, 32, 1, black);
 
-    fullPageItemCount = (page == 0) ? 6 : 12;
+        // ¼ÆËã×Ü½ğ¶î
+        total_amount = 0.0;
+        for (i = 0; i < currentOrder.itemCount; i++) {
+            int quantity = currentOrder.item[i].quantity; // ÉÌÆ·ÊıÁ¿
+            float price = currentOrder.item[i].price; // ÉÌÆ·¼Û¸ñ
+            total_amount += price * quantity;
+        }
 
-    bar1(200, 0, 1024, 768, white);//Çå¿Õ»­²¼
-    draw_b_pagination_buttons();//»æÖÆ·ÖÒ³°´Å¥
-    if (page == 0) draw_b_order_info(currentOrder);//»æÖÆ¶©µ¥ĞÅÏ¢
-    draw_b_order_items(currentOrder, startIdx, endIdx, item_y);//»æÖÆ¶©µ¥ÉÌÆ·ĞÅÏ¢
-
-    if ((endIdx - startIdx) < fullPageItemCount || endIdx == currentOrder.itemCount) {
-        draw_b_total_amount(currentOrder, item_y);//»æÖÆ×Ü½ğ¶î
+        sprintf(total_str, "×Ü½ğ¶î£º%.2f Ôª", total_amount);
+        PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
+    
     }
 }
-

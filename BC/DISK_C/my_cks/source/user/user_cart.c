@@ -19,8 +19,9 @@ void user_cart() {
         }
 		else if (mouse_press(800, 700, 1000, 750) == 1)
 		{
-			user_order();
+			user_order();// 点击生成订单按钮，进入订单页面
 			
+            //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(200, 0, 1024, 768, white); // 清除注册界面残留
             draw_user_cart(carts, cart.itemCount, page);
