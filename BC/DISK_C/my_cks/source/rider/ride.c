@@ -13,14 +13,20 @@ void rider(int user_pos){
 		if(mouse_press(40, 113, 160, 163)==1){
 			welcome();//首页
 		}else if(mouse_press(40, 276, 160, 326)==1){
-            press1(1);//进入超市页面
-            user_shop();//用户超市页面 
+            //press1(1);//进入地图页面
+            show_map(); 
+            dijkstra(&node[1], &node[28]);//测试dijkstra算法
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
             user_takeout();//用户外卖页面      
         }else if(mouse_press(40, 602, 160, 652)==1){
             press1(3);//进入快递页面
             user_deliver();//用户快递页面  
+        }
+        else if(mouse_press(950, 25, 1000, 75)==1)
+        {
+            CloseSVGA();//关闭SVGA画图界面
+            exit(100);
         }
     }
 }
@@ -41,8 +47,8 @@ void draw_rider()
     Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//快递
 
     PrintCC(75,128,"返回",HEI,24,1,deepblue);
-    PrintCC(75,291,"超市",HEI,24,1,deepblue);
-    PrintCC(75,454,"外卖",HEI,24,1,deepblue);
+    PrintCC(75,291,"地图",HEI,24,1,deepblue);
+    PrintCC(75,454,"订单",HEI,24,1,deepblue);
     PrintCC(75,617,"快递",HEI,24,1,deepblue);
 
     PrintCC(250,50,"当前账号类型为：骑手",HEI,24,1,deepblue);

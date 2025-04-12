@@ -31,7 +31,7 @@
 #include "busi_det.h"
 
 #include "ride.h"
-
+#include "map.h"
 
 #include "HZK.h"
 #include "draw_shape.h"
@@ -44,6 +44,7 @@ extern CartItem carts[50];
 extern ShoppingCart cart;
 extern Deliver deliver;
 extern Order orders;
+extern Node node[408];
 
 #define white 0xFFFF
 #define snow 0xFFDF
