@@ -15,7 +15,7 @@ void rider(int user_pos){
 		}else if(mouse_press(40, 276, 160, 326)==1){
             //press1(1);//进入地图页面
             show_map(); 
-            dijkstra(&node[1], &node[28]);//测试dijkstra算法
+            dijkstra(&node[1], &node[29]);//测试dijkstra算法
         }else if(mouse_press(40, 439, 160, 489)==1){
             press1(2);//进入外卖页面
             user_takeout();//用户外卖页面      
@@ -26,6 +26,7 @@ void rider(int user_pos){
         else if(mouse_press(950, 25, 1000, 75)==1)
         {
             CloseSVGA();//关闭SVGA画图界面
+            //dijkstra(&node[1], &node[28]);//测试dijkstra算法
             exit(100);
         }
     }

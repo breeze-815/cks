@@ -733,7 +733,17 @@ void Line2(int x1, int y1, int x2, int y2, unsigned int color)
 	/*如果是水平线*/
 	else if (y2 == y1)
 	{
-		Line1(x1, y1, x2, y1, color);		
+		/*画水平线*/
+		if (x1 > x2)
+		{
+			dx = x1;
+			x1 = x2;
+			x2 = dx;
+		}
+		for (dx = x1; dx <= x2; dx++)
+		{
+			Putpixel64k(dx, y1, color);
+		}
 		return;
 	}
 	

@@ -3,8 +3,8 @@
 
 typedef struct Node { 
     int x, y;
-    int adj_nodes[5];
-    int distance[5];
+    int adj_nodes[6];
+    int distance[6];
     int num_of_adj_nodes;
 } Node; 
 

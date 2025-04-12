@@ -2,8 +2,9 @@
 
 int main()
 {
+   
     int gd = DETECT, gm;
-
+    //dijkstra(&node[5], &node[10]);//测试dijkstra算法
     SetSVGA64k();//启动SVGA画图界面 
     
     mouse_init(); // 初始化鼠标

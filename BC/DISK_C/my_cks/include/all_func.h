@@ -44,7 +44,7 @@ extern CartItem carts[50];
 extern ShoppingCart cart;
 extern Deliver deliver;
 extern Order orders;
-extern Node node[408];
+extern Node node[409];
 
 #define white 0xFFFF
 #define snow 0xFFDF
@@ -54,6 +54,6 @@ extern Node node[408];
 #define skyblue 0xB71C
 #define grey 0xC618
 #define lightred 0XF800
-
+#define Red 0xF800
 #endif
 

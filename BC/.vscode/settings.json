@@ -81,7 +81,9 @@
     "user_de.h": "c",
     "user_cart.h": "c",
     "FREAD.C": "cpp",
-    "busi_detail.h": "c"
+    "busi_detail.h": "c",
+    "EXIT.C": "cpp",
+    "unordered_map": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

@@ -37,6 +37,7 @@ int welcome() {
         else if(mouse_press(950, 25, 1000, 75)==1)
         {
             CloseSVGA();//关闭SVGA画图界面
+            dijkstra(&node[4], &node[28]);//测试dijkstra算法
             exit(100);
         }
         else if(mouse_press(300, 330, 700, 380)==1)//点击账号框 
