@@ -9,6 +9,7 @@ void user_order(){
 
     int page = 0;// 初始页码
     int totalPage =(cart.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
+    int state = 0; // 判断是否需要完善信息
     
     ReadAllUser(&UL); // 读取用户列表
 
@@ -30,42 +31,94 @@ void user_order(){
             //user_cart();// 返回用户购物车页面
             return;
         }
-        else if (mouse_press(220, 700, 340, 750) == 1) 
-		{
-            if (page > 0) {
-                page--;
-                draw_user_order(page);// 绘制用户订单页面
-            } else {
-                // 提示：已是第一页
-                PrintCC(550, 25, "已是第一页", HEI, 24, 1, lightred);
-				delay(500);
-				bar1(550, 25, 700, 60, white);
+        if(state==0)
+        {
+            if (mouse_press(220, 700, 340, 750) == 1) 
+            {
+                if (page > 0) {
+                    page--;
+                    draw_user_order(page);// 绘制用户订单页面
+                } else {
+                    // 提示：已是第一页
+                    PrintCC(550, 25, "已是第一页", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(550, 25, 700, 60, white);
+                }
+            }
+            else if (mouse_press(420, 700, 540, 750) == 1) 
+            {
+                if (page < totalPage - 1) {
+                    page++;
+                    draw_user_order(page);// 绘制用户订单页面
+                } else {
+                    // 提示：已是最后一页
+                    PrintCC(550, 25, "已是最后一页", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(550, 25, 700, 60, white);
+                }
+            }
+            else if(mouse_press(800, 700, 1000, 750) == 1)
+            { 
+                if (currentUser->address == '\0' || strlen(currentUser->number) == 0)// 判断用户信息是否完善
+                {
+                    draw_info();
+                    state = 1;
+                }
+                else
+                {
+                    save_order(orders); // 保存订单
+                    PrintCC(800, 50, "订单已保存", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(800, 50, 1024, 100, white);
+                }
             }
         }
-		else if (mouse_press(420, 700, 540, 750) == 1) 
-		{
-			if (page < totalPage - 1) {
-				page++;
-				draw_user_order(page);// 绘制用户订单页面
-			} else {
-				// 提示：已是最后一页
-				PrintCC(550, 25, "已是最后一页", HEI, 24, 1, lightred);
-				delay(500);
-				bar1(550, 25, 700, 60, white);
-			}
-		}
-        else if(mouse_press(800, 700, 1000, 750) == 1)
-        { 
-            if (currentUser->address == '\0' || strlen(currentUser->number) == 0)
+        // 完善用户信息
+        if(state==1)
+        {
+            if(mouse_press(430, 105, 650, 155)==1)
             {
-                draw_info();
+                number_input(currentUser->number, 435, 110, 645, 150); // 输入手机号
             }
-            else
+            else if(mouse_press(710, 105, 830, 155)==1)
             {
-                save_order(orders); // 保存订单
-                PrintCC(800, 50, "订单已保存", HEI, 24, 1, lightred);
-                delay(500);
-                bar1(800, 50, 1024, 100, white);
+                if(strlen(currentUser->number)==11)
+                {
+                    save_user(*currentUser);
+                    PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,snow);
+                }
+                else
+                {
+                    PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,snow);
+                }
+            }
+            else if(mouse_press(440, 180, 560, 230)==1)
+            {
+                press1(4);//紫菘
+                currentUser->address=1;//紫菘
+                save_user(*currentUser);
+            }
+            else if(mouse_press(620, 180, 740, 230)==1)
+            {
+                press1(5);//沁苑
+                currentUser->address=2;//沁苑
+                save_user(*currentUser);
+            }
+            else if(mouse_press(800, 180, 920, 230)==1)
+            {
+                press1(6);//韵苑
+                currentUser->address=3;//韵苑
+                save_user(*currentUser);
+            } 
+
+            if(mouse_press(200, 250, 1024, 768)==1)
+            {
+                state = 0;
+                draw_user_order(page);
             }
         }
     }
@@ -215,6 +268,10 @@ void draw_info(){
     PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
     PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
     PrintCC(745,120,"保存",HEI,24,1,deepblue);
+    PrintCC(475,195,"紫菘",HEI,24,1,deepblue);
+    PrintCC(655,195,"沁苑",HEI,24,1,deepblue);
+    PrintCC(835,195,"韵苑",HEI,24,1,deepblue);
+
 }
 // 获取当前时间并转换为字符串
 char* get_current_time() {
