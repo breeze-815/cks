@@ -158,8 +158,8 @@ void draw_user_order(int page){
         sprintf(quantity_str, "x%d", quantity);
 
         PrintCC(250, item_y, carts[i].name, HEI, 24, 1, black); // 商品名
-        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);
-        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);
+        PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);// 商品数量
+        PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);// 商品金额
 
         item_y += 50;
     }

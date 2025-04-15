@@ -39,10 +39,11 @@
 extern MOUSE mouse;
 extern USER users;
 extern Shop shops;
-extern Product products[50];
-extern CartItem carts[50];
+extern Product products[84];
+extern CartItem carts[84];
 extern ShoppingCart cart;
-extern Deliver deliver;
+extern Deliver delivers;
+
 extern Order orders;
 extern Node node[409];
 
