@@ -6,7 +6,7 @@ typedef struct CartItem{
     int type;//种类
     char name[20];//商品名称
     float price;//价格
-    char photo[20];
+    char photo[50];
     int quantity;//数量
     int index_in_products;//在商品数组中的索引，即cnt
 } CartItem;//购物车内的商品
@@ -23,10 +23,12 @@ typedef struct Product
     int type;
     char name[20];
     float price;
-    char photo[20];
+    char photo[50];
     int quantity;//数量
 
 } Product;//商品
+
+
 
 void user_shop();
 void draw_user_shop(Product products[],int productCount,int currentpage);

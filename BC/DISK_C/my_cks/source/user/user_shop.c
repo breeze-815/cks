@@ -1,14 +1,106 @@
 #include "all_func.h"
 
-Product products[50]={0};
-CartItem carts[50]={0};
+Product products[84]=
+{
+/*1===========================================================================*/
+    {1, 1, "盆", 5.00, "bmp\\shop\\pen.bmp", 0},
+    {2, 1, "扫把", 12.00, "bmp\\shop\\saoba.bmp", 0},
+    {3, 1, "餐具", 10.00, "bmp\\shop\\canju.bmp", 0},
+    {4, 1, "碗", 3.00, "bmp\\shop\\wan.bmp", 0},
+    {5, 1, "水杯", 15.00, "bmp\\shop\\shuibei.bmp", 0},
+    {6, 1, "衣架", 5.00, "bmp\\shop\\yijia.bmp", 0},
+    {7, 1, "牙刷", 10.00, "bmp\\shop\\yashua.bmp", 0},
+    {8, 1, "拖把", 18.00, "bmp\\shop\\tuoba.bmp", 0},
+    {9, 1, "枕头", 20.00, "bmp\\shop\\zhentou.bmp", 0},
+    {10, 1, "毛巾", 12.00, "bmp\\shop\\maojin.bmp", 0},
+    {11, 1, "挂钩", 1.00, "bmp\\shop\\guagou.bmp", 0},
+    {12, 1, "马桶塞子", 10.00, "bmp\\shop\\matong.bmp", 0},
+/*2===========================================================================*/
+    {13, 2, "黑笔", 2.00, "bmp\\shop\\blackbi.bmp", 0},
+    {14, 2, "红笔", 3.00, "bmp\\shop\\redbi.bmp", 0},
+    {15, 2, "铅笔", 4.00, "bmp\\shop\\qianbi.bmp", 0},
+    {16, 2, "钢笔", 35.00, "bmp\\shop\\gangbi.bmp", 0},
+    {17, 2, "剪刀", 12.00, "bmp\\shop\\jiandao.bmp", 0},
+    {18, 2, "橡皮", 2.00, "bmp\\shop\\xiangpi.bmp", 0},
+    {19, 2, "尺子", 8.00, "bmp\\shop\\chizi.bmp", 0},
+    {20, 2, "胶带", 2.00, "bmp\\shop\\jiaodai.bmp", 0},
+    {21, 2, "固体胶", 4.00, "bmp\\shop\\jiao.bmp", 0},
+    {22, 2, "修正带", 6.00, "bmp\\shop\\xiuzheng.bmp", 0}, 
+    {23, 2, "笔记本", 3.00, "bmp\\shop\\benzi.bmp", 0},
+    {24, 2, "订书机", 15.00, "bmp\\shop\\dingshu.bmp", 0},
+/*3===========================================================================*/
+    {25, 3, "薯片", 7.00, "bmp\\shop\\shupian.bmp", 0},
+    {26, 3, "达利园蛋糕", 1.00, "bmp\\shop\\dali.bmp", 0},
+    {27, 3, "奥利奥饼干", 8.00, "bmp\\shop\\aoliao.bmp", 0},
+    {28, 3, "辣条", 5.00, "bmp\\shop\\latiao.bmp", 0},
+    {29, 3, "大白兔奶糖", 1.00, "bmp\\shop\\dabaitu.bmp", 0},
+    {30, 3, "卤鹌鹑蛋", 1.00, "bmp\\shop\\ludan.bmp", 0},
+    {31, 3, "巧克力", 1.00, "bmp\\shop\\defu.bmp", 0},
+    {32, 3, "锅巴", 1.00, "bmp\\shop\\guoba.bmp", 0},
+    {33, 3, "吐司面包", 1.00, "bmp\\shop\\tusi.bmp", 0},
+    {34, 3, "鸡腿", 1.00, "bmp\\shop\\jitui.bmp", 0},
+    {35, 3, "方便面", 1.00, "bmp\\shop\\paomian.bmp", 0},
+    {36, 3, "薄荷糖", 1.00, "bmp\\shop\\bohe.bmp", 0},
+/*4===========================================================================*/
+    {37, 4, "可口可乐", 3.00, "bmp\\shop\\kekou.bmp", 0},
+    {38, 4, "百事可乐", 3.00, "bmp\\shop\\baishi.bmp", 0},
+    {39, 4, "芬达", 3.00, "bmp\\shop\\fenda.bmp", 0},
+    {40, 4, "阿萨姆奶茶", 4.00, "bmp\\shop\\asamu.bmp", 0},
+    {41, 4, "茶兀", 5.00, "bmp\\shop\\chapi.bmp", 0},
+    {42, 4, "脉动", 5.00, "bmp\\shop\\maidong.bmp", 0},
+    {43, 4, "雪碧", 3.00, "bmp\\shop\\xuebi.bmp", 0},
+    {44, 4, "冰红茶", 3.00, "bmp\\shop\\bing.bmp", 0},
+    {45, 4, "绿茶", 3.00, "bmp\\shop\\lv.bmp", 0},
+    {46, 4, "优酸乳", 2.00, "bmp\\shop\\you.bmp", 0},
+    {47, 4, "纯牛奶", 4.00, "bmp\\shop\\milk.bmp", 0},
+    {48, 4, "酸奶", 5.00, "bmp\\shop\\suan.bmp", 0},
+/*5===========================================================================*/
+    {49, 5, "篮球", 10.00, "bmp\\shop\\lanqiu.bmp", 0},
+    {50, 5, "足球", 10.00, "bmp\\shop\\zuqiu.bmp", 0},
+    {51, 5, "羽毛球", 10.00, "bmp\\shop\\yu.bmp", 0},
+    {52, 5, "乒乓球", 10.00, "bmp\\shop\\ping.bmp", 0},
+    {53, 5, "网球", 10.00, "bmp\\shop\\wang.bmp", 0},
+    {54, 5, "排球", 10.00, "bmp\\shop\\pai.bmp", 0},
+    {55, 5, "网球拍", 10.00, "bmp\\shop\\wangpai.bmp", 0},
+    {56, 5, "羽毛球拍", 10.00, "bmp\\shop\\yupai.bmp", 0},    
+    {57, 5, "乒乓球拍", 10.00, "bmp\\shop\\pingpai.bmp", 0},
+    {58, 5, "跳绳", 10.00, "bmp\\shop\\tiao.bmp", 0},
+    {59, 5, "哑铃", 10.00, "bmp\\shop\\ya.bmp", 0},
+    {60, 5, "运动背包", 50.00, "bmp\\shop\\beibao.bmp", 0},
+/*6===========================================================================*/
+    {61, 6, "苹果", 10.00, "bmp\\shop\\apple.bmp", 0},
+    {62, 6, "哈密瓜", 10.00, "bmp\\shop\\hami.bmp", 0},
+    {63, 6, "梨", 10.00, "bmp\\shop\\pear.bmp", 0},
+    {64, 6, "橘子", 10.00, "bmp\\shop\\orange.bmp", 0},
+    {65, 6, "草莓", 10.00, "bmp\\shop\\cao.bmp", 0},
+    {66, 6, "西瓜", 10.00, "bmp\\shop\\xigua.bmp", 0},
+    {67, 6, "火龙果", 10.00, "bmp\\shop\\huo.bmp", 0},
+    {68, 6, "芒果", 10.00, "bmp\\shop\\mango.bmp", 0},
+    {69, 6, "猕猴桃", 10.00, "bmp\\shop\\mihou.bmp", 0},
+    {70, 6, "蓝莓", 10.00, "bmp\\shop\\lan.bmp", 0},
+    {71, 6, "樱桃", 10.00, "bmp\\shop\\yingtao.bmp", 0},
+    {72, 6, "圣女果", 10.00, "bmp\\shop\\shengnv.bmp", 0},
+/*7===========================================================================*/
+    {73, 7, "笔记本套装", 10.00, "bmp\\shop\\bijitao.bmp", 0},
+    {74, 7, "茶杯套装", 10.00, "bmp\\shop\\chatao.bmp", 0},
+    {75, 7, "书签套装", 10.00, "bmp\\shop\\shutao.bmp", 0},
+    {76, 7, "帆布包", 10.00, "bmp\\shop\\fanbu.bmp", 0},
+    {77, 7, "钥匙扣", 10.00, "bmp\\shop\\yaoshi.bmp", 0},
+    {78, 7, "明信片", 10.00, "bmp\\shop\\mingxin.bmp", 0},
+    {79, 7, "文创直尺", 10.00, "bmp\\shop\\wenchi.bmp", 0},
+    {80, 7, "冰箱贴", 10.00, "bmp\\shop\\bingx.bmp", 0},
+    {81, 7, "文化衫", 10.00, "bmp\\shop\\wenshan.bmp", 0},
+    {82, 7, "金属书签", 10.00, "bmp\\shop\\jinqian.bmp", 0},
+    {83, 7, "金属吊坠", 10.00, "bmp\\shop\\jinzhui.bmp", 0},
+    {84, 7, "校徽", 10.00, "bmp\\shop\\xiaohui.bmp", 0},
+/*===========================================================================*/
+};
+CartItem carts[84]={0};
 ShoppingCart cart={0};
 
 void user_shop(){
-    int productCount = 0;//超市里商品数量初始化
+    int productCount = 84;//超市里商品数量初始化
     int currentpage = 1;//当前页面初始化
-
-    init_Products(&productCount);//初始化商品所有信息
 
     mouse_off_arrow(&mouse);//隐藏鼠标
 	
@@ -210,7 +302,7 @@ void draw_user_shop(Product products[],int productCount,int currentpage){
             PrintCC(270+200*i,75+200*j,products[cnt].name,HEI,24,1,black);//显示商品名称
             
             PrintText(270+22+200*i, 220+3+200*j,price_str, HEI, 24, 0, black);//显示商品价格
-            PrintText(390+200*i,75+200*j, (unsigned char*)quantity_str,HEI,24,0,black);//显示商品数量
+            PrintText(395+200*i,75+200*j, (unsigned char*)quantity_str,HEI,24,0,black);//显示商品数量
 
         
             Readbmp64k(270+200*i, 100+200*j, products[cnt].photo);//显示商品图片
@@ -235,166 +327,12 @@ void draw_user_shop_quantity(Product products[],int productCount,int currentpage
             // 使用 sprintf 将 quantity 转换为字符串
             sprintf(quantity_str, "%d", products[cnt].quantity);
             // 调用 PrintText 函数，将 quantity_str 转换为 unsigned char* 类型
-            bar1(390+200*i, 75+200*j, 460+200*i, 95+200*j,white);
-            PrintText(390+200*i,75+200*j, (unsigned char*)quantity_str,HEI,24,0,black);//显示商品数量
+            bar1(395+200*i, 75+200*j, 460+200*i, 95+200*j,white);
+            PrintText(395+200*i,75+200*j, (unsigned char*)quantity_str,HEI,24,0,black);//显示商品数量
             cnt++;
             
     	}
     }
-}
-
-//初始化商品信息
-void init_Products(int *productCount){ 
-    int i;
-   
-    strcpy(products[0].name, "盆");
-    products[0].price = 5.00;
-    products[0].id = 1;
-    products[0].type = 1;
-    strcpy(products[0].photo, "bmp\\pen.bmp");
-    
-
-    strcpy(products[1].name, "扫把");
-    products[1].price = 12.00;
-    products[1].id = 2;
-    products[1].type = 1;
-    strcpy(products[1].photo, "bmp\\saoba.bmp");
-    
-    strcpy(products[2].name, "餐具");
-    products[2].price = 10.00;
-    products[2].id = 3;
-    products[2].type = 1;
-    strcpy(products[2].photo, "bmp\\canju.bmp");
-
-    strcpy(products[3].name, "碗");
-    products[3].price = 3.00;
-    products[3].id = 4;
-    products[3].type = 1;
-    strcpy(products[3].photo, "bmp\\wan.bmp");
-
-    strcpy(products[4].name, "水杯");
-    products[4].price = 15.00;
-    products[4].id = 5;
-    products[4].type = 1;
-    strcpy(products[4].photo, "bmp\\shuibei.bmp");
-
-    strcpy(products[5].name, "衣架");
-    products[5].price = 5.00;
-    products[5].id = 6;
-    products[5].type = 1;
-    strcpy(products[5].photo, "bmp\\yijia.bmp");
-
-    strcpy(products[6].name, "牙刷");
-    products[6].price = 10.00;
-    products[6].id = 7;
-    products[6].type = 1;
-    strcpy(products[6].photo, "bmp\\yashua.bmp");
-
-    strcpy(products[7].name, "拖把");
-    products[7].price = 18.00;
-    products[7].id = 8;
-    products[7].type = 1;
-    strcpy(products[7].photo, "bmp\\tuoba.bmp");
-
-    strcpy(products[8].name, "枕头");
-    products[8].price = 20.00;
-    products[8].id = 9;
-    products[8].type = 1;
-    strcpy(products[8].photo, "bmp\\zhentou.bmp");
-
-    strcpy(products[9].name, "毛巾");
-    products[9].price = 12.00;
-    products[9].id = 10;
-    products[9].type = 1;
-    strcpy(products[9].photo, "bmp\\maojin.bmp");
-
-    strcpy(products[10].name, "挂钩");
-    products[10].price = 1.00;
-    products[10].id = 11;
-    products[10].type = 1;
-    strcpy(products[10].photo, "bmp\\guagou.bmp");
-
-    strcpy(products[11].name, "马桶塞子");
-    products[11].price = 12.00;
-    products[11].id = 12;
-    products[11].type = 1;
-    strcpy(products[11].photo, "bmp\\matong.bmp");
-/*===========================================================================*/
-    strcpy(products[12].name, "黑笔");
-    products[12].price = 3.00;
-    products[12].id = 13;
-    products[12].type = 2;
-    strcpy(products[12].photo, "bmp\\blackbi.bmp");
-
-    strcpy(products[13].name, "红笔");
-    products[13].price = 3.00;
-    products[13].id = 14;
-    products[13].type = 2;
-    strcpy(products[13].photo, "bmp\\redbi.bmp");
-
-    strcpy(products[14].name, "铅笔");
-    products[14].price = 2.00;  
-    products[14].id = 15;
-    products[14].type = 2;
-    strcpy(products[14].photo, "bmp\\qianbi.bmp");
-
-    strcpy(products[15].name, "钢笔");
-    products[15].price = 35.00;
-    products[15].id = 16;
-    products[15].type = 2;
-    strcpy(products[15].photo, "bmp\\gangbi.bmp");
-
-    strcpy(products[16].name, "剪刀");
-    products[16].price = 12.00;
-    products[16].id = 17;
-    products[16].type = 2;
-    strcpy(products[16].photo, "bmp\\jiandao.bmp");
-
-    strcpy(products[17].name, "橡皮");
-    products[17].price = 2.00;
-    products[17].id = 18;
-    products[17].type = 2;  
-    strcpy(products[17].photo, "bmp\\xiangpi.bmp");
-
-    strcpy(products[18].name, "尺子");
-    products[18].price = 8.00;
-    products[18].id = 19;
-    products[18].type = 2;
-    strcpy(products[18].photo, "bmp\\chizi.bmp");
-
-    strcpy(products[19].name, "胶带");
-    products[19].price = 2.00;
-    products[19].id = 20;
-    products[19].type = 2;
-    strcpy(products[19].photo, "bmp\\jiaodai.bmp");
-
-    strcpy(products[20].name, "固体胶");
-    products[20].price = 4.00;
-    products[20].id = 21;
-    products[20].type = 2;
-    strcpy(products[20].photo, "bmp\\jiao.bmp");
-
-    strcpy(products[21].name, "修正带");
-    products[21].price = 6.00;
-    products[21].id = 22;
-    products[21].type = 2;  
-    strcpy(products[21].photo, "bmp\\xiuzheng.bmp");
-
-    strcpy(products[22].name, "笔记本");
-    products[22].price = 3.00;
-    products[22].id = 23;
-    products[22].type = 2;
-    strcpy(products[22].photo, "bmp\\benzi.bmp");
-
-    strcpy(products[23].name, "订书机");
-    products[23].price = 15.00;
-    products[23].id = 24;
-    products[23].type = 2;
-    strcpy(products[23].photo, "bmp\\dingshu.bmp");
-
-
-    *productCount = 24;
-
 }
 
 //加减商品

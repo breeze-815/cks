@@ -99,6 +99,7 @@ void draw_user_cart(CartItem carts[], int cartCount, int page) {
             case 5: strcpy(type_str, "运动用品"); break;
             case 6: strcpy(type_str, "水果"); break;
             case 7: strcpy(type_str, "文创"); break;
+            default: strcpy(type_str, "未知"); break;
         }
        
         Draw_Rounded_Rectangle(220, y, 1000, y + 150, 30, 1, 0x6B4D);//商品框
