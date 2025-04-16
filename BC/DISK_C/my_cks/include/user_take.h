@@ -3,6 +3,6 @@
 
 void user_takeout();
 void draw_user_takeout();
-void press_canteen(int x);
+int press_canteen(int mx, int my);
 
 #endif

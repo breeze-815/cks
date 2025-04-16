@@ -1,6 +1,9 @@
 #include "all_func.h"
 
 void user_takeout(){
+    int index=0;
+    int mx=0;
+    int my=0;
 
     mouse_off_arrow(&mouse);
 	
@@ -33,119 +36,90 @@ void user_takeout(){
             press1(3);//进入快递页面
             user_deliver();//用户快递页面 
             return;
+        }else if(mouse_press(200, 0, 1024, 768)==1)//选择食堂
+        {
+            MouseGet(&mouse);
+            mx=mouse.x;
+            my=mouse.y;
+            index=press_canteen(mx,my);//获取食堂编号
+            user_food(index);//进入菜品页面
+
         }
+        
     }
 }
 void draw_user_takeout(){
     bar1(200, 0, 1024, 768,white);
 
-    Line_Thick(200,50,1024,50,2,deepblue);
-    //Line_Thick(200,1,1024,1,2,deepblue);
+    PrintCC(250,50,"请选择食堂",HEI,24,1,deepblue);
 
-    Line_Thick(320,0,320,50,2,deepblue);
-    Line_Thick(440,0,440,50,2,deepblue);
-    Line_Thick(560,0,560,50,2,deepblue);
-    Line_Thick(680,0,680,50,2,deepblue);
-    Line_Thick(800,0,800,50,2,deepblue);
-    Line_Thick(920,0,920,50,2,deepblue);
+    Draw_Rounded_Rectangle(250, 120, 250+185, 120+50, 5,1,0x0235);
+    PrintCC(250+17,120+13,"韵苑学生食堂",HEI,24,1,0x0235);
+            
+    Draw_Rounded_Rectangle(500, 120, 500+185, 120+50, 5,1,0x0235);
+    PrintCC(500+17,120+13,"东园食堂",HEI,24,1,0x0235);
 
-    PrintCC(210,15,"生活用品",HEI,24,1,grey);
-    PrintCC(355,15,"文具",HEI,24,1,grey);
-    PrintCC(475,15,"零食",HEI,24,1,grey);
-    PrintCC(595,15,"饮料",HEI,24,1,grey);
-    PrintCC(690,15,"运动用品",HEI,24,1,grey);
-    PrintCC(835,15,"水果",HEI,24,1,grey);
-    PrintCC(955,15,"文创",HEI,24,1,grey);
+    Draw_Rounded_Rectangle(750, 120, 750+185, 120+50, 5,1,0x0235);
+    PrintCC(750+17,120+13,"东教工食堂",HEI,24,1,0x0235);
 
-    bar2(630,280,750,400,deepblue);
-    bar2(810,280,930,400,deepblue);
+    Draw_Rounded_Rectangle(250, 200, 250+185, 200+50, 5,1,0x0235);
+    PrintCC(250+17,200+13,"学生一食堂",HEI,24,1,0x0235);
 
-    bar2(270,460,390,580,deepblue);//120*120
-    bar2(450,460,570,580,deepblue);
-    bar2(630,460,750,580,deepblue);
-    bar2(810,460,930,580,deepblue);
+    Draw_Rounded_Rectangle(500, 200, 500+185, 200+50, 5,1,0x0235);
+    PrintCC(500+17,200+13,"学生二食堂",HEI,24,1,0x0235);  
 
-    PrintCC(315,240,"盆",HEI,24,1,deepblue);
-    Readbmp64k(270, 100, "bmp\\pen.bmp");//盆
-    Readbmp64k(450, 100, "bmp\\saoba.bmp");//扫把
-    Readbmp64k(630, 100, "bmp\\canju.bmp");//餐具
-    Readbmp64k(810, 100, "bmp\\wan.bmp");//碗
-    Readbmp64k(270, 280, "bmp\\shuibei.bmp");//水杯
-    Readbmp64k(450, 280, "bmp\\yijia.bmp");//衣架
+    Draw_Rounded_Rectangle(750, 200, 750+185, 200+50, 5,1,0x0235);
+    PrintCC(750+17,200+13,"紫荆园餐厅",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 280, 250+185, 280+50, 5,1,0x0235);
+    PrintCC(250+17,280+13,"东一食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 280, 500+185, 280+50, 5,1,0x0235);
+    PrintCC(500+17,280+13,"东三食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 280, 750+185, 280+50, 5,1,0x0235);
+    PrintCC(750+17,280+13,"喻园餐厅",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 360, 250+185, 360+50, 5,1,0x0235);
+    PrintCC(250+17,360+13,"百景园",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 360, 500+185, 360+50, 5,1,0x0235);
+    PrintCC(500+17,360+13,"西一食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 360, 750+185, 360+50, 5,1,0x0235);
+    PrintCC(750+17,360+13,"西二食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 440, 250+185, 440+50, 5,1,0x0235);
+    PrintCC(250+17,440+13,"东园食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 440, 500+185, 440+50, 5,1,0x0235);
+    PrintCC(500+17,440+13,"东教工食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 440, 750+185, 440+50, 5,1,0x0235);
+    PrintCC(750+17,440+13,"西园食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(250, 520, 250+185, 520+50, 5,1,0x0235);
+    PrintCC(250+17,520+13,"南园食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(500, 520, 500+185, 520+50, 5,1,0x0235);
+    PrintCC(500+17,520+13,"中心食堂",HEI,24,1,0x0235);
+
+    Draw_Rounded_Rectangle(750, 520, 750+185, 520+50, 5,1,0x0235);
+    PrintCC(750+17,520+13,"韵苑食堂",HEI,24,1,0x0235);
 }
 
-void press_canteen(int x){
-    switch (x)
-    {
-        case 1:{
-            PrintCC(210,15,"生活用品",HEI,24,1,deepblue);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }
-        case 2:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,deepblue);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }
-        case 3:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,deepblue);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }
-        case 4:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,deepblue);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }   
-        case 5:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,deepblue);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }
-        case 6:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,deepblue);
-            PrintCC(955,15,"文创",HEI,24,1,grey);
-            break;
-        }
-        case 7:{
-            PrintCC(210,15,"生活用品",HEI,24,1,grey);
-            PrintCC(355,15,"文具",HEI,24,1,grey);
-            PrintCC(475,15,"零食",HEI,24,1,grey);
-            PrintCC(595,15,"饮料",HEI,24,1,grey);
-            PrintCC(690,15,"运动用品",HEI,24,1,grey);
-            PrintCC(835,15,"水果",HEI,24,1,grey);
-            PrintCC(955,15,"文创",HEI,24,1,deepblue);
-            break;
-        }
+int press_canteen(int mx, int my){
+    //if(mx < 250 || mx > 935 || my < 120 || my > 570) return; // 边界检查
+
+    int row = (my - 120) / 80;
+    int col = (mx - 250) / 250;
+
+    // 每个按钮的精确区域
+    int btn_x = 250 + col * 250;
+    int btn_y = 120 + row * 80;
+
+    if(mx >= btn_x && mx <= btn_x + 185 && my >= btn_y && my <= btn_y + 50){
+        int index = row * 3 + col + 1;// 计算索引
     }
 }
+

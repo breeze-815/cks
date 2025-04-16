@@ -25,6 +25,8 @@
 #include "user_de.h"
 #include "user_cart.h"
 #include "user_order.h"
+#include "user_food.h"
+#include "food_order.h"
 
 #include "busi.h"
 #include "busi_order.h"
@@ -43,6 +45,7 @@ extern Product products[84];
 extern CartItem carts[84];
 extern ShoppingCart cart;
 extern Deliver delivers;
+extern Food foods[12];
 
 extern Order orders;
 extern Node node[409];
