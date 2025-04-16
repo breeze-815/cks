@@ -56,7 +56,7 @@ void user_order(){
 		}
         else if(mouse_press(800, 700, 1000, 750) == 1)
         { 
-            if (currentUser->address == '\0' || strlen(currentUser->number) == 0)
+            if (currentUser->community == '\0' || strlen(currentUser->number) == 0)
             {
                 draw_info();
             }
@@ -123,10 +123,13 @@ void draw_user_order(int page){
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-        switch(currentUser->address){// 根据用户地址显示地址
-            case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
-            case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
-            case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
+        switch(currentUser->community){// 根据用户地址显示地址
+            case 0: PrintText(250, 250, "地址：是零", HEI, 24, 1, black); break;
+            case 1: PrintText(250, 250, "地址：东区学生公寓", HEI, 24, 1, black); break;
+            case 2: PrintText(250, 250, "地址：西区学生公寓", HEI, 24, 1, black); break;
+            case 3: PrintText(250, 250, "地址：南区学生公寓", HEI, 24, 1, black); break;
+            case 4: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
+            case 5: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
             default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
         }
 
@@ -189,7 +192,8 @@ void draw_user_order(int page){
     strcpy(orders.order_time, current_time); // 下单时间
     strcpy(orders.user_name, currentUser->name); // 用户名
     strcpy(orders.user_phone, currentUser->number); // 用户手机号
-    orders.address=currentUser->address; // 用户手机号
+    orders.community=currentUser->community; // 用户社区
+    orders.building=currentUser->building; 
     for (i = 0; i < cart.itemCount; i++) {
         orders.item[i] = carts[i]; // 购物车内商品信息
     }

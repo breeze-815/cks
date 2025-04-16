@@ -469,43 +469,8 @@ void dijkstra(Node *start, Node *end) {
         current = prev[current];
     }
 
-    // 绘制路径连线
-    
-    // // 调整后的绘制循环
    
-        
-
-        
-    //     sprintf(buffer, "%d (%d,%d) to %d (%d,%d) %d", 
-    //         path[i], x1, y1, 
-    //         path[i-1], x2, y2,i);
-
-    //     // 调试输出
-    //     printf("%s\n", buffer);
-
-    //     // 文本渲染（固定行高）
-    //     PrintText(50, y_offset, buffer, HEI, 24, 1, black);
-    //     y_offset += 28; // 精确匹配字体行高
-
-    //     // 绘制连线
-    //     Line1(x1, y1, x2, y2, 0x0000); 
-    // }
-    // 回溯路径
-
-
-    // 输出路径信息
-    //printf("Shortest path from Node %d to Node %d:\n", start - node, end - node);
-    // sprintf(buffer,"%d %d:\n", start - node, end - node);
-    // PrintText(50, y_offset, buffer, HEI, 16, 1, black);
-    //printf("%d %d:\n", start - node, end - node);
-    // sprintf(buffer,"Node %d to Node %d:\n", start - node, end - node);
-    // PrintText(50, y_offset, buffer, HEI, 16, 1, black);
-    //printf("%d\n",end-node);
-    //Line2(845,156+326,837,156+326,0x0000);
     for (i = path_len - 1; i > 0; i--) {
-        //printf("Node %d (%d, %d) -> Node %d (%d, %d)\n", 
-            // path[i], node[path[i]].x, node[path[i]].y, 
-            // path[i - 1], node[path[i - 1]].x, node[path[i - 1]].y);
             x1 = node[path[i]].x;
             y1 = node[path[i]].y + 326; // 地图坐标偏移补偿
             x2 = node[path[i - 1]].x;
@@ -517,58 +482,19 @@ void dijkstra(Node *start, Node *end) {
             PrintText(50, y_offset, buffer, HEI, 16, 1, black);
             y_offset += 15;
     }
+    sprintf(buffer, "Shortest distance: %d", distance[end - node]);
+    PrintText(50, y_offset, buffer, HEI, 16, 1, black);
 }
+
+
+// int Manhattan Distance(int x1, int y1, int x2, int y2) {
+//     return abs(x1 - x2) + abs(y1 - y2);
+// }
+
 
 void show_map(){
     bar1(0,0,1024,768,white);
     Draw_Rounded_Rectangle(950, 25, 1000, 75, 5,1,0x0235);//关闭按钮
     Readbmp64k(0,768-442, "bmp\\map4.bmp");
-    //dijkstra(&node[10], &node[2]); // 从节点 0 到节点 1 的最短路径
+    
 }
-// struct Node {
-//     int x, y,
-//     int adj_nodes[5],
-//     int distance[5],
-//     int num_of_adj_nodes,
-// },
-
-// int  Manhattan_Distance(Node *start,Node *end)
-// {
-//     int distance ,
-//     distance = abs(start->x - end->x) + abs(start->y - end->y),
-//     return distance,
-// }
-
-// void find_shortest_distance()
-
-// void A_star(Node *start, Node *end) {
-//     int cost[5]; // 存储每个相邻节点的总成本
-//     int lowest_cost = 20000; // 初始化最低成本为无穷大
-//     int next_node_index = -1; // 用于存储下一个起始节点的索引
-//     int i,
-
-//     // 遍历当前节点的所有相邻节点
-//     for (i = 0; i < start->num_of_adj_nodes; i++) {
-//         // 如果相邻节点编号为 0，跳过（表示无效节点）
-//         if (start->adj_nodes[i] == 0) {
-//             continue,
-//         }
-
-//         // 计算到相邻节点的成本：当前节点到相邻节点的距离 + 相邻节点到终点的曼哈顿距离
-//         cost[i] = start->distance[i] + Manhattan_Distance(&node[start->adj_nodes[i] - 1], end),
-
-//         // 如果当前成本小于最低成本，更新最低成本和下一个节点索引
-//         if (cost[i] < lowest_cost) {
-//             lowest_cost = cost[i],
-//             next_node_index = start->adj_nodes[i] - 1; // 更新下一个节点索引
-//         }
-//     }
-
-//     // 如果找到了下一个节点，递归调用 A_star 函数
-//     if (next_node_index != -1) {
-//         printf("Moving to node %d with cost %d\n", next_node_index + 1, lowest_cost),
-//         A_star(&node[next_node_index], end); // 递归调用
-//     } else {
-//         printf("No valid path found!\n"),
-//     }
-// }

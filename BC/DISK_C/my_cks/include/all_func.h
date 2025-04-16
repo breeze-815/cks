@@ -36,6 +36,8 @@
 #include "HZK.h"
 #include "draw_shape.h"
 
+#include "button.h"
+
 extern MOUSE mouse;
 extern USER users;
 extern Shop shops;
@@ -45,7 +47,7 @@ extern ShoppingCart cart;
 extern Deliver deliver;
 extern Order orders;
 extern Node node[409];
-
+extern Button button [79];
 #define white 0xFFFF
 #define snow 0xFFDF
 #define black 0x0000
