@@ -1,5 +1,5 @@
-#ifndef __MAP_H
-#define __MAP_H
+#ifndef ROUTE_H
+#define ROUTE_H
 
 typedef struct Node { 
     int x, y;
@@ -8,7 +8,7 @@ typedef struct Node {
     int num_of_adj_nodes;
 } Node; 
 
-void show_map();
+void draw_route();
 void dijkstra(struct Node *start, struct Node *end);
-
+void route();
 #endif

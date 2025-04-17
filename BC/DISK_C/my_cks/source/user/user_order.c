@@ -130,7 +130,6 @@ void draw_user_order(int page){
     OrderList OL = {0};
     USER *currentUser;
     Order *currentOrder;
-
     char* current_time = get_current_time(); // 获取当前时间
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
@@ -145,13 +144,45 @@ void draw_user_order(int page){
     float total_amount = 0.0; // 总金额
     char total_str[50]; // 总金额字符串
     int fullPageItemCount = 0; // 满页商品数量
-
+    char debug_buf[100]; // 调试信息缓冲区
     ReadAllUser(&UL); // 读取用户列表
     currentUser = &UL.elem[users.pos]; // 获取当前用户信息
 
     ReadAllOrder(&OL); // 读取订单列表
     orders.id = OL.length + 1; // 订单号
-
+    //存储订单信息
+        
+    strcpy(orders.order_time, current_time); // 下单时间
+    strcpy(orders.user_name, currentUser->name); // 用户名
+    strcpy(orders.user_phone, currentUser->number); // 用户手机号
+    orders.community=currentUser->community; // 用户社区
+    orders.building=currentUser->building;   // 用户栋数
+    sprintf(debug_buf, "community: %d", orders.community); // 调试信息
+    PrintText(800, 50, debug_buf, HEI, 24, 1, lightred); // 打印调试信息
+    switch (orders.community)  //超市下单时由就近超市配货
+    {
+        case 1: //东区宿舍
+            orders.pick_up_loction = 19; //喻园超市
+            break;
+        case 2: //西区宿舍
+            orders.pick_up_loction = 20; //西区超市
+            break;
+        case 3: //南区宿舍
+            orders.pick_up_loction = 19; //喻园超市
+            break;
+        case 4: //紫菘宿舍
+            orders.pick_up_loction = 20; //西区超市
+            break;
+        case 5:
+            orders.pick_up_loction = 18; //韵苑超市
+            break;
+    }
+    for (i = 0; i < cart.itemCount; i++) {
+        orders.item[i] = carts[i]; // 购物车内商品信息
+    }
+    orders.itemCount = cart.itemCount; // 购物车内商品数量
+    orders.total_amount = total_amount; // 总金额
+	ReadAllOrder(&OL);//读取所有订单信息
     sprintf(time_str, "下单时间：%s", current_time);
     sprintf(user_name, "用户名：%s", currentUser->name);
     sprintf(user_phone, "手机号：%s", currentUser->number);
@@ -241,17 +272,7 @@ void draw_user_order(int page){
         PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
     }
 
-    //存储订单信息
-    strcpy(orders.order_time, current_time); // 下单时间
-    strcpy(orders.user_name, currentUser->name); // 用户名
-    strcpy(orders.user_phone, currentUser->number); // 用户手机号
-    orders.community=currentUser->community; // 用户社区
-    orders.building=currentUser->building; 
-    for (i = 0; i < cart.itemCount; i++) {
-        orders.item[i] = carts[i]; // 购物车内商品信息
-    }
-    orders.itemCount = cart.itemCount; // 购物车内商品数量
-    orders.total_amount = total_amount; // 总金额
+    
 
 }
 
@@ -347,7 +368,6 @@ int save_order(Order orders) {
 	int order_pos;
 	FILE *fp = NULL;
 
-	ReadAllOrder(&OL);//读取所有订单信息
 
     if ((fp = fopen("data\\order.dat", "wb")) == NULL) {
         printf("无法打开文件！\n");

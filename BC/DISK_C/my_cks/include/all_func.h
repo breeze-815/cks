@@ -33,13 +33,14 @@
 #include "busi_det.h"
 
 #include "ride.h"
-#include "map.h"
+#include "route.h"
 
 #include "HZK.h"
 #include "draw_shape.h"
 
 #include "button.h"
-
+#include "account.h"
+#include "acp_order.h"
 extern MOUSE mouse;
 extern USER users;
 extern Shop shops;
