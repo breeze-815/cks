@@ -39,17 +39,30 @@
 #include "draw_shape.h"
 
 extern MOUSE mouse;
+
 extern USER users;
+
 extern Shop shops;
+
 extern Product products[84];
 extern CartItem carts[84];
 extern ShoppingCart cart;
+
 extern Deliver delivers;
+
 extern Food foods[12];
+extern FoodCart food_carts[12];
+extern ShoppingFood shopping_food;
 
 extern Order orders;
+extern Canteen canteen[18];
+
 extern Node node[409];
 
+<<<<<<< Updated upstream
+=======
+extern Button button [79];
+>>>>>>> Stashed changes
 #define white 0xFFFF
 #define snow 0xFFDF
 #define black 0x0000

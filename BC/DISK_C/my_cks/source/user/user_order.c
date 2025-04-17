@@ -170,18 +170,34 @@ void draw_user_order(int page){
     // 页头信息只在第一页显示
     if (page == 0) {
         char order_number_str[20]; // 订单号字符串
+        char community[50]; // 社区字符串
+        char building[50]; // 楼栋字符串
         sprintf(order_number_str, "订单号：%d", orders.id); // 订单号
         PrintText(250, 50, order_number_str, HEI, 24, 1, black);
         PrintText(250, 100, time_str, HEI, 24, 1, black);
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
+<<<<<<< Updated upstream
         switch(currentUser->address){// 根据用户地址显示地址
             case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
             case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
             case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
             default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
+=======
+        switch(currentUser->community){// 根据用户地址显示地址
+            case 1: strcpy(community,"地址：东区学生公寓"); break;
+            case 2: strcpy(community,"地址：西区学生公寓"); break;
+            case 3: strcpy(community,"地址：南区学生公寓"); break;
+            case 4: strcpy(community,"地址：紫菘学生公寓"); break;
+            case 5: strcpy(community,"地址：韵苑学生公寓"); break;
+            default: strcpy(community,"地址：未知"); break;
+>>>>>>> Stashed changes
         }
+
+        sprintf(building, "%d栋", currentUser->building);
+        strcat(community,building);
+        PrintText(250, 250, community, HEI, 24, 1, black);
 
         // 表头
         PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);

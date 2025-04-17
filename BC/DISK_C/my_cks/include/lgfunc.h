@@ -11,7 +11,12 @@ typedef struct USER
 
 	char type;//用户类型 1为用户，2为商家，3为骑手
 	char number[12];//手机号
+<<<<<<< Updated upstream
 	char address;//地址 1紫菘，2沁苑，2韵苑
+=======
+	int community; //地址 1东区 2西区 3南区 4紫菘 5韵苑
+	int building;
+>>>>>>> Stashed changes
 	int pos;//用户在列表中位置
 
 }USER;

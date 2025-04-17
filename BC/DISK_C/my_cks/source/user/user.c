@@ -3,7 +3,14 @@
 Shop shops={0};//存储信息的商店结构体 
 
 void user(int user_pos){
+<<<<<<< Updated upstream
     
+=======
+    char test_buf[20];
+    int cur_index = -1;//
+    int cur_community=0;
+    int returned_index;
+>>>>>>> Stashed changes
     UserList UL = {0};
     USER *currentUser;
 
@@ -82,6 +89,7 @@ void user(int user_pos){
         }
         else if(mouse_press(440, 180, 560, 230)==1)
         {
+<<<<<<< Updated upstream
             press1(4);//紫菘
             currentUser->address=1;//紫菘
             save_user(*currentUser);
@@ -97,6 +105,59 @@ void user(int user_pos){
             press1(6);//韵苑
             currentUser->address=3;//韵苑
             save_user(*currentUser);
+=======
+            cur_index = -1;
+            press1(4);//按钮状态切换
+            draw_button(1);
+            cur_community=1; 
+           
+        }
+        else if(mouse_press(620, 180, 740, 230)==1)
+        {
+            cur_index = -1;
+            press1(5);//西区
+            draw_button(2);
+            cur_community=2;
+        }
+        else if(mouse_press(800, 180, 920, 230)==1)
+        {
+            cur_index = -1;
+            press1(6);//南区
+            draw_button(3);
+            cur_community=3;
+      
+        }
+        else if(mouse_press(530, 255, 650, 305)==1)
+        {
+            cur_index = -1;
+            press1(7);//紫菘
+            draw_button(4);
+            cur_community=4;
+        }
+        else if(mouse_press(750, 255, 870, 305)==1)
+        {
+            cur_index = -1;
+            press1(8);//韵苑
+            draw_button(5);
+            cur_community=5;
+        }
+        else if (mouse_press(200, 310, 1024, 768) == 1) { 
+            MouseGet(&mouse);
+            mouse_off_arrow(&mouse);
+            returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
+
+            currentUser->community = button[returned_index].commmunity;//获取社区编号
+
+            currentUser->building = button[returned_index].number;//获取楼号编号
+
+            cur_index = returned_index;//更新当前按钮编号
+
+            save_user(*currentUser);//保存用户信息
+
+            mouse_on_arrow(mouse);
+
+            delay(200);
+>>>>>>> Stashed changes
         }
     }
 }

@@ -1,18 +1,18 @@
 #include "all_func.h"
 
 Food foods[12]={
-    {1, 1, "黄焖鸡", 15, "food/黄焖鸡米饭.jpg",0},
-    {2, 1, "黄焖鸡", 15, "food/黄焖鸡米饭.jpg",0},
-    {3, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {4, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {5, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {6, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {7, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {8, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {9, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {10, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {11, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0},
-    {12, 1, "黄焖鸡米饭", 15, "food/黄焖鸡米饭.jpg",0}
+    {1, 1, "黄焖鸡", 15, "bmp\\shop\\apple.bmp",0},
+    {2, 1, "黄焖鸡", 15, "bmp\\shop\\apple.bmp",0},
+    {3, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {4, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {5, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {6, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {7, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {8, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {9, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {10, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {11, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
+    {12, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0}
 };
 FoodCart food_carts[12]={0};//购物车内的商品
 ShoppingFood shopping_food={0};//购物车整体
@@ -34,6 +34,10 @@ void user_food(int index){
             return;
 			//
 		}
+        else if(mouse_press(800, 700, 1000, 750)==1)//查看订单
+        {
+            food_order(index);//查看订单
+        }
         else if(mouse_press(270, 235, 1070, 835)==1)//点击商品
         {
             MouseGet(&mouse);
@@ -55,66 +59,13 @@ void draw_user_food(int index){
 
     PrintCC(850,715,"查看订单",HEI,24,1,deepblue);
 
-    switch(index){
-        case 1:
-            PrintCC(220,700, "韵苑学生食堂", HEI, 48, 1, deepblue);
-            break;
-        case 2:
-            PrintCC(220,700, "东园食堂", HEI, 48, 1, deepblue);
-            break;
-        case 3:
-            PrintCC(220,700, "东教工食堂", HEI, 48, 1, deepblue);
-            break;
-        case 4:
-            PrintCC(220,700, "学生一食堂", HEI, 48, 1, deepblue);
-            break;
-        case 5:
-            PrintCC(220,700, "学生二食堂", HEI, 48, 1, deepblue);
-            break;
-        case 6: 
-            PrintCC(220,700, "紫荆园餐厅", HEI, 48, 1, deepblue);
-            break;
-        case 7:
-            PrintCC(220,700, "东一食堂", HEI, 48, 1, deepblue);
-            break;
-        case 8:
-            PrintCC(220,700, "东三食堂", HEI, 48, 1, deepblue);
-            break;
-        case 9:
-            PrintCC(220,700, "喻园餐厅", HEI, 48, 1, deepblue);
-            break;
-        case 10:
-            PrintCC(220,700, "百景园", HEI, 48, 1, deepblue);
-            break;
-        case 11:
-            PrintCC(220,700, "西一食堂", HEI, 48, 1, deepblue);
-            break;
-        case 12:
-            PrintCC(220,700, "西二食堂", HEI, 48, 1, deepblue);
-            break;
-        case 13:
-            PrintCC(220,700, "东园食堂", HEI, 48, 1, deepblue);
-            break;
-        case 14:
-            PrintCC(220,700, "东教工食堂", HEI, 48, 1, deepblue);
-            break;
-        case 15:
-            PrintCC(220,700, "西园食堂", HEI, 48, 1, deepblue);
-            break;
-        case 16:    
-            PrintCC(220,700, "南园食堂", HEI, 48, 1, deepblue);
-            break;
-        case 17:
-            PrintCC(220,700, "北园教工食堂", HEI, 48, 1, deepblue);
-            break;
-        case 18:
-            PrintCC(220,700, "南园教工食堂", HEI, 48, 1, deepblue);
-            break;
-    }
+    PrintCC(220,700, canteen[index-1].name, HEI, 48, 1, deepblue);//显示食堂名称
 
     //显示商品信息
     for(j=0;j<3;j++){
         for(i=0;i<4;i++){//先横向，再竖向
+
+
             char quantity_str[20];
             char price_str[20];
             // 使用 sprintf 将 quantity 转换为字符串
