@@ -27,6 +27,7 @@
 #include "user_order.h"
 #include "user_food.h"
 #include "food_order.h"
+#include "button.h"
 
 #include "busi.h"
 #include "busi_order.h"
@@ -34,24 +35,31 @@
 
 #include "ride.h"
 #include "route.h"
-
+#include "acp_order.h"
+#include "account.h"
 #include "HZK.h"
 #include "draw_shape.h"
-
-#include "button.h"
-#include "account.h"
-#include "acp_order.h"
 extern MOUSE mouse;
+
 extern USER users;
+
 extern Shop shops;
+
 extern Product products[84];
 extern CartItem carts[84];
 extern ShoppingCart cart;
+
 extern Deliver delivers;
+
 extern Food foods[12];
+extern FoodCart food_carts[12];
+extern ShoppingFood shopping_food;
 
 extern Order orders;
+extern Canteen canteen[18];
+
 extern Node node[409];
+
 extern Button button [79];
 #define white 0xFFFF
 #define snow 0xFFDF

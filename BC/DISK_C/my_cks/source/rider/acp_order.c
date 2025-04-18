@@ -12,6 +12,7 @@ void accept_order()
 	
 	draw_accept_order(page,&OL);
 
+    
 	//mouse_on_arrow(mouse);
 
 	while(1){
@@ -114,7 +115,7 @@ void draw_accept_order(int page,OrderList *OL)
             // DEBUG：打印到控制台
             
             sprintf(debug_buf,"DEBUG[%d]: community=%d, pick_up_loction=%d\n",
-                i, order.community, order.pick_up_loction);
+                i, order.community, order.pick_up_location);
             PrintText(35, y_offset+15, debug_buf, HEI, 24, 1, lightred); 
 
         

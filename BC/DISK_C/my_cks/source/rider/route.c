@@ -2,7 +2,7 @@
 
 #define INF 20000
 #define MAX_NODES 409
-
+#define MAX_ORDERS 5
 Node node [MAX_NODES] = {
     {0,0,{0,0,0,0,0,0}, {0,0,0,0,0,0}, 0},
     {854, 143, {131, 0, 0, 0, 0, 0}, {20, 20000, 20000, 20000, 20000, 20000}, 1}, //1.韵苑学生食堂
@@ -230,7 +230,7 @@ Node node [MAX_NODES] = {
     {414, 343, {217, 222, 224, 0, 0, 0}, {89, 31, 53, 20000, 20000, 20000}, 3},
     {414, 329, {218, 223, 225, 0, 0, 0}, {76, 53, 30, 20000, 20000, 20000}, 3},
     {414, 319, {224, 226, 233, 0, 0, 0}, {30, 101, 33, 20000, 20000, 20000}, 3},
-    {414, 219, {211, 225, 227, 230, 0, 0}, {153, 101, 108, 66, 20000, 20000}, 4},
+    {414, 292, {211, 225, 227, 230, 0, 0}, {153, 101, 108, 66, 20000, 20000}, 4},
     {414, 259, {209, 226, 228, 0, 0, 0}, {155, 108, 91, 20000, 20000, 20000}, 3},
     {390, 259, {227, 229, 242, 243, 0, 0}, {91, 109, 207, 108, 20000, 20000}, 4},
     {390, 290, {228, 230, 240, 0, 0, 0}, {109, 23, 76, 20000, 20000, 20000}, 3},
@@ -416,8 +416,29 @@ Node node [MAX_NODES] = {
 };
 
 
-void route(){
+// Acp_order acp_order [5] =
+// {
+//     {0001,1,39,2,1,123,18682353005}, //1号订单，韵苑食堂取餐，西一宿舍送餐，用户名：123，电话
+//     {0002,10,26,4,5,2,123,18682353005}, //2号订单，东三食堂取餐，紫菘5栋送餐，用户名：456，电话
+//     {0003,5,56,3,1,123,18682353005}, //3号订单，东教工食堂取餐，南一宿舍送餐，用户名：789，电话
+//     {0004,19,62,1,4,111,18682353005}, //4号订单，喻园超市取餐，东四宿舍送餐，用户名：111，电话
+//     {0005,16,95,5,24,222,18682353005} //5号订单，集锦园取餐，韵苑24东送餐，用户名：222
+// };
 
+Acp_order acp_order[5] = {
+    //  id        pick  dest  comm  bldg  user_name    user_phone
+    { "0001",    1,    39,    2,    1,   "张三",       "18682353005" },
+    { "0002",   10,    26,    4,    5,   "李四",       "18682353006" },
+    { "0003",    5,    56,    3,    1,   "王五",       "18682353007" },
+    { "0004",   19,    62,    1,    4,   "赵六",       "18682353008" },
+    { "0005",   16,    95,    5,   24,   "孙七",       "18682353009" }
+};
+
+
+
+
+void route()
+{
     UserList UL = {0};
     USER *currentUser;
 
@@ -430,7 +451,8 @@ void route(){
 	draw_route();
 
 	mouse_on_arrow(mouse);
-
+    
+    dispatch_orders(5, acp_order, 5); // 调度订单
 	while(1)
     {
 		mouse_show_arrow(&mouse);
@@ -531,21 +553,135 @@ void dijkstra(Node *start, Node *end) {
             x2 = node[path[i - 1]].x;
             y2 = node[path[i - 1]].y + 326;
             Line2(x1, y1, x2, y2, Red); 
-            sprintf(buffer,"Node %d (%d, %d) -> Node %d (%d, %d)", 
-            path[i], node[path[i]].x, node[path[i]].y, 
-            path[i - 1], node[path[i - 1]].x, node[path[i - 1]].y);
-            PrintText(50, y_offset, buffer, HEI, 16, 1, black);
-            y_offset += 15;
+            // sprintf(buffer,"Node %d (%d, %d) -> Node %d (%d, %d)", 
+            // path[i], node[path[i]].x, node[path[i]].y, 
+            // path[i - 1], node[path[i - 1]].x, node[path[i - 1]].y);
+            // PrintText(50, y_offset, buffer, HEI, 16, 1, black);
+            // y_offset += 15;
     }
-    sprintf(buffer, "Shortest distance: %d", distance[end - node]);
-    PrintText(50, y_offset, buffer, HEI, 16, 1, black);
+    // sprintf(buffer, "Shortest distance: %d", distance[end - node]);
+    // PrintText(50, y_offset, buffer, HEI, 16, 1, black);
 }
 
 
-// int Manhattan Distance(int x1, int y1, int x2, int y2) {
-//     return abs(x1 - x2) + abs(y1 - y2);
-// }
+int Manhattan_Distance(int x1, int y1, int x2, int y2) 
+{
+    return abs(x1 - x2) + abs(y1 - y2);
+}
 
+void draw_finish_button() {
+    // 右下角 900,700 到 1000,750
+    Draw_Rounded_Rectangle(900, 700, 1000, 750, 5, 1, deepblue);
+    PrintCC(920, 715, "完成", HEI, 24, 1, white);
+}
+void dispatch_orders(int start_idx, Acp_order acp_orders[], int n_orders)
+{
+    int picked[MAX_ORDERS];
+    int delivered[MAX_ORDERS];
+    int remaining;
+    int current;
+    int best_i;
+    int best_type;    // 0 = 取餐, 1 = 送餐
+    int dist;
+    int best_dist;
+    int i;
+    int target;
+    char buf[64];
+
+    /*—— 初始化 ——*/
+    for (i = 0; i < n_orders; i++) {
+        picked[i]    = 0;
+        delivered[i] = 0;
+    }
+    remaining = n_orders * 2;
+    current   = start_idx;
+
+    /*—— 主循环 ——*/
+    while (remaining > 0) {
+        /*—— 找最近的可做任务 ——*/
+        best_dist = 20000;
+        best_i    = -1;
+        best_type = -1;
+
+        for (i = 0; i < n_orders; i++) {
+            /* 取餐任务 */
+            if (!picked[i]) {
+                dist = Manhattan_Distance(
+                    node[current].x, node[current].y,
+                    node[ acp_orders[i].pick_up_index ].x,
+                    node[ acp_orders[i].pick_up_index ].y
+                );
+                if (dist < best_dist) {
+                    best_dist = dist;
+                    best_i    = i;
+                    best_type = 0;
+                }
+            }
+            /* 送餐任务 */
+            else if (!delivered[i]) {
+                dist = Manhattan_Distance(
+                    node[current].x, node[current].y,
+                    node[ acp_orders[i].destination_index ].x,
+                    node[ acp_orders[i].destination_index ].y
+                );
+                if (dist < best_dist) {
+                    best_dist = dist;
+                    best_i    = i;
+                    best_type = 1;
+                }
+            }
+        }
+
+        /*—— 如果没有找到任务，就跳出 ——*/
+        if (best_i < 0) {
+            PrintText(50, 50, "调度异常：无可执行任务", HEI, 24, 1, black);
+            break;
+        }
+
+        /*—— 在地图上绘制背景 + 路径 ——*/
+        draw_route();
+
+        if (best_type == 0) {
+            target = acp_orders[best_i].pick_up_index;
+            sprintf(buf, "正在前往取餐: 订单[%s]", acp_orders[best_i].id);
+        } else {
+            target = acp_orders[best_i].destination_index;
+            sprintf(buf, "正在前往送餐: 订单[%s]", acp_orders[best_i].id);
+        }
+        /* 最短路径 */
+        dijkstra(&node[current], &node[target]);
+        /* 显示状态文字 */
+        PrintText(50, 50, buf, HEI, 24, 1, black);
+
+        /*—— 绘制“完成”按钮 ——*/
+        draw_finish_button();
+
+        /*—— 等待骑手点击“完成” ——*/
+        while (1) {
+            mouse_show_arrow(&mouse);
+            if (mouse_press(900, 700, 1000, 750) == 1) {
+                /* 标记任务完成，更新 current */
+                if (best_type == 0) {
+                    picked[best_i] = 1;
+                    current = acp_orders[best_i].pick_up_index;
+                } else {
+                    delivered[best_i] = 1;
+                    current = acp_orders[best_i].destination_index;
+                }
+                remaining--;
+                /* 擦除按钮与文字，为下一次循环做准备 */
+                bar1(900, 700, 1000, 750, white);
+                bar1(0, 50, 400, 90, white);
+                break;
+            }
+            /* 可在此添加“取消”或“退出”按钮检测 */
+        }
+    }
+
+    /*—— 全部完成后的展示 ——*/
+    draw_route();
+    PrintText(50, 50, "所有任务已完成！", HEI, 24, 1, black);
+}
 
 void draw_route(){
     bar1(0, 0, 1024, 768,white);

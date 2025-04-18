@@ -1,5 +1,25 @@
 #include "all_func.h"
 
+Canteen canteen[18]={
+    {1,"韵苑学生食堂"},
+    {2,"东园食堂"},
+    {3,"东教工食堂"},
+    {4,"学生一食堂"},
+    {5,"学生二食堂"},
+    {6,"紫荆园餐厅"},
+    {7,"东一食堂"},
+    {8,"东三食堂"},
+    {9,"喻园餐厅"},
+    {10,"百景园"},
+    {11,"西一食堂"},
+    {12,"西二食堂"},
+    {13,"集锦园"},
+    {14,"东教工食堂"},
+    {15,"西园食堂"},
+    {16,"南园食堂"},
+    {17,"北园教工食堂"},
+    {18,"南园教工食堂"}
+};
 void user_takeout(){
     int index=0;
     int mx=0;
@@ -44,68 +64,84 @@ void user_takeout(){
             index=press_canteen(mx,my);//获取食堂编号
             user_food(index);//进入菜品页面
 
+            //return后从这开始
+            mouse_off_arrow(&mouse);
+            bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+            draw_user_takeout();
+            mouse_on_arrow(mouse);
+
         }
         
     }
 }
 void draw_user_takeout(){
+    int i,j;
+    int cnt=0;
     bar1(200, 0, 1024, 768,white);
 
     PrintCC(250,50,"请选择食堂",HEI,24,1,deepblue);
 
-    Draw_Rounded_Rectangle(250, 120, 250+185, 120+50, 5,1,0x0235);
-    PrintCC(250+17,120+13,"韵苑学生食堂",HEI,24,1,0x0235);
+    for(i=0;i<6;i++){
+        for(j=0;j<3;j++){
+        Draw_Rounded_Rectangle(250+250*j, 120+80*i, 250+250*j+185, 120+80*i+50, 5,1,0x0235);
+        PrintCC(250+250*j+17,120+80*i+13,canteen[cnt].name,HEI,24,1,0x0235);
+        cnt++;
+        }
+    }
+
+    // Draw_Rounded_Rectangle(250, 120, 250+185, 120+50, 5,1,0x0235);
+    // PrintCC(250+17,120+13,"韵苑学生食堂",HEI,24,1,0x0235);
             
-    Draw_Rounded_Rectangle(500, 120, 500+185, 120+50, 5,1,0x0235);
-    PrintCC(500+17,120+13,"东园食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(500, 120, 500+185, 120+50, 5,1,0x0235);
+    // PrintCC(500+17,120+13,"东园食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 120, 750+185, 120+50, 5,1,0x0235);
-    PrintCC(750+17,120+13,"东教工食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 120, 750+185, 120+50, 5,1,0x0235);
+    // PrintCC(750+17,120+13,"东教工食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 200, 250+185, 200+50, 5,1,0x0235);
-    PrintCC(250+17,200+13,"学生一食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(250, 200, 250+185, 200+50, 5,1,0x0235);
+    // PrintCC(250+17,200+13,"学生一食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 200, 500+185, 200+50, 5,1,0x0235);
-    PrintCC(500+17,200+13,"学生二食堂",HEI,24,1,0x0235);  
+    // Draw_Rounded_Rectangle(500, 200, 500+185, 200+50, 5,1,0x0235);
+    // PrintCC(500+17,200+13,"学生二食堂",HEI,24,1,0x0235);  
 
-    Draw_Rounded_Rectangle(750, 200, 750+185, 200+50, 5,1,0x0235);
-    PrintCC(750+17,200+13,"紫荆园餐厅",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 200, 750+185, 200+50, 5,1,0x0235);
+    // PrintCC(750+17,200+13,"紫荆园餐厅",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 280, 250+185, 280+50, 5,1,0x0235);
-    PrintCC(250+17,280+13,"东一食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(250, 280, 250+185, 280+50, 5,1,0x0235);
+    // PrintCC(250+17,280+13,"东一食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 280, 500+185, 280+50, 5,1,0x0235);
-    PrintCC(500+17,280+13,"东三食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(500, 280, 500+185, 280+50, 5,1,0x0235);
+    // PrintCC(500+17,280+13,"东三食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 280, 750+185, 280+50, 5,1,0x0235);
-    PrintCC(750+17,280+13,"喻园餐厅",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 280, 750+185, 280+50, 5,1,0x0235);
+    // PrintCC(750+17,280+13,"喻园餐厅",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 360, 250+185, 360+50, 5,1,0x0235);
-    PrintCC(250+17,360+13,"百景园",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(250, 360, 250+185, 360+50, 5,1,0x0235);
+    // PrintCC(250+17,360+13,"百景园",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 360, 500+185, 360+50, 5,1,0x0235);
-    PrintCC(500+17,360+13,"西一食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(500, 360, 500+185, 360+50, 5,1,0x0235);
+    // PrintCC(500+17,360+13,"西一食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 360, 750+185, 360+50, 5,1,0x0235);
-    PrintCC(750+17,360+13,"西二食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 360, 750+185, 360+50, 5,1,0x0235);
+    // PrintCC(750+17,360+13,"西二食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 440, 250+185, 440+50, 5,1,0x0235);
-    PrintCC(250+17,440+13,"东园食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(250, 440, 250+185, 440+50, 5,1,0x0235);
+    // PrintCC(250+17,440+13,"东园食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 440, 500+185, 440+50, 5,1,0x0235);
-    PrintCC(500+17,440+13,"东教工食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(500, 440, 500+185, 440+50, 5,1,0x0235);
+    // PrintCC(500+17,440+13,"东教工食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 440, 750+185, 440+50, 5,1,0x0235);
-    PrintCC(750+17,440+13,"西园食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 440, 750+185, 440+50, 5,1,0x0235);
+    // PrintCC(750+17,440+13,"西园食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(250, 520, 250+185, 520+50, 5,1,0x0235);
-    PrintCC(250+17,520+13,"南园食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(250, 520, 250+185, 520+50, 5,1,0x0235);
+    // PrintCC(250+17,520+13,"南园食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(500, 520, 500+185, 520+50, 5,1,0x0235);
-    PrintCC(500+17,520+13,"中心食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(500, 520, 500+185, 520+50, 5,1,0x0235);
+    // PrintCC(500+17,520+13,"中心食堂",HEI,24,1,0x0235);
 
-    Draw_Rounded_Rectangle(750, 520, 750+185, 520+50, 5,1,0x0235);
-    PrintCC(750+17,520+13,"韵苑食堂",HEI,24,1,0x0235);
+    // Draw_Rounded_Rectangle(750, 520, 750+185, 520+50, 5,1,0x0235);
+    // PrintCC(750+17,520+13,"韵苑食堂",HEI,24,1,0x0235);
 }
 
 int press_canteen(int mx, int my){

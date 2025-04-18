@@ -3,13 +3,20 @@
 void business(int user_pos){
 
     UserList UL = {0};
-    USER *currentUser;
+    USER currentUser;
     int shop_type=0;//商店类型，1为超市，2为餐厅
     int code[12]={0};//绑定码
+    int state=0;//状态，0为未绑定，1为已绑定
+    int page=0;//0为未选择，1为超市，2为餐厅
+    int last_canteen_index = -1; // 记录上一个被按下的按钮
+    int index=-1;//食堂/超市编号
+    
 
     ReadAllUser(&UL); // 读取用户列表
 
-    currentUser=&UL.elem[user_pos];// 获取当前用户信息
+    currentUser=UL.elem[user_pos];// 获取当前用户信息
+
+    DestroyUList(&UL); // 释放用户列表空间
 
     mouse_off_arrow(&mouse);
 	
@@ -22,42 +29,18 @@ void business(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            DestroyUList(&UL); // 释放用户列表内存
             return;
 			//welcome();//首页
 		}
-        else if(mouse_press(490, 260, 610, 310)==1)
-        {
-            press_type(1);//选择为超市经营者
-            shop_type=1;//超市
-            
-        }
-        else if(mouse_press(670, 260, 790, 310)==1)
-        {
-            press_type(2);//选择为餐厅经营者
-            shop_type=2;//餐厅
-        }
-        else if(mouse_press(40, 602, 160, 652)==1)//查看订单
-        {
-            
-            business_order();//商家订单页面
-            
-            //return后从这开始
-            mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除注册界面残留
-            draw_business();
-            mouse_on_arrow(mouse);
-
-        }
         else if(mouse_press(430, 110, 650, 160)==1)//输入手机号
         {
-            number_input(currentUser->number, 435, 115, 645, 155); // 输入手机号
+            number_input(currentUser.number, 435, 115, 645, 155); // 输入手机号
         }
         else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
         {
-            if(strlen(currentUser->number)==11)
+            if(strlen(currentUser.number)==11)
             {
-                save_user(*currentUser);
+                save_user(currentUser);
                 PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
                 bar1(800,50,1024,100,white);
@@ -73,20 +56,80 @@ void business(int user_pos){
         {
             number_input(code, 435, 190, 645, 230); // 输入绑定码
         }
-        else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
+        else if(mouse_press(710, 185, 830, 235)==1)//确认绑定
         {
-            if(strlen(currentUser->number)==11)
+            if(strcmp(code,"111")==0)
             {
-                save_user(*currentUser);
-                PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                PrintCC(800,50,"绑定成功",HEI,24,1,lightred);
                 delay(500);
                 bar1(800,50,1024,100,white);
+                state=1;//已绑定
             }
             else
             {
-                PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                PrintCC(800,50,"绑定失败",HEI,24,1,lightred);
                 delay(500);
                 bar1(800,50,1024,100,white);
+            }
+        }
+
+        //绑定后
+        if(state==1)
+        {
+            if(mouse_press(490, 260, 610, 310)==1)
+            {
+                press_type(1);//选择为超市经营者
+                shop_type=1;//超市
+                page=1;
+                
+            }
+            else if(mouse_press(670, 260, 790, 310)==1)
+            {
+                press_type(2);//选择为餐厅经营者
+                shop_type=2;//餐厅
+                page=2;
+            }
+            else if(mouse_press(40, 602, 160, 652)==1)//查看订单
+            {
+                
+                business_order(index);//商家订单页面
+                
+                //return后从这开始
+                mouse_off_arrow(&mouse);
+                bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+                draw_business();
+                mouse_on_arrow(mouse);
+    
+            }
+            else if(mouse_press(205, 325, 1024, 768)==1)//选择具体食堂/超市
+            {
+                
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                if(page==1)//超市
+                {
+                    index=0;//选择超市
+                }
+
+                if(page==2)//餐厅
+                {
+                    index=choose_canteen(mouse.x, mouse.y, &last_canteen_index);
+                }
+                mouse_on_arrow(mouse);
+            }
+        }
+
+        //未绑定
+        if(state==0)
+        {
+            if(mouse_press(490, 260, 610, 310)==1||
+               mouse_press(670, 260, 790, 310)==1||
+               mouse_press(40, 602, 160, 652)==1)
+            {
+                PrintCC(800,50,"请先进行绑定操作",HEI,24,1,lightred);
+                delay(500);
+                bar1(800,50,1024,100,white);
+                
             }
         }
     }
@@ -124,9 +167,7 @@ void draw_business()
     PrintCC(250,275,"请选择店铺种类：",HEI,24,1,deepblue);
     PrintCC(525,275,"超市",HEI,24,1,deepblue);
     PrintCC(705,275,"餐厅",HEI,24,1,deepblue);
-
-    //Readbmp64k(200, 100, "bmp\\map.bmp");
-    
+  
 }
 
 void press_type(int x){
@@ -166,70 +207,74 @@ void draw_market(){
     bar1(205, 325, 1024, 768, white);
 
     Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,0x0235);
-    PrintCC(250+17,330+13,"韵苑学生食堂",HEI,24,1,0x0235);
+    PrintCC(250+17,330+13,"韵苑喻园超市",HEI,24,1,0x0235);
             
     Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,0x0235);
-    PrintCC(500+17,330+13,"东园食堂",HEI,24,1,0x0235);
+    PrintCC(500+17,330+13,"沁苑喻园超市",HEI,24,1,0x0235);
 
     Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,0x0235);
-    PrintCC(750+17,330+13,"东教工食堂",HEI,24,1,0x0235);
+    PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,0x0235);
 
 }
 
 void draw_canteen(){
+    int i,j;
+    int cnt=0;
     bar1(205, 325, 1024, 768, white);
 
-    Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,0x0235);
-    PrintCC(250+17,330+13,"韵苑学生食堂",HEI,24,1,0x0235);
-            
-    Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,0x0235);
-    PrintCC(500+17,330+13,"东园食堂",HEI,24,1,0x0235);
+    //打印食堂名称
+    for(i=0;i<6;i++){
+    	for(j=0;j<3;j++){
+    		Draw_Rounded_Rectangle(250+250*j, 330+60*i, 250+250*j+185, 330+60*i+50, 5,1,deepblue);
+            PrintCC(250+250*j+17,330+60*i+13,canteen[cnt].name,HEI,24,1,deepblue);
+            cnt++;
+    	}
+    }
 
-    Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,0x0235);
-    PrintCC(750+17,330+13,"东教工食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(250, 390, 250+185, 390+50, 5,1,0x0235);
-    PrintCC(250+17,390+13,"学生一食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(500, 390, 500+185, 390+50, 5,1,0x0235);
-    PrintCC(500+17,390+13,"学生二食堂",HEI,24,1,0x0235);  
-
-    Draw_Rounded_Rectangle(750, 390, 750+185, 390+50, 5,1,0x0235);
-    PrintCC(750+17,390+13,"紫荆园餐厅",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(250, 450, 250+185, 450+50, 5,1,0x0235);
-    PrintCC(250+17,450+13,"东一食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(500, 450, 500+185, 450+50, 5,1,0x0235);
-    PrintCC(500+17,450+13,"东三食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(750, 450, 750+185, 450+50, 5,1,0x0235);
-    PrintCC(750+17,450+13,"喻园餐厅",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(250, 510, 250+185, 510+50, 5,1,0x0235);
-    PrintCC(250+17,510+13,"百景园",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(500, 510, 500+185, 510+50, 5,1,0x0235);
-    PrintCC(500+17,510+13,"西一食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(750, 510, 750+185, 510+50, 5,1,0x0235);
-    PrintCC(750+17,510+13,"西二食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(250, 570, 250+185, 570+50, 5,1,0x0235);
-    PrintCC(250+17,570+13,"东园食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(500, 570, 500+185, 570+50, 5,1,0x0235);
-    PrintCC(500+17,570+13,"东教工食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(750, 570, 750+185, 570+50, 5,1,0x0235);
-    PrintCC(750+17,570+13,"西园食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(250, 630, 250+185, 630+50, 5,1,0x0235);
-    PrintCC(250+17,630+13,"南园食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(500, 630, 500+185, 630+50, 5,1,0x0235);
-    PrintCC(500+17,630+13,"中心食堂",HEI,24,1,0x0235);
-
-    Draw_Rounded_Rectangle(750, 630, 750+185, 630+50, 5,1,0x0235);
-    PrintCC(750+17,630+13,"韵苑食堂",HEI,24,1,0x0235);
 }
+
+void choose_market(int x){
+	
+}
+
+int choose_canteen(int x, int y, int* last_index) {
+    int i, j;
+    int index = -1;
+
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < 3; j++) {
+            int x1 = 250 + 250 * j;
+            int y1 = 330 + 60 * i;
+            int x2 = x1 + 185;
+            int y2 = y1 + 50;
+
+            if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+                index = i * 3 + j;
+
+                // 恢复上一个按钮
+                if (*last_index != -1 && *last_index != index) {
+                    int pre_row = *last_index / 3;
+                    int pre_col = *last_index % 3;
+                    int pre_x1 = 250 + 250 * pre_col;
+                    int pre_y1 = 330 + 60 * pre_row;
+                    int pre_x2 = pre_x1 + 185;
+                    int pre_y2 = pre_y1 + 50;
+
+                    Fill_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, white);
+                    Draw_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, 1, deepblue);
+                    PrintCC(pre_x1 + 17, pre_y1 + 13, canteen[*last_index].name, HEI, 24, 1, deepblue);
+                }
+
+                // 当前按钮高亮
+                Fill_Rounded_Rectangle(x1, y1, x2, y2, 5, deepblue);
+                Draw_Rounded_Rectangle(x1, y1, x2, y2, 5, 1, deepblue);
+                PrintCC(x1 + 17, y1 + 13, canteen[index].name, HEI, 24, 1, white);
+
+                *last_index = index;
+                return index + 1; // 返回食堂编号（1~18）
+            }
+        }
+    }
+}
+
+
