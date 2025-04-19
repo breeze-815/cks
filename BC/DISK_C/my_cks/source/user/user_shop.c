@@ -113,6 +113,14 @@ void user_shop(){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
+            int i;
+            for(i=0;i<productCount;i++)
+            {
+                products[i].quantity=0;//清空商品数量
+            }
+            cart.itemCount=0;//清空购物车
+            cart.items=NULL;//清空购物车
+            
             return;
 			//welcome();//首页
 		}

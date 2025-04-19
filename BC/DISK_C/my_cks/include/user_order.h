@@ -6,7 +6,8 @@
 
 typedef struct Order{
     int id;//订单号
-    int address;//用户地址
+    int community;//用户地址
+    int building;//楼栋号
     char user_name[12];//用户名
     char user_phone[12];//用户手机号
     char order_time[20];//下单时间

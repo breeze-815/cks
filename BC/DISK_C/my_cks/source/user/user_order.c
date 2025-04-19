@@ -5,15 +5,19 @@ Order orders = {0}; // 订单
 void user_order(){
 
     UserList UL = {0};
-    USER *currentUser;
+    USER currentUser;
 
     int page = 0;// 初始页码
     int totalPage =(cart.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
     int state = 0; // 判断是否需要完善信息
+
+    int cur_index = -1;
+    int cur_community=0;
+    int returned_index;
     
     ReadAllUser(&UL); // 读取用户列表
 
-    currentUser=&UL.elem[users.pos];// 获取当前用户信息
+    currentUser=UL.elem[users.pos];// 获取当前用户信息
 
     DestroyUList(&UL); // 释放用户列表空间
 
@@ -59,9 +63,11 @@ void user_order(){
             }
             else if(mouse_press(800, 700, 1000, 750) == 1)
             { 
-                if (currentUser->address == '\0' || strlen(currentUser->number) == 0)// 判断用户信息是否完善
+                if (currentUser.community == '\0' || strlen(currentUser.number) == 0)// 判断用户信息是否完善
                 {
+                    mouse_off_arrow(&mouse);
                     draw_info();
+                    mouse_on_arrow(mouse);
                     state = 1;
                 }
                 else
@@ -78,47 +84,85 @@ void user_order(){
         {
             if(mouse_press(430, 105, 650, 155)==1)
             {
-                number_input(currentUser->number, 435, 110, 645, 150); // 输入手机号
+                number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
             }
             else if(mouse_press(710, 105, 830, 155)==1)
             {
-                if(strlen(currentUser->number)==11)
+                if(strlen(currentUser.number)==11)
                 {
-                    save_user(*currentUser);
+                    save_user(currentUser);
                     PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                     delay(500);
-                    bar1(800,50,950,100,snow);
+                    bar1(800,50,950,100,white);
                 }
                 else
                 {
                     PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
                     delay(500);
-                    bar1(800,50,950,100,snow);
+                    bar1(800,50,950,100,white);
                 }
             }
             else if(mouse_press(440, 180, 560, 230)==1)
             {
-                press1(4);//紫菘
-                currentUser->address=1;//紫菘
-                save_user(*currentUser);
+                cur_index = -1;
+                press1(4);//按钮状态切换
+                draw_button(1);
+                cur_community=1; 
+            
             }
             else if(mouse_press(620, 180, 740, 230)==1)
             {
-                press1(5);//沁苑
-                currentUser->address=2;//沁苑
-                save_user(*currentUser);
+                cur_index = -1;
+                press1(5);//西区
+                draw_button(2);
+                cur_community=2;
             }
             else if(mouse_press(800, 180, 920, 230)==1)
             {
-                press1(6);//韵苑
-                currentUser->address=3;//韵苑
-                save_user(*currentUser);
-            } 
+                cur_index = -1;
+                press1(6);//南区
+                draw_button(3);
+                cur_community=3;
+        
+            }
+            else if(mouse_press(530, 255, 650, 305)==1)
+            {
+                cur_index = -1;
+                press1(7);//紫菘
+                draw_button(4);
+                cur_community=4;
+            }
+            else if(mouse_press(750, 255, 870, 305)==1)
+            {
+                cur_index = -1;
+                press1(8);//韵苑
+                draw_button(5);
+                cur_community=5;
+            }
+            else if (mouse_press(200, 310, 1024, 768) == 1) { 
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
 
-            if(mouse_press(200, 250, 1024, 768)==1)
+                currentUser.community = button[returned_index].commmunity;//获取社区编号
+
+                currentUser.building = button[returned_index].number;//获取楼号编号
+
+                cur_index = returned_index;//更新当前按钮编号
+
+                save_user(currentUser);//保存用户信息
+
+                mouse_on_arrow(mouse);
+
+                delay(200);
+            }
+
+            if(mouse_press(950, 50, 975,75)==1)
             {
                 state = 0;
+                mouse_off_arrow(&mouse);
                 draw_user_order(page);
+                mouse_on_arrow(mouse);
             }
         }
     }
@@ -128,14 +172,12 @@ void draw_user_order(int page){
     int i;
     UserList UL = {0};
     OrderList OL = {0};
-    USER *currentUser;
-    Order *currentOrder;
+    USER currentUser;
 
     char* current_time = get_current_time(); // 获取当前时间
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
-    char order_number; // 打印订单号
 
     int startIdx = 0;// 起始商品索引
     int itemsPerPage = 0;// 每页商品数量
@@ -147,14 +189,14 @@ void draw_user_order(int page){
     int fullPageItemCount = 0; // 满页商品数量
 
     ReadAllUser(&UL); // 读取用户列表
-    currentUser = &UL.elem[users.pos]; // 获取当前用户信息
+    currentUser = UL.elem[users.pos]; // 获取当前用户信息
 
     ReadAllOrder(&OL); // 读取订单列表
     orders.id = OL.length + 1; // 订单号
 
     sprintf(time_str, "下单时间：%s", current_time);
-    sprintf(user_name, "用户名：%s", currentUser->name);
-    sprintf(user_phone, "手机号：%s", currentUser->number);
+    sprintf(user_name, "用户名：%s", currentUser.name);
+    sprintf(user_phone, "手机号：%s", currentUser.number);
 
     bar1(200, 0, 1024, 768, white); // 清空屏幕
 
@@ -178,24 +220,16 @@ void draw_user_order(int page){
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-<<<<<<< Updated upstream
-        switch(currentUser->address){// 根据用户地址显示地址
-            case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
-            case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
-            case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
-            default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
-=======
-        switch(currentUser->community){// 根据用户地址显示地址
+        switch(currentUser.community){// 根据用户地址显示地址
             case 1: strcpy(community,"地址：东区学生公寓"); break;
             case 2: strcpy(community,"地址：西区学生公寓"); break;
             case 3: strcpy(community,"地址：南区学生公寓"); break;
             case 4: strcpy(community,"地址：紫菘学生公寓"); break;
             case 5: strcpy(community,"地址：韵苑学生公寓"); break;
             default: strcpy(community,"地址：未知"); break;
->>>>>>> Stashed changes
         }
 
-        sprintf(building, "%d栋", currentUser->building);
+        sprintf(building, "%d栋", currentUser.building);
         strcat(community,building);
         PrintText(250, 250, community, HEI, 24, 1, black);
 
@@ -256,27 +290,36 @@ void draw_user_order(int page){
 
     //存储订单信息
     strcpy(orders.order_time, current_time); // 下单时间
-    strcpy(orders.user_name, currentUser->name); // 用户名
-    strcpy(orders.user_phone, currentUser->number); // 用户手机号
-    orders.address=currentUser->address; // 用户手机号
+    strcpy(orders.user_name, currentUser.name); // 用户名
+    strcpy(orders.user_phone, currentUser.number); // 用户手机号
+    orders.community=currentUser.community; // 用户社区
+    orders.building=currentUser.building; 
     for (i = 0; i < cart.itemCount; i++) {
         orders.item[i] = carts[i]; // 购物车内商品信息
     }
     orders.itemCount = cart.itemCount; // 购物车内商品数量
     orders.total_amount = total_amount; // 总金额
 
+    DestroyUList(&UL); // 释放用户列表空间
+    DestroyOList(&OL); // 释放订单列表空间
+
 }
 
 void draw_info(){
 
-    Fill_Rounded_Rectangle(225, 25, 1000, 250, 30,snow);//填色
-    Draw_Rounded_Rectangle(225, 25, 1000, 250, 30, 2,0x6B4D);//最外围灰色圆角矩形框
+    bar1(200, 0, 1024, 768, white);//清屏
+    Draw_Rounded_Rectangle(225, 25, 1000, 750, 30, 2,0x6B4D);//最外围灰色圆角矩形框
+
+    Line_Thick(950, 50, 975, 75, 1, black);//
+    Line_Thick(950, 75, 975, 50, 1, black);//
 
     PrintCC(250, 50, "请先完善个人信息", HEI, 24, 1, lightred);
 
-    Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);//紫菘按钮
-    Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);//沁苑按钮
-    Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);//韵苑按钮
+    Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);//东区按钮
+    Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);//西区按钮
+    Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);//南区按钮
+    Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,deepblue);//紫菘按钮
+    Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);//韵苑按钮
 
     Draw_Rounded_Rectangle(430, 105, 650, 155, 5, 1,deepblue);//手机号输入框 
     Draw_Rounded_Rectangle(710, 105, 830, 155, 25, 1,deepblue);//保存按钮
@@ -284,9 +327,12 @@ void draw_info(){
     PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
     PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
     PrintCC(745,120,"保存",HEI,24,1,deepblue);
-    PrintCC(475,195,"紫菘",HEI,24,1,deepblue);
-    PrintCC(655,195,"沁苑",HEI,24,1,deepblue);
-    PrintCC(835,195,"韵苑",HEI,24,1,deepblue);
+    PrintCC(475,195,"东区",HEI,24,1,deepblue);
+    PrintCC(655,195,"西区",HEI,24,1,deepblue);
+    PrintCC(835,195,"南区",HEI,24,1,deepblue);
+    PrintCC(565,270,"紫菘",HEI,24,1,deepblue);
+    PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
+    PrintCC(745,120,"保存",HEI,24,1,deepblue);
 
 }
 // 获取当前时间并转换为字符串

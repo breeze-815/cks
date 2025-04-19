@@ -27,6 +27,8 @@
 #include "user_order.h"
 #include "user_food.h"
 #include "food_order.h"
+#include "button.h"
+#include "de_order.h"
 
 #include "busi.h"
 #include "busi_order.h"
@@ -56,13 +58,11 @@ extern ShoppingFood shopping_food;
 
 extern Order orders;
 extern Canteen canteen[18];
+extern Station stations[8];
 
 extern Node node[409];
 
-<<<<<<< Updated upstream
-=======
 extern Button button [79];
->>>>>>> Stashed changes
 #define white 0xFFFF
 #define snow 0xFFDF
 #define black 0x0000

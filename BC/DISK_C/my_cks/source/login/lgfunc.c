@@ -227,7 +227,7 @@ int Userposition(UserList UL,USER e)
 
 
 //输入模式
-void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode)
+void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode,int state)
 {
 	int length;//用于记录输入的字符个数，便于光标移动至末尾
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
@@ -244,7 +244,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 	border=x1+4;//每个字符占8个像素,每输入一个字符光标右移8个像素
 	switch (mode)
 	{
-	case 1:
+	case 1://账号输入
 		if(name_temp[0]=='\0') //如果账号为空，则显示输入框
 			bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 		else
@@ -255,7 +255,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 			cursor(border,y1);
 		}
 		break;
-	case 2:
+	case 2://密码输入
 		if(code_temp[0]=='\0') //如果密码为空，则显示输入框
 			bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 		else
@@ -265,7 +265,7 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 			border+=12*i;
 			cursor(border,y1);
 		}
-	case 3:
+	case 3://确认密码输入
 	if(judge_temp[0]=='\0') //如果输入框为空，则显示输入框
 		bar1(bar_x1, bar_y1, bar_x2, bar_y2,0xFFFF);
 	else
@@ -360,29 +360,29 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 					bar1(border,y1,border+12, y1+26, 0xffff);	//清空原字符
 					draw_cursor(border,y1);
 				}
-				else if(temp=='\t')
-				{
-					if(mode==1)	//输入账号或密码模式
-					{
-						hide_cursor(border,y1);//隐藏光标
-						bar1(430,560,580,590,snow);
-						input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
-						break;
-					}
-					else if(mode==2)
-					{
-						hide_cursor(border,y1);//隐藏光标
-						bar1(430,560,580,590,snow);
-						input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
-						break;
-					}
-					else if(mode == 3)
-					{
-						hide_cursor(border,y1);//隐藏光标
-						bar1(430,560,580,590,snow);
-						break;
-					}
-				}
+				// else if(temp=='\t')
+				// {
+				// 	if(mode==1)	//输入账号或密码模式
+				// 	{
+				// 		hide_cursor(border,y1);//隐藏光标
+				// 		bar1(430,560,580,590,snow);
+				// 		input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
+				// 		break;
+				// 	}
+				// 	else if(mode==2)
+				// 	{
+				// 		hide_cursor(border,y1);//隐藏光标
+				// 		bar1(430,560,580,590,snow);
+				// 		input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
+				// 		break;
+				// 	}
+				// 	else if(mode == 3)
+				// 	{
+				// 		hide_cursor(border,y1);//隐藏光标
+				// 		bar1(430,560,580,590,snow);
+				// 		break;
+				// 	}
+				// }
 				else if(i>=10)
 				{
 					mouse_off_arrow(&mouse);
@@ -398,26 +398,39 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 				break;
 			}
 		}
-		else if(mouse_press(455, 255, 845, 295)==1 && mode !=1)  //点击账号栏
+		else if(mouse_press(455, 255, 845, 295)==1 && mode !=1 && state==0)  //点击注册时账号栏
 		{
 			hide_cursor(border,y1);//隐藏光标
-			bar1(430,560,580,590,snow);
-			input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,1); 
+			bar1(455,255,845,295,snow);
+			input_mode(name,code,judge,455,255,845,295,1,0); 
 			break;
 		}
-		else if(mouse_press(450, 330, 850, 380)==1 && mode !=2)
+		else if(mouse_press(450, 330, 850, 380)==1 && mode !=2 && state==0)//点击注册时密码栏
 		{
 			hide_cursor(border,y1);//隐藏光标
-			bar1(430,560,580,590,snow);
-			input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,2); 
+			bar1(455,335,845,375,snow);
+			input_mode(name,code,judge,455,335,845,375,2,0); 
 			break;
 		}
-
-		else if(mouse_press(450, 410, 850, 460)==1 && mode !=3)
+		else if(mouse_press(450, 410, 850, 460)==1 && mode !=3 && state==0)//点击注册时确认密码栏
 		{
 			hide_cursor(border,y1);//隐藏光标
-			bar1(430,560,580,590,snow);
-			input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,3); 
+			bar1(455,415,845,455,snow);
+			input_mode(name,code,judge,455,415,845,455,3,0); 
+			break;
+		}
+		else if(mouse_press(300, 330, 700, 380)==1 && mode !=1 && state==1)//点击登录时账号框 
+		{
+			hide_cursor(border,y1);//隐藏光标
+			bar1(305, 335, 695, 375,snow);
+			input_mode(name,code,judge, 305, 335, 695, 375,1,1);
+			break;
+		}
+        else if(mouse_press(300, 410, 700, 460)==1 && mode !=2 && state==1)//点击密码框 
+		{	
+			hide_cursor(border,y1);//隐藏光标
+			bar1(305, 415, 695, 455,snow);
+			input_mode(name,code,judge, 305, 415, 695, 455,2,1);
 			break;
 		}
 		else if (mouse_press(bar_x1,bar_y1,bar_x2,bar_y2)==2)  //点击框外

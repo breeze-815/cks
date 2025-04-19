@@ -5,7 +5,7 @@ FoodOrder Foodorders = {0}; // 订单
 void food_order(int index){
 
     UserList UL = {0};
-    USER *currentUser;
+    USER currentUser;
 
     int page = 0;// 初始页码
     int totalPage =(shopping_food.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
@@ -13,7 +13,7 @@ void food_order(int index){
     
     ReadAllUser(&UL); // 读取用户列表
 
-    currentUser=&UL.elem[users.pos];// 获取当前用户信息
+    currentUser=UL.elem[users.pos];// 获取当前用户信息
 
     DestroyUList(&UL); // 释放用户列表空间
 
@@ -61,7 +61,7 @@ void food_order(int index){
             }
             else if(mouse_press(800, 700, 1000, 750) == 1)
             { 
-                if (currentUser->community == '\0' || strlen(currentUser->number) == 0)// 判断用户信息是否完善
+                if (currentUser.community == '\0' || strlen(currentUser.number) == 0)// 判断用户信息是否完善
                 {
                     draw_info();
                     state = 1;
@@ -80,13 +80,13 @@ void food_order(int index){
         {
             if(mouse_press(430, 105, 650, 155)==1)
             {
-                number_input(currentUser->number, 435, 110, 645, 150); // 输入手机号
+                number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
             }
             else if(mouse_press(710, 105, 830, 155)==1)
             {
-                if(strlen(currentUser->number)==11)
+                if(strlen(currentUser.number)==11)
                 {
-                    save_user(*currentUser);
+                    save_user(currentUser);
                     PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                     delay(500);
                     bar1(800,50,950,100,snow);
@@ -101,20 +101,20 @@ void food_order(int index){
             else if(mouse_press(440, 180, 560, 230)==1)
             {
                 press1(4);//紫菘
-                currentUser->community=1;//紫菘
-                save_user(*currentUser);
+                currentUser.community=1;//紫菘
+                save_user(currentUser);
             }
             else if(mouse_press(620, 180, 740, 230)==1)
             {
                 press1(5);//沁苑
-                currentUser->community=2;//沁苑
-                save_user(*currentUser);
+                currentUser.community=2;//沁苑
+                save_user(currentUser);
             }
             else if(mouse_press(800, 180, 920, 230)==1)
             {
                 press1(6);//韵苑
-                currentUser->community=3;//韵苑
-                save_user(*currentUser);
+                currentUser.community=3;//韵苑
+                save_user(currentUser);
             } 
 
             if(mouse_press(200, 250, 1024, 768)==1)
@@ -130,7 +130,7 @@ void draw_food_order(int page){
     int i;
     UserList UL = {0};
     FoodList FL = {0};
-    USER *currentUser;
+    USER currentUser;
     FoodOrder *currentFood;
 
     char* current_time = get_current_time(); // 获取当前时间
@@ -149,14 +149,14 @@ void draw_food_order(int page){
     int fullPageItemCount = 0; // 满页商品数量
 
     ReadAllUser(&UL); // 读取用户列表
-    currentUser = &UL.elem[users.pos]; // 获取当前用户信息
+    currentUser = UL.elem[users.pos]; // 获取当前用户信息
 
     ReadAllFood(&FL); // 读取订单列表
     Foodorders.id = FL.length + 1; // 订单号
 
     sprintf(time_str, "下单时间：%s", current_time);
-    sprintf(user_name, "用户名：%s", currentUser->name);
-    sprintf(user_phone, "手机号：%s", currentUser->number);
+    sprintf(user_name, "用户名：%s", currentUser.name);
+    sprintf(user_phone, "手机号：%s", currentUser.number);
 
     bar1(200, 0, 1024, 768, white); // 清空屏幕
 
@@ -180,7 +180,7 @@ void draw_food_order(int page){
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-        switch(currentUser->community){// 根据用户地址显示地址
+        switch(currentUser.community){// 根据用户地址显示地址
             case 1: strcpy(community,"地址：东区学生公寓"); break;
             case 2: strcpy(community,"地址：西区学生公寓"); break;
             case 3: strcpy(community,"地址：南区学生公寓"); break;
@@ -189,7 +189,7 @@ void draw_food_order(int page){
             default: strcpy(community,"地址：未知"); break;
         }
 
-        sprintf(building, "%d栋", currentUser->building);
+        sprintf(building, "%d栋", currentUser.building);
         strcat(community,building);
         PrintText(250, 250, community, HEI, 24, 1, black);
 
@@ -252,11 +252,11 @@ void draw_food_order(int page){
 
     //存储订单信息
     strcpy(Foodorders.order_time, current_time); // 下单时间
-    strcpy(Foodorders.user_name, currentUser->name); // 用户名
-    strcpy(Foodorders.user_phone, currentUser->number); // 用户手机号
+    strcpy(Foodorders.user_name, currentUser.name); // 用户名
+    strcpy(Foodorders.user_phone, currentUser.number); // 用户手机号
 
-    Foodorders.community=currentUser->community; // 用户社区
-    Foodorders.building=currentUser->building; 
+    Foodorders.community=currentUser.community; // 用户社区
+    Foodorders.building=currentUser.building; 
 
     for (i = 0; i < shopping_food.itemCount; i++) {
         Foodorders.item[i] = food_carts[i]; // 购物车内商品信息
@@ -266,6 +266,9 @@ void draw_food_order(int page){
     Foodorders.total_amount = total_amount; // 总金额
 
     //食堂编号在20行存过了
+
+    DestroyUList(&UL); // 释放用户列表空间
+    DestroyFList(&FL); // 释放订单列表空间
 
 }
 

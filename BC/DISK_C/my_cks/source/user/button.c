@@ -101,8 +101,8 @@ void draw_button(int x)
     int deta_x1 = (x == 5 ? 30 : 40), deta_x2 = (x == 5 ? 23 : 35), deta_y = 15;
 
     char buffer[20];
-    PrintText(200, 310, "-----------------------------------", HEI, 32, 1, black); // 分隔线
-    bar1(200, 320, 1024, 768, white); // 清除原有按钮
+    bar1(230, 320, 995, 732, white); // 清除原有按钮
+    //PrintText(200, 310, "-----------------------------------", HEI, 32, 1, black); // 分隔线
     
     for (i = 0; i < sizeof(button) / sizeof(button[0]); i++) {
         if (button[i].commmunity == x) {
@@ -151,6 +151,8 @@ int press_button(int mx, int my, int cur_index, int cur_community) {
                 sprintf(buffer, "%d栋", button[cur_index].number);
                 PrintText(button[cur_index].x1 + deta_x, button[cur_index].y1 + 15, 
                         buffer, HEI, 24, 1, deepblue);
+            }else {
+                
             }
 
             // 设置新高亮
@@ -164,14 +166,14 @@ int press_button(int mx, int my, int cur_index, int cur_community) {
             sprintf(buffer, "%d栋", button[i].number);
             PrintText(button[i].x1 + deta_x, button[i].y1 + 15, buffer, HEI, 24, 1, white);
 
-            // 调试信息
-            bar1(200, 310, 700, 340, white);
-            sprintf(test_buf, "传出索引%d 对应%d %d", new_index, button[new_index].commmunity, button[new_index].number);
-            PrintText(200, 310, test_buf, HEI, 32, 1, black);
-
             break; // 退出循环，避免多个按钮被处理
         }
     }
+    //调试信息
+    // bar1(200, 310, 700, 340, white);
+    // sprintf(test_buf, "传出索引%d 对应%d %d", new_index, button[new_index].commmunity, button[new_index].number);
+    // PrintText(200, 310, test_buf, HEI, 32, 1, black);
+
     return new_index;
 }
  

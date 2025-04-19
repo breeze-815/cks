@@ -64,6 +64,12 @@ void user_takeout(){
             index=press_canteen(mx,my);//获取食堂编号
             user_food(index);//进入菜品页面
 
+            //return后从这开始
+            mouse_off_arrow(&mouse);
+            bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+            draw_user_takeout();
+            mouse_on_arrow(mouse);
+
         }
         
     }

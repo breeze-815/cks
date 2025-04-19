@@ -3,7 +3,7 @@
 void business(int user_pos){
 
     UserList UL = {0};
-    USER *currentUser;
+    USER currentUser;
     int shop_type=0;//商店类型，1为超市，2为餐厅
     int code[12]={0};//绑定码
     int state=0;//状态，0为未绑定，1为已绑定
@@ -14,7 +14,9 @@ void business(int user_pos){
 
     ReadAllUser(&UL); // 读取用户列表
 
-    currentUser=&UL.elem[user_pos];// 获取当前用户信息
+    currentUser=UL.elem[user_pos];// 获取当前用户信息
+
+    DestroyUList(&UL); // 释放用户列表空间
 
     mouse_off_arrow(&mouse);
 	
@@ -27,19 +29,18 @@ void business(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            DestroyUList(&UL); // 释放用户列表内存
             return;
 			//welcome();//首页
 		}
         else if(mouse_press(430, 110, 650, 160)==1)//输入手机号
         {
-            number_input(currentUser->number, 435, 115, 645, 155); // 输入手机号
+            number_input(currentUser.number, 435, 115, 645, 155); // 输入手机号
         }
         else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
         {
-            if(strlen(currentUser->number)==11)
+            if(strlen(currentUser.number)==11)
             {
-                save_user(*currentUser);
+                save_user(currentUser);
                 PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
                 bar1(800,50,1024,100,white);
@@ -108,6 +109,7 @@ void business(int user_pos){
                 if(page==1)//超市
                 {
                     index=0;//选择超市
+                    choose_market(mouse.x, mouse.y);
                 }
 
                 if(page==2)//餐厅
@@ -232,8 +234,49 @@ void draw_canteen(){
 
 }
 
-void choose_market(int x){
-	
+void choose_market(int mx,int my){
+	if(mx>=250&&mx<=250+185&&my>=330&&my<=330+50)//韵苑
+    {
+        Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,deepblue);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"韵苑喻园超市",HEI,24,1,white);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"沁苑喻园超市",HEI,24,1,deepblue);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,deepblue);
+	}
+    else if(mx>=500&&mx<=500+185&&my>=330&&my<=330+50)//沁苑
+    {
+		Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,white);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"韵苑喻园超市",HEI,24,1,deepblue);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,deepblue);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"沁苑喻园超市",HEI,24,1,white);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,deepblue);
+	}
+    else if(mx>=750&&mx<=750+185&&my>=330&&my<=330+50)//紫菘
+    {
+		Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,white);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"韵苑喻园超市",HEI,24,1,deepblue);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"沁苑喻园超市",HEI,24,1,deepblue);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,deepblue);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,white);
+	}
 }
 
 int choose_canteen(int x, int y, int* last_index) {

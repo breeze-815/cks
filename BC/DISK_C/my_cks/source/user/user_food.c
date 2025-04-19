@@ -31,12 +31,25 @@ void user_food(int index){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
+            int i;
+            for(i=0;i<foodCount;i++)
+            {
+                foods[i].quantity=0;//清空商品数量
+            }
+            shopping_food.itemCount=0;//清空购物车
+            shopping_food.items=NULL;//清空购物车
+
             return;
-			//
 		}
         else if(mouse_press(800, 700, 1000, 750)==1)//查看订单
         {
             food_order(index);//查看订单
+
+            //return后从这开始
+            mouse_off_arrow(&mouse);
+            bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+            draw_user_food(index);
+            mouse_on_arrow(mouse);
         }
         else if(mouse_press(270, 235, 1070, 835)==1)//点击商品
         {

@@ -157,6 +157,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
                 default: strcpy(community,"地址：未知"); break;
             }
             sprintf(building, "%d栋", currentFood.building);
+            PrintCC(750,250, canteen[currentFood.station-1].name, HEI, 24, 1, black);//显示食堂名称
         }
         
         PrintText(250, 50, order_number_str, HEI, 24, 1, black);
@@ -164,17 +165,8 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-<<<<<<< Updated upstream
-        switch(currentOrder.address){// 根据用户地址显示地址
-            case 1: PrintText(250, 250, "地址：紫菘学生公寓", HEI, 24, 1, black); break;
-            case 2: PrintText(250, 250, "地址：沁苑学生公寓", HEI, 24, 1, black); break;
-            case 3: PrintText(250, 250, "地址：韵苑学生公寓", HEI, 24, 1, black); break;
-            default: PrintText(250, 250, "地址：未知", HEI, 24, 1, black); break;
-        }
-=======
         strcat(community,building);
         PrintText(250, 250, community, HEI, 24, 1, black);
->>>>>>> Stashed changes
 
         // 表头
         PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);

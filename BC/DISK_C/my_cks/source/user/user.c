@@ -3,20 +3,16 @@
 Shop shops={0};//存储信息的商店结构体 
 
 void user(int user_pos){
-<<<<<<< Updated upstream
-    
-=======
     char test_buf[20];
-    int cur_index = -1;//
+    int cur_index = -1;
     int cur_community=0;
     int returned_index;
->>>>>>> Stashed changes
     UserList UL = {0};
-    USER *currentUser;
+    USER currentUser;
 
     ReadAllUser(&UL); // 读取用户列表
 
-    currentUser=&UL.elem[user_pos];// 获取当前用户信息
+    currentUser=UL.elem[user_pos];// 获取当前用户信息
 
     DestroyUList(&UL); // 释放用户列表空间
     
@@ -31,6 +27,7 @@ void user(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
+            DestroyUList(&UL); // 释放用户列表空间
             return;
 			//welcome();//首页
 		}
@@ -69,45 +66,28 @@ void user(int user_pos){
         }
         else if(mouse_press(430, 105, 650, 155)==1)
         {
-            number_input(currentUser->number, 435, 110, 645, 150); // 输入手机号
+            number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
         }
         else if(mouse_press(710, 105, 830, 155)==1)
         {
-            if(strlen(currentUser->number)==11)
+            if(strlen(currentUser.number)==11)
             {
-                save_user(*currentUser);
+                save_user(currentUser);
                 PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(800,50,950,100,white);
             }
             else
             {
                 PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(800,50,950,100,white);
             }
         }
         else if(mouse_press(440, 180, 560, 230)==1)
         {
-<<<<<<< Updated upstream
-            press1(4);//紫菘
-            currentUser->address=1;//紫菘
-            save_user(*currentUser);
-        }
-        else if(mouse_press(620, 180, 740, 230)==1)
-        {
-            press1(5);//沁苑
-            currentUser->address=2;//沁苑
-            save_user(*currentUser);
-        }
-        else if(mouse_press(800, 180, 920, 230)==1)
-        {
-            press1(6);//韵苑
-            currentUser->address=3;//韵苑
-            save_user(*currentUser);
-=======
             cur_index = -1;
-            press1(4);//按钮状态切换
+            press1(4);//东区
             draw_button(1);
             cur_community=1; 
            
@@ -142,27 +122,30 @@ void user(int user_pos){
             cur_community=5;
         }
         else if (mouse_press(200, 310, 1024, 768) == 1) { 
+
             MouseGet(&mouse);
             mouse_off_arrow(&mouse);
             returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
 
-            currentUser->community = button[returned_index].commmunity;//获取社区编号
+            if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
+            {
+                currentUser.community = button[returned_index].commmunity;//获取社区编号
 
-            currentUser->building = button[returned_index].number;//获取楼号编号
+                currentUser.building = button[returned_index].number;//获取楼号编号
+
+                save_user(currentUser);//保存用户信息
+            }
 
             cur_index = returned_index;//更新当前按钮编号
-
-            save_user(*currentUser);//保存用户信息
 
             mouse_on_arrow(mouse);
 
             delay(200);
->>>>>>> Stashed changes
         }
     }
 }
 
-void draw_user(USER *currentUser)
+void draw_user(USER currentUser)
 {
     bar1(0, 0, 1024, 768,0xFFFF);
     bar1(0, 0, 200, 768,0x0235);
@@ -176,9 +159,11 @@ void draw_user(USER *currentUser)
     Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);//超市按钮
     Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);//外卖按钮
     Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//快递按钮
-    Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);//紫菘按钮
-    Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);//沁苑按钮
-    Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);//韵苑按钮
+    Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);//东区按钮
+    Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);//西区按钮
+    Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);//南区按钮
+    Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,deepblue);//紫菘按钮
+    Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);//韵苑按钮
 
     Draw_Rounded_Rectangle(430, 105, 650, 155, 5, 1,deepblue);//手机号输入框 
     Draw_Rounded_Rectangle(710, 105, 830, 155, 25, 1,deepblue);//保存按钮
@@ -187,16 +172,18 @@ void draw_user(USER *currentUser)
     PrintCC(75,291,"超市",HEI,24,1,deepblue);
     PrintCC(75,454,"外卖",HEI,24,1,deepblue);
     PrintCC(75,617,"快递",HEI,24,1,deepblue);
-    PrintCC(475,195,"紫菘",HEI,24,1,deepblue);
-    PrintCC(655,195,"沁苑",HEI,24,1,deepblue);
-    PrintCC(835,195,"韵苑",HEI,24,1,deepblue);
+    PrintCC(475,195,"东区",HEI,24,1,deepblue);
+    PrintCC(655,195,"西区",HEI,24,1,deepblue);
+    PrintCC(835,195,"南区",HEI,24,1,deepblue);
+    PrintCC(565,270,"紫菘",HEI,24,1,deepblue);
+    PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
     PrintCC(745,120,"保存",HEI,24,1,deepblue);
 
     PrintCC(250,50,"当前账号类型为：用户",HEI,24,1,deepblue);
     PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
     PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
    
-    Readbmp64k(201, 257, "bmp\\map.bmp");
+    //Readbmp64k(201, 257, "bmp\\map.bmp");
     
 }
 
@@ -243,39 +230,112 @@ void press1(int x){
         case 4:{
             Fill_Rounded_Rectangle(440, 180, 560, 230, 25, deepblue);
             Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,white);
-            PrintCC(475,195,"紫菘",HEI,24,1,white);
+            PrintCC(475,195,"东区",HEI,24,1,white);
             Fill_Rounded_Rectangle(620, 180, 740, 230, 25, white);
             Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);
-            PrintCC(655,195,"沁苑",HEI,24,1,deepblue);
+            PrintCC(655,195,"西区",HEI,24,1,deepblue);
             Fill_Rounded_Rectangle(800, 180, 920, 230, 25, white);
             Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);
-            PrintCC(835,195,"韵苑",HEI,24,1,deepblue);
+            PrintCC(835,195,"南区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(530, 255, 650, 305, 25, white);
+            Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,deepblue);
+            PrintCC(565,270,"紫菘",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(750, 255, 870, 305, 25, white);
+            Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);
+            PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
             break;
         }
         case 5:{
             Fill_Rounded_Rectangle(440, 180, 560, 230, 25, white);
             Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);
-            PrintCC(475,195,"紫菘",HEI,24,1,deepblue);
+            PrintCC(475,195,"东区",HEI,24,1,deepblue);
             Fill_Rounded_Rectangle(620, 180, 740, 230, 25, deepblue);
             Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,white);
-            PrintCC(655,195,"沁苑",HEI,24,1,white);
+            PrintCC(655,195,"西区",HEI,24,1,white);
             Fill_Rounded_Rectangle(800, 180, 920, 230, 25, white);
             Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);
-            PrintCC(835,195,"韵苑",HEI,24,1,deepblue);
+            PrintCC(835,195,"南区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(530, 255, 650, 305, 25, white);
+            Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,deepblue);
+            PrintCC(565,270,"紫菘",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(750, 255, 870, 305, 25, white);
+            Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);
+            PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
             break;  
         }
         case 6:{
             Fill_Rounded_Rectangle(440, 180, 560, 230, 25, white);
             Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);
-            PrintCC(475,195,"紫菘",HEI,24,1,deepblue);
+            PrintCC(475,195,"东区",HEI,24,1,deepblue);
             Fill_Rounded_Rectangle(620, 180, 740, 230, 25, white);
             Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);
-            PrintCC(655,195,"沁苑",HEI,24,1,deepblue);
+            PrintCC(655,195,"西区",HEI,24,1,deepblue);
             Fill_Rounded_Rectangle(800, 180, 920, 230, 25, deepblue);
             Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,white);
-            PrintCC(835,195,"韵苑",HEI,24,1,white);
+            PrintCC(835,195,"南区",HEI,24,1,white);
+            Fill_Rounded_Rectangle(530, 255, 650, 305, 25, white);
+            Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,deepblue);
+            PrintCC(565,270,"紫菘",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(750, 255, 870, 305, 25, white);
+            Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);
+            PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
             break;
         }
+        case 7 :{
+            Fill_Rounded_Rectangle(440, 180, 560, 230, 25, white);
+            Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);
+            PrintCC(475,195,"东区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(620, 180, 740, 230, 25, white);
+            Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);
+            PrintCC(655,195,"西区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(800, 180, 920, 230, 25, white);
+            Draw_Rounded_Rectangle(800, 180, 920, 230, 25, 1,deepblue);
+            PrintCC(835,195,"南区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(530, 255, 650, 305, 25, deepblue);
+            Draw_Rounded_Rectangle(530, 255, 650, 305, 25, 1,white);
+            PrintCC(565,270,"紫菘",HEI,24,1,white);
+            Fill_Rounded_Rectangle(750, 255, 870, 305, 25, white);
+            Draw_Rounded_Rectangle(750, 255, 870, 305, 25, 1,deepblue);
+            PrintCC(785,270,"韵苑",HEI,24,1,deepblue);
+            break;
+        }
+        case 8:{
+            Fill_Rounded_Rectangle(440, 180, 560, 230, 25, white);
+            Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);
+            PrintCC(475,195,"东区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(620, 180, 740, 230, 25, white);
+            Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);
+            PrintCC(655,195,"西区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(800, 180, 920, 230 ,25 ,white);
+            Draw_Rounded_Rectangle(800 ,180 ,920 ,230 ,25 ,1 ,deepblue);
+            PrintCC(835 ,195 ,"南区" ,HEI ,24 ,1 ,deepblue); 
+            Fill_Rounded_Rectangle(530 ,255 ,650 ,305 ,25 ,white);
+            Draw_Rounded_Rectangle(530 ,255 ,650 ,305 ,25 ,1 ,deepblue);
+            PrintCC(565 ,270 ,"紫菘" ,HEI ,24 ,1 ,deepblue); 
+            Fill_Rounded_Rectangle(750 ,255 ,870 ,305 ,25 ,deepblue);
+            Draw_Rounded_Rectangle(750 ,255 ,870 ,305 ,25 ,1 ,white);
+            PrintCC(785 ,270 ,"韵苑" ,HEI ,24 ,1 ,white); 
+            break;
+        }
+        case 9:{
+            Draw_Rounded_Rectangle(440, 180, 560, 230, 25, 1,deepblue);
+            PrintCC(475,195,"东区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(620, 180, 740, 230, 25, white);
+            Draw_Rounded_Rectangle(620, 180, 740, 230, 25, 1,deepblue);
+            PrintCC(655,195,"西区",HEI,24,1,deepblue);
+            Fill_Rounded_Rectangle(800, 180, 920, 230 ,25 ,white);
+            Draw_Rounded_Rectangle(800 ,180 ,920 ,230 ,25 ,1 ,deepblue);
+            PrintCC(835 ,195 ,"南区" ,HEI ,24 ,1 ,deepblue); 
+            Fill_Rounded_Rectangle(530 ,255 ,650 ,305 ,25 ,white);
+            Draw_Rounded_Rectangle(530 ,255 ,650 ,305 ,25 ,1 ,deepblue);
+            PrintCC(565 ,270 ,"紫菘" ,HEI ,24 ,1 ,deepblue); 
+            Fill_Rounded_Rectangle(750 ,255 ,870 ,305 ,25 ,deepblue);
+            Draw_Rounded_Rectangle(750 ,255 ,870 ,305 ,25 ,1 ,white);
+            PrintCC(785 ,270 ,"韵苑" ,HEI ,24 ,1 ,white); 
+            break;
+        }
+        default:
+            break;
     }
     mouse_on_arrow(mouse);
 }
