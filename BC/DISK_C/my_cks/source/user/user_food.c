@@ -1,24 +1,25 @@
 #include "all_func.h"
 
 Food foods[12]={
-    {1, 1, "黄焖鸡", 15, "bmp\\shop\\apple.bmp",0},
-    {2, 1, "黄焖鸡", 15, "bmp\\shop\\apple.bmp",0},
-    {3, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {4, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {5, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {6, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {7, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {8, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {9, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {10, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {11, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0},
-    {12, 1, "黄焖鸡米饭", 15, "bmp\\shop\\apple.bmp",0}
+    {1, 1, "黄焖鸡米饭", 20, "bmp\\canteen\\huang.bmp",0},
+    {2, 1, "卤肉饭", 15, "bmp\\canteen\\lurou.bmp",0},
+    {3, 1, "蛋炒饭", 10, "bmp\\canteen\\dan.bmp",0},
+    {4, 1, "炒河粉", 10, "bmp\\canteen\\hefen.bmp",0},
+    {5, 1, "牛肉拉面", 12, "bmp\\canteen\\niurou.bmp",0},
+    {6, 1, "番茄鸡蛋面", 8, "bmp\\canteen\\fanqie.bmp",0},
+    {7, 1, "红烧肉", 12, "bmp\\canteen\\hong.bmp",0},
+    {8, 1, "炒油麦菜", 4, "bmp\\canteen\\cai.bmp",0},
+    {9, 1, "小米粥", 3, "bmp\\canteen\\xiaomi.bmp",0},
+    {10, 1, "八宝粥", 3, "bmp\\canteen\\babao.bmp",0},
+    {11, 1, "排骨炖藕汤", 8, "bmp\\canteen\\ou.bmp",0},
+    {12, 1, "紫菜蛋花汤", 2, "bmp\\canteen\\zicai.bmp",0}
 };
 FoodCart food_carts[12]={0};//购物车内的商品
 ShoppingFood shopping_food={0};//购物车整体
 
 void user_food(int index){
     int foodCount=12;
+    int state=0;//0为未选择排序，1为选择排序
 
     mouse_off_arrow(&mouse);
 	
@@ -58,6 +59,55 @@ void user_food(int index){
             draw_food_quantity(foods); //刷新页面显示更新后的数量
             delay(100);
         }
+        else if(mouse_press(220,75, 250, 90)==1)
+        {
+            mouse_off_arrow(&mouse);//隐藏鼠标
+            draw_sort();//绘制排序页面
+            mouse_on_arrow(mouse);//显示鼠标
+            state=1;//已点击排序
+        }
+
+        if (state == 1) {
+            if (mouse_press(205, 95, 445, 144) == 1) // 点击从高到低
+            {
+                int i, j;
+        
+                for (i = 0; i < 12 - 1; i++) {
+                    for (j = 0; j < 12 - 1 - i ; j++) {
+                        if (foods[j].price < foods[j + 1].price) {
+                            Food temp = foods[j];
+                            foods[j] = foods[j + 1];
+                            foods[j + 1] = temp;
+                        }
+                    }
+                }
+
+                mouse_off_arrow(&mouse);//隐藏鼠标
+                draw_user_food(index);
+                mouse_on_arrow(mouse);//显示鼠标
+                state=0;
+            }
+            else if(mouse_press(205, 146, 445, 295)==1)//点击从低到高
+            {
+            	int i, j;
+        
+                for (i = 0; i < 12 - 1; i++) {
+                    for (j = 0; j < 12 - 1 - i ; j++) {
+                        if (foods[j].price > foods[j + 1].price) {
+                            Food temp = foods[j];
+                            foods[j] = foods[j + 1];
+                            foods[j + 1] = temp;
+                        }
+                    }
+                }
+
+                mouse_off_arrow(&mouse);//隐藏鼠标
+                draw_user_food(index);
+                mouse_on_arrow(mouse);//显示鼠标
+                state=0;
+            }
+
+        }
     }
 }
 
@@ -67,6 +117,9 @@ void draw_user_food(int index){
     int i,j;
 	bar1(200, 0, 1024, 768, white);
     bar1(0, 250, 199, 768, deepblue);
+
+    Line_Thick(220,75,235,90,1,black);//
+    Line_Thick(235,90,250,75,1,black);//
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5,1,deepblue);//查看订单按钮
 

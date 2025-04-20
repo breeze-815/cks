@@ -44,7 +44,7 @@ int Userposition(UserList UL,USER e);
 //显示光标
 void show_gb(int x,int y);
 //得到显示信息
-void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode);
+void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_x2,int bar_y2,int mode,int state);
 //保存用户信息
 int save_user(USER temp);
 

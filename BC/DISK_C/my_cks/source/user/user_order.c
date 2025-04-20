@@ -178,7 +178,6 @@ void draw_user_order(int page){
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
-    char order_number; // 打印订单号
 
     int startIdx = 0;// 起始商品索引
     int itemsPerPage = 0;// 每页商品数量

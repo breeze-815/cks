@@ -109,6 +109,7 @@ void business(int user_pos){
                 if(page==1)//³¬ÊÐ
                 {
                     index=0;//Ñ¡Ôñ³¬ÊÐ
+                    choose_market(mouse.x, mouse.y);
                 }
 
                 if(page==2)//²ÍÌü
@@ -233,8 +234,49 @@ void draw_canteen(){
 
 }
 
-void choose_market(int x){
-	
+void choose_market(int mx,int my){
+	if(mx>=250&&mx<=250+185&&my>=330&&my<=330+50)//ÔÏÔ·
+    {
+        Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,deepblue);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"ÔÏÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,white);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"ÇßÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"×ÏÝ¿Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+	}
+    else if(mx>=500&&mx<=500+185&&my>=330&&my<=330+50)//ÇßÔ·
+    {
+		Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,white);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"ÔÏÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,deepblue);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"ÇßÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,white);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"×ÏÝ¿Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+	}
+    else if(mx>=750&&mx<=750+185&&my>=330&&my<=330+50)//×ÏÝ¿
+    {
+		Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,white);
+		Draw_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,1,deepblue);
+        PrintCC(250+17,330+13,"ÔÏÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+                
+        Fill_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,white);
+        Draw_Rounded_Rectangle(500, 330, 500+185, 330+50, 5,1,deepblue);
+        PrintCC(500+17,330+13,"ÇßÔ·Ó÷Ô°³¬ÊÐ",HEI,24,1,deepblue);
+
+        Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,deepblue);
+        Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
+        PrintCC(750+17,330+13,"×ÏÝ¿Ó÷Ô°³¬ÊÐ",HEI,24,1,white);
+	}
 }
 
 int choose_canteen(int x, int y, int* last_index) {

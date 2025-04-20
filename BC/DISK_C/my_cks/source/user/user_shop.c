@@ -101,6 +101,7 @@ ShoppingCart cart={0};
 void user_shop(){
     int productCount = 84;//超市里商品数量初始化
     int currentpage = 1;//当前页面初始化
+    int state=0;//0为未点击排序，1为已点击排序
 
     mouse_off_arrow(&mouse);//隐藏鼠标
 	
@@ -146,42 +147,62 @@ void user_shop(){
         {
             user_cart();//用户购物车页面
             break;
+        }else if(mouse_press(220,75, 250, 90)==1)
+        {
+            mouse_off_arrow(&mouse);//隐藏鼠标
+            draw_sort();//绘制排序页面
+            mouse_on_arrow(mouse);//显示鼠标
+            state=1;//已点击排序
         }
         else if(mouse_press(200, 0, 320, 50)==1)
         {
             currentpage = 1;//生活用品
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
 
         }
         else if(mouse_press(320, 0, 440, 50)==1)
         {
             currentpage = 2;//文具
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(440, 0, 560, 50)==1)
         {
             currentpage = 3;//零食
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(560, 0, 680, 50)==1)
         {
             currentpage = 4;//饮料
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(680, 0, 800, 50)==1)
         {
             currentpage = 5;//运动用品
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(800, 0, 920, 50)==1)
         {
             currentpage = 6;//水果
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(920, 0, 1024, 50)==1)
         {
             currentpage = 7;//文创
+            mouse_off_arrow(&mouse);//隐藏鼠标
             draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+            mouse_on_arrow(mouse);//显示鼠标
         }
         else if(mouse_press(270, 235, 1070, 835)==1)//点击商品
         {
@@ -189,6 +210,53 @@ void user_shop(){
             AddSub(mouse.x, mouse.y, productCount, products, carts, &cart.itemCount, currentpage - 1); //注意currentpage从1开始，计算index时需减1
             draw_user_shop_quantity(products, productCount, currentpage); //刷新页面显示更新后的数量
             delay(100);
+        }
+
+        //点击排序
+        if (state == 1) {
+            if (mouse_press(205, 95, 445, 144) == 1) // 点击从高到低
+            {
+                int i, j;
+                int cnt = (currentpage - 1) * 12; // 当前页起始下标
+                int end = cnt + 12;
+        
+                for (i = cnt; i < end - 1; i++) {
+                    for (j = cnt; j < end - 1 - (i - cnt); j++) {
+                        if (products[j].price < products[j + 1].price) {
+                            Product temp = products[j];
+                            products[j] = products[j + 1];
+                            products[j + 1] = temp;
+                        }
+                    }
+                }
+
+                mouse_off_arrow(&mouse);//隐藏鼠标
+                draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+                mouse_on_arrow(mouse);//显示鼠标
+                state=0;
+            }
+            else if(mouse_press(205, 146, 445, 295)==1)//点击从低到高
+            {
+            	int i, j;
+                int cnt = (currentpage - 1) * 12; // 当前页起始下标
+                int end = cnt + 12;
+        
+                for (i = cnt; i < end - 1; i++) {
+                    for (j = cnt; j < end - 1 - (i - cnt); j++) {
+                        if (products[j].price > products[j + 1].price) {
+                            Product temp = products[j];
+                            products[j] = products[j + 1];
+                            products[j + 1] = temp;
+                        }
+                    }
+                }
+
+                mouse_off_arrow(&mouse);//隐藏鼠标
+                draw_user_shop(products, productCount,currentpage);//绘制用户超市页面
+                mouse_on_arrow(mouse);//显示鼠标
+                state=0;
+            }
+
         }
     }
 }
@@ -211,6 +279,11 @@ void draw_user_shop(Product products[],int productCount,int currentpage){
     Line_Thick(920,0,920,50,2,deepblue);
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5,1,deepblue);//购物车按钮
+
+    Line_Thick(220,75,235,90,1,black);//
+    Line_Thick(235,90,250,75,1,black);//
+
+
 
     PrintCC(860,715,"购物车",HEI,24,1,deepblue);
     PrintCC(220,700,"喻园超市",HEI,48,1,deepblue);
@@ -413,3 +486,11 @@ void removeFromCart(Product p, CartItem carts[], int *itemCount) {
     }
 }
 
+void draw_sort(){
+	Fill_Rounded_Rectangle(205, 95, 455, 200, 30,snow);//填色
+    Draw_Rounded_Rectangle(205, 95, 455, 200, 30, 1,0x6B4D);//最外围灰色圆角矩形
+
+    PrintText(225, 110,"价格从高到低排序",HEI,24,1,black);
+    Line_Thick(215, 145, 445, 145, 1, deepgrew);//横线
+    PrintText(225, 160,"价格从低到高排序",HEI,24,1,black);
+}

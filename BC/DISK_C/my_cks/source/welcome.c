@@ -41,11 +41,11 @@ int welcome() {
         }
         else if(mouse_press(300, 330, 700, 380)==1)//µã»÷ÕËºÅ¿ò 
 		{
-			input_mode(name,code,judge1, 305, 335, 695, 375,1);
+			input_mode(name,code,judge1, 305, 335, 695, 375,1,1);
 		}
         else if(mouse_press(300, 410, 700, 460)==1)//µã»÷ÃÜÂë¿ò 
 		{
-			input_mode(name,code,judge1, 305, 415, 695, 455,2);
+			input_mode(name,code,judge1, 305, 415, 695, 455,2,1);
 		}
         else if(mouse_press(300,490, 485, 540)==1)//µã»÷µÇÂ¼
         {
@@ -103,7 +103,10 @@ void draw_basic()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
-    Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//ÌîÉ«
+    //Readbmp64k(0, 0, "bmp\\hust.bmp");//¶ÁÈ¡±³¾°Í¼Æ¬
+    //Readbmp64k(0, 0, "bmp\\windows.bmp");//
+
+    //Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//ÌîÉ«
     Draw_Rounded_Rectangle(200, 148, 824, 600, 30, 2,0x6B4D);//×îÍâÎ§»ÒÉ«Ô²½Ç¾ØĞÎ
     
     Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//ÕËºÅÀ¸Ô²½Ç¾ØĞÎ

@@ -28,6 +28,7 @@
 #include "user_food.h"
 #include "food_order.h"
 #include "button.h"
+#include "de_order.h"
 
 #include "busi.h"
 #include "busi_order.h"
@@ -73,5 +74,6 @@ extern RouteState route_state;
 #define grey 0xC618
 #define lightred 0XF800
 #define Red 0xF800
+#define deepgrew 0x6B4D
 #endif
 

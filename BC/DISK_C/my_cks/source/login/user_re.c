@@ -36,15 +36,15 @@ void user_register(){
         }
         else if(mouse_press(450, 250, 850, 300)==1)//输入账号//x+5,y+6
         {
-            input_mode(users.name,users.code,judge,455,255,845,295,1);
+            input_mode(users.name,users.code,judge,455,255,845,295,1,0);
 		}
         else if(mouse_press(450, 330, 850, 380)==1)//输入密码
         {   
-			input_mode(users.name,users.code,judge,455,335,845,375,2);
+			input_mode(users.name,users.code,judge,455,335,845,375,2,0);
 		}
 		else if(mouse_press(450, 410, 850, 460)==1)//重新输入密码
         {   
-			input_mode(users.name,users.code,judge,455,415,845,455,3);
+			input_mode(users.name,users.code,judge,455,415,845,455,3,0);
 		}
         if(mouse_press(665, 490, 850, 540)==1)//点击确认键
         {   

@@ -1,14 +1,38 @@
 #include "all_func.h"
 
 Deliver delivers={0};//存储信息的快递结构体
+Station stations[8]={
+    {"顺丰快递"},
+    {"韵达快递"},
+    {"申通快递"},
+    {"中通快递"},
+    {"京东快递"},
+    {"邮政快递"},
+    {"圆通快递"},
+    {"其他快递"}
+};
 
 void user_deliver(){
     UserList UL = {0};
-    USER *currentUser;
+    DeliverList DL = {0};
+    USER currentUser;
+    int last_index=-1;//记录上次选择的服务提供商
+    int state=0; //判断是否需要完善信息
+
+    int cur_index = -1;
+    int cur_community=0;
+    int returned_index;
 
     ReadAllUser(&UL); // 读取用户列表
+    ReadAllDeliver(&DL); // 读取订单列表
 
-    currentUser=&UL.elem[users.pos];// 获取当前用户信息
+    currentUser=UL.elem[users.pos];// 获取当前用户信息
+
+    delivers.id=DL.length+1;// 订单号
+    strcpy(delivers.name, currentUser.name);// 用户名
+    strcpy(delivers.number, currentUser.number);// 用户手机号
+    delivers.community=currentUser.community;// 用户地址
+    delivers.building=currentUser.building;// 用户楼栋
 
     DestroyUList(&UL); // 释放用户列表空间
 
@@ -44,55 +68,151 @@ void user_deliver(){
             user_deliver();//用户快递页面 
             return;
         }
-        else if(mouse_press(440, 35, 660, 85)==1)
-        {
-            deliver_input(delivers.code, 445, 40, 655, 80); // 输入取件码
+
+        //
+        if(state==0){
+            if(mouse_press(440, 35, 660, 85)==1)
+            {
+                deliver_input(delivers.code, 445, 40, 655, 80); // 输入取件码
+            }
+            else if(mouse_press(730, 35, 850, 85)==1)//保存取件码按钮
+            {
+                save_Deliver(delivers);
+                PrintCC(750, 120, "保存成功", HEI, 24, 1, lightred);
+                delay(500);
+                bar1(750, 120, 1024, 160, white);
+            }
+            else if(mouse_press(800, 700, 1000, 750)==1)//点击生成订单按钮
+            {
+                if (delivers.station == 0) // 未选择服务提供商
+                { 
+                    PrintCC(750, 120, "请选择服务提供商", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(750, 120, 1024, 160, white);
+                }
+                else if(strlen(delivers.code)==0){//未输入取件码
+                    PrintCC(750, 120, "请输入取件码", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(750, 120, 1024, 160, white);
+                }
+                else if (currentUser.community == '\0' || strlen(currentUser.number) == 0)// 判断用户信息是否完善
+                {
+                    mouse_off_arrow(&mouse);
+                    draw_info();
+                    mouse_on_arrow(mouse);
+                    state = 1;
+                }
+                else//输入正确,保存信息
+                {
+                    strcpy(delivers.time, get_current_time()); // 保存时间
+                    save_Deliver(delivers);
+                    de_order();//进入订单页面
+                }
+
+            }
+            else if(mouse_press(250,50, 750+185, 325+50)==1)//选择服务提供商
+            {
+                int index;
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                
+                index=choose_station(mouse.x, mouse.y, &last_index);
+
+                if(index!=-1)
+                {
+                    delivers.station=index;//记录选择的服务提供商
+                    save_Deliver(delivers);
+                }
+
+                mouse_on_arrow(mouse);
+            }
         }
-        else if(mouse_press(730, 35, 850, 85)==1)//保存订单号按钮
+        
+        // 完善用户信息
+        if(state==1)
         {
-        	save_Deliver(delivers);
-            PrintCC(750, 120, "保存成功", HEI, 24, 1, lightred);
-            delay(500);
-            bar1(750, 120, 1024, 160, white);
-        }
-        else if(mouse_press(800, 700, 1000, 750)==1)
-        {
-            save_Deliver(delivers);
-            PrintCC(750, 120, "订单已保存", HEI, 24, 1, lightred);
-            delay(500);
-            bar1(750, 120, 1024, 160, white);
-        }
-        else if(mouse_press(250, 175, 250+185, 175+50)==1)
-        {
-            press_station(1);          
-        }
-        else if(mouse_press(500, 175, 500+185, 175+50)==1)
-        {
-            press_station(2);
-        }
-        else if(mouse_press(750, 175, 750+185, 175+50)==1)
-        {
-            press_station(3);
-        }
-        else if(mouse_press(250, 250, 250+185, 250+50)==1)
-        {
-            press_station(4);
-        }
-        else if(mouse_press(500, 250, 500+185, 250+50)==1)
-        {
-            press_station(5);
-        }
-        else if(mouse_press(750, 250, 750+185, 250+50)==1)
-        {
-            press_station(6);
-        }
-        else if(mouse_press(250, 325, 250+185, 325+50)==1)
-        {
-            press_station(7);
-        }
-        else if(mouse_press(500, 325, 500+185, 325+50)==1)
-        {
-            press_station(8);
+            if(mouse_press(430, 105, 650, 155)==1)
+            {
+                number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
+            }
+            else if(mouse_press(710, 105, 830, 155)==1)
+            {
+                if(strlen(currentUser.number)==11)
+                {
+                    save_user(currentUser);
+                    PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,white);
+                }
+                else
+                {
+                    PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,white);
+                }
+            }
+            else if(mouse_press(440, 180, 560, 230)==1)
+            {
+                cur_index = -1;
+                press1(4);//按钮状态切换
+                draw_button(1);
+                cur_community=1; 
+            
+            }
+            else if(mouse_press(620, 180, 740, 230)==1)
+            {
+                cur_index = -1;
+                press1(5);//西区
+                draw_button(2);
+                cur_community=2;
+            }
+            else if(mouse_press(800, 180, 920, 230)==1)
+            {
+                cur_index = -1;
+                press1(6);//南区
+                draw_button(3);
+                cur_community=3;
+        
+            }
+            else if(mouse_press(530, 255, 650, 305)==1)
+            {
+                cur_index = -1;
+                press1(7);//紫菘
+                draw_button(4);
+                cur_community=4;
+            }
+            else if(mouse_press(750, 255, 870, 305)==1)
+            {
+                cur_index = -1;
+                press1(8);//韵苑
+                draw_button(5);
+                cur_community=5;
+            }
+            else if (mouse_press(200, 310, 1024, 768) == 1) { 
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
+
+                currentUser.community = button[returned_index].commmunity;//获取社区编号
+
+                currentUser.building = button[returned_index].number;//获取楼号编号
+
+                cur_index = returned_index;//更新当前按钮编号
+
+                save_user(currentUser);//保存用户信息
+
+                mouse_on_arrow(mouse);
+
+                delay(200);
+            }
+
+            if(mouse_press(950, 50, 975,75)==1)
+            {
+                state = 0;
+                mouse_off_arrow(&mouse);
+                draw_user_deliver();
+                mouse_on_arrow(mouse);
+            }
         }
     }
 }
@@ -135,287 +255,53 @@ void draw_user_deliver(){
     PrintCC(850, 715, "生成订单", HEI, 24, 1, deepblue);
 }
 
-void press_station(int x){
-    mouse_off_arrow(&mouse);
-    switch (x)
-    {
-        case 1:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,deepblue);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,white);
 
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
+int choose_station(int x, int y, int* last_index) {
+    int i, j;
+    int index = -1;
+    int station_count = 8;
 
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
+    for (i = 0; i < 3; i++) {           // 行
+        for (j = 0; j < 3; j++) {       // 列
+            int x1 = 250 + 250 * j;
+            int y1 = 175 + 75 * i;
+            int x2 = x1 + 185;
+            int y2 = y1 + 50;
+            
+            index = i * 3 + j;
+            if (index >= station_count) break; // 超出快递数量则退出
 
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
+            
 
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
+            if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
 
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
+                // 恢复上一个按钮
+                if (*last_index != -1 && *last_index != index) {
+                    int pre_row = *last_index / 3;
+                    int pre_col = *last_index % 3;
+                    int pre_x1 = 250 + 250 * pre_col;
+                    int pre_y1 = 175 + 75 * pre_row;
+                    int pre_x2 = pre_x1 + 185;
+                    int pre_y2 = pre_y1 + 50;
 
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
+                    Fill_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, white);
+                    Draw_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, 1, deepblue);
+                    PrintCC(pre_x1 + 40, pre_y1 + 13, stations[*last_index].name, HEI, 24, 1, deepblue);
+                }
 
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 2:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
+                // 当前按钮高亮
+                Fill_Rounded_Rectangle(x1, y1, x2, y2, 5, deepblue);
+                Draw_Rounded_Rectangle(x1, y1, x2, y2, 5, 1, deepblue);
+                PrintCC(x1 + 40, y1 + 13, stations[index].name, HEI, 24, 1, white);
 
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,deepblue);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,white);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 3:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,deepblue);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,white);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 4:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,deepblue);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,white);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }   
-        case 5:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,deepblue);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,white);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 6:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,deepblue);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,white);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 7:{
-            Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,deepblue);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,white);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
-            break;
-        }
-        case 8:{
-        	Fill_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-            PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-            PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,white);
-            Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-            PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-            PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-            PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-            Fill_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,white);
-            Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-            PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,white);
-            Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-            PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-            Fill_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,deepblue);
-            Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-            PrintCC(500+40,325+13,"其他快递",HEI,24,1,white);
-            break;
+                *last_index = index;
+                return index + 1; // 返回快递公司编号（1~8）
+            }
         }
     }
-    mouse_on_arrow(mouse);
-    delivers.station=x;
-    save_Deliver(delivers);
+    return -1; // 未选中任何按钮
 }
+
 
 void deliver_input(char *deliver_code,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {

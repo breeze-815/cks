@@ -157,6 +157,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
                 default: strcpy(community,"地址：未知"); break;
             }
             sprintf(building, "%d栋", currentFood.building);
+            PrintCC(750,250, canteen[currentFood.station-1].name, HEI, 24, 1, black);//显示食堂名称
         }
         
         PrintText(250, 50, order_number_str, HEI, 24, 1, black);
