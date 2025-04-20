@@ -20,7 +20,7 @@ typedef struct ShoppingCart{
 typedef struct Product
 {
     int id;
-    int type;
+    int type;//ÖÖÀà
     char name[20];
     float price;
     char photo[50];
@@ -37,5 +37,7 @@ void init_Products(int *productCount);
 void AddSub(int mx, int my, int productCount, Product products[], CartItem carts[], int *cartCount, int currentPage);
 void addToCart(Product p, CartItem carts[], int *cartCount,int index);
 void removeFromCart(Product p, CartItem carts[], int *cartCount);
+
+void draw_sort();
 
 #endif

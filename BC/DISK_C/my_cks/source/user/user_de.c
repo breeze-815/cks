@@ -17,6 +17,11 @@ void user_deliver(){
     DeliverList DL = {0};
     USER currentUser;
     int last_index=-1;//记录上次选择的服务提供商
+    int state=0; //判断是否需要完善信息
+
+    int cur_index = -1;
+    int cur_community=0;
+    int returned_index;
 
     ReadAllUser(&UL); // 读取用户列表
     ReadAllDeliver(&DL); // 读取订单列表
@@ -63,26 +68,49 @@ void user_deliver(){
             user_deliver();//用户快递页面 
             return;
         }
-        else if(mouse_press(440, 35, 660, 85)==1)
-        {
-            deliver_input(delivers.code, 445, 40, 655, 80); // 输入取件码
-        }
-        else if(mouse_press(730, 35, 850, 85)==1)//保存订单号按钮
-        {
-        	save_Deliver(delivers);
-            PrintCC(750, 120, "保存成功", HEI, 24, 1, lightred);
-            delay(500);
-            bar1(750, 120, 1024, 160, white);
-        }
-        else if(mouse_press(800, 700, 1000, 750)==1)
-        {
-            strcpy(delivers.time, get_current_time()); // 保存时间
-            save_Deliver(delivers);
 
-            de_order();//进入订单页面
+        //
+        if(state==0){
+            if(mouse_press(440, 35, 660, 85)==1)
+            {
+                deliver_input(delivers.code, 445, 40, 655, 80); // 输入取件码
+            }
+            else if(mouse_press(730, 35, 850, 85)==1)//保存取件码按钮
+            {
+                save_Deliver(delivers);
+                PrintCC(750, 120, "保存成功", HEI, 24, 1, lightred);
+                delay(500);
+                bar1(750, 120, 1024, 160, white);
+            }
+            else if(mouse_press(800, 700, 1000, 750)==1)//点击生成订单按钮
+            {
+                if (delivers.station == 0) // 未选择服务提供商
+                { 
+                    PrintCC(750, 120, "请选择服务提供商", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(750, 120, 1024, 160, white);
+                }
+                else if(strlen(delivers.code)==0){//未输入取件码
+                    PrintCC(750, 120, "请输入取件码", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(750, 120, 1024, 160, white);
+                }
+                else if (currentUser.community == '\0' || strlen(currentUser.number) == 0)// 判断用户信息是否完善
+                {
+                    mouse_off_arrow(&mouse);
+                    draw_info();
+                    mouse_on_arrow(mouse);
+                    state = 1;
+                }
+                else//输入正确,保存信息
+                {
+                    strcpy(delivers.time, get_current_time()); // 保存时间
+                    save_Deliver(delivers);
+                    de_order();//进入订单页面
+                }
 
-        }
-        else if(mouse_press(250,50, 750+185, 325+50)==1)//选择服务提供商
+            }
+            else if(mouse_press(250,50, 750+185, 325+50)==1)//选择服务提供商
             {
                 int index;
                 MouseGet(&mouse);
@@ -98,7 +126,94 @@ void user_deliver(){
 
                 mouse_on_arrow(mouse);
             }
+        }
         
+        // 完善用户信息
+        if(state==1)
+        {
+            if(mouse_press(430, 105, 650, 155)==1)
+            {
+                number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
+            }
+            else if(mouse_press(710, 105, 830, 155)==1)
+            {
+                if(strlen(currentUser.number)==11)
+                {
+                    save_user(currentUser);
+                    PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,white);
+                }
+                else
+                {
+                    PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,950,100,white);
+                }
+            }
+            else if(mouse_press(440, 180, 560, 230)==1)
+            {
+                cur_index = -1;
+                press1(4);//按钮状态切换
+                draw_button(1);
+                cur_community=1; 
+            
+            }
+            else if(mouse_press(620, 180, 740, 230)==1)
+            {
+                cur_index = -1;
+                press1(5);//西区
+                draw_button(2);
+                cur_community=2;
+            }
+            else if(mouse_press(800, 180, 920, 230)==1)
+            {
+                cur_index = -1;
+                press1(6);//南区
+                draw_button(3);
+                cur_community=3;
+        
+            }
+            else if(mouse_press(530, 255, 650, 305)==1)
+            {
+                cur_index = -1;
+                press1(7);//紫菘
+                draw_button(4);
+                cur_community=4;
+            }
+            else if(mouse_press(750, 255, 870, 305)==1)
+            {
+                cur_index = -1;
+                press1(8);//韵苑
+                draw_button(5);
+                cur_community=5;
+            }
+            else if (mouse_press(200, 310, 1024, 768) == 1) { 
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
+
+                currentUser.community = button[returned_index].commmunity;//获取社区编号
+
+                currentUser.building = button[returned_index].number;//获取楼号编号
+
+                cur_index = returned_index;//更新当前按钮编号
+
+                save_user(currentUser);//保存用户信息
+
+                mouse_on_arrow(mouse);
+
+                delay(200);
+            }
+
+            if(mouse_press(950, 50, 975,75)==1)
+            {
+                state = 0;
+                mouse_off_arrow(&mouse);
+                draw_user_deliver();
+                mouse_on_arrow(mouse);
+            }
+        }
     }
 }
 

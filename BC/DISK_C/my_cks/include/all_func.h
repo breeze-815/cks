@@ -72,5 +72,6 @@ extern Button button [79];
 #define grey 0xC618
 #define lightred 0XF800
 #define Red 0xF800
+#define deepgrew 0x6B4D
 #endif
 

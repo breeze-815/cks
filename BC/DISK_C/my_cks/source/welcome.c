@@ -104,7 +104,10 @@ void draw_basic()
 {
     bar1(0, 0, 1024, 768,0xFFFF);
 
-    Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//填色
+    //Readbmp64k(0, 0, "bmp\\hust.bmp");//读取背景图片
+    //Readbmp64k(0, 0, "bmp\\windows.bmp");//
+
+    //Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//填色
     Draw_Rounded_Rectangle(200, 148, 824, 600, 30, 2,0x6B4D);//最外围灰色圆角矩形
     
     Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//账号栏圆角矩形

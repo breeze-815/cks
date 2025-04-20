@@ -83,7 +83,8 @@
     "FREAD.C": "cpp",
     "busi_detail.h": "c",
     "EXIT.C": "cpp",
-    "unordered_map": "c"
+    "unordered_map": "c",
+    "FPERR.C": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
