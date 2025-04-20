@@ -61,7 +61,7 @@ extern Order orders;
 extern Canteen canteen[18];
 
 extern Node node[410];
-
+extern Station stations[8];
 extern Button button [79];
 extern Acp_order acp_orders[4];
 extern RouteState route_state;
