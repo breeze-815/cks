@@ -28,8 +28,7 @@ void rider(int user_pos){
         else if(mouse_press(562, 50, 682, 100)==1)
         {
             press3(2);//进入路线规划界面
-            route();//进入路线规划界面
-            //dijkstra(&node[1], &node[29]);//测试dijkstra算法
+            route(acp_orders,4);//进入路线规划界面
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
@@ -49,29 +48,6 @@ void rider(int user_pos){
     }
 }
 
-// void draw_rider()
-// {
-//     bar1(0, 0, 1024, 768,0xFFFF);
-//     bar1(0, 0, 200, 768,0x0235);
-
-//     Fill_Rounded_Rectangle(40, 113, 160, 163, 25,white);//填色
-//     Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//填色
-//     Fill_Rounded_Rectangle(40, 439, 160, 489, 25,white);//填色
-//     Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);//填色
-
-//     Draw_Rounded_Rectangle(40, 113, 160, 163, 25, 1,deepblue);//返回
-//     Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);//接单
-//     Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);//路线 
-//     Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//账户
-
-//     PrintCC(75,128,"返回",HEI,24,1,deepblue);
-//     PrintCC(75,291,"接单",HEI,24,1,deepblue);
-//     PrintCC(75,454,"路线",HEI,24,1,deepblue);
-//     PrintCC(75,617,"账户",HEI,24,1,deepblue);
-
-//     PrintCC(250,50,"当前账号类型为：骑手",HEI,24,1,deepblue);
-    
-// }
 
 void draw_rider(){
     bar1(0, 0, 1024, 768, white);
@@ -104,15 +80,7 @@ void press3(int x){
     { 
         case 1:
         {
-            // Fill_Rounded_Rectangle(40, 276, 160, 326, 25,deepblue);
-            // Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);
-            // PrintCC(75,291,"接单",HEI,24,1,white);
-            // Fill_Rounded_Rectangle(40, 439, 160, 489, 25,white);
-            // Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);
-            // PrintCC(75,454,"路线",HEI,24,1,deepblue);
-            // Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);
-            // Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);
-            // PrintCC(75,617,"账户",HEI,24,1,deepblue);
+            
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, deepblue);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,white);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, white);

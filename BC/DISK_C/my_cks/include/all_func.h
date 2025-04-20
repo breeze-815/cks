@@ -39,6 +39,7 @@
 #include "account.h"
 #include "HZK.h"
 #include "draw_shape.h"
+#include "arrange.h"
 extern MOUSE mouse;
 
 extern USER users;
@@ -58,9 +59,11 @@ extern ShoppingFood shopping_food;
 extern Order orders;
 extern Canteen canteen[18];
 
-extern Node node[409];
+extern Node node[410];
 
 extern Button button [79];
+extern Acp_order acp_orders[4];
+extern RouteState route_state;
 #define white 0xFFFF
 #define snow 0xFFDF
 #define black 0x0000

@@ -27,7 +27,7 @@ void accept_order()
         else if(mouse_press(342, 50, 462, 100)==1)
         {
             press3(1);
-            route();//进入路线规划界面
+            //route();//进入路线规划界面
             //dijkstra(&node[1], &node[29]);//测试dijkstra算法
             //return后从这开始
             mouse_off_arrow(&mouse);
