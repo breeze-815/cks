@@ -35,11 +35,12 @@
 #include "busi_det.h"
 
 #include "ride.h"
-#include "map.h"
-
+#include "route.h"
+#include "acp_order.h"
+#include "account.h"
 #include "HZK.h"
 #include "draw_shape.h"
-
+#include "arrange.h"
 extern MOUSE mouse;
 
 extern USER users;
@@ -58,11 +59,12 @@ extern ShoppingFood shopping_food;
 
 extern Order orders;
 extern Canteen canteen[18];
+
+extern Node node[410];
 extern Station stations[8];
-
-extern Node node[409];
-
 extern Button button [79];
+extern Acp_order acp_orders[4];
+extern RouteState route_state;
 #define white 0xFFFF
 #define snow 0xFFDF
 #define black 0x0000
