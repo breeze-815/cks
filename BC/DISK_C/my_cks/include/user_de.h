@@ -10,9 +10,9 @@ typedef struct Deliver
     int type; // 快递类型
     char name[10]; // 用户名
     char number[12];//手机号
-    int index; //用户住址索引
     int community; //地址 1东区 2西区 3南区 4紫菘 5韵苑
-	int building;//楼栋
+	int building;//楼栋号
+    int destination;//送达地址
     char time[20]; // 下单时间 
     char code[10]; //取件码
     int company; // 快递公司

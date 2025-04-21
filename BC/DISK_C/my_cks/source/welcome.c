@@ -74,7 +74,6 @@ int welcome() {
                 //return后从这开始
                 ReadAllUser(&UL);
                 mouse_off_arrow(&mouse);
-                bar1(0, 0, 1024, 768, white); // 清除注册界面残留
                 draw_basic();
                 mouse_on_arrow(mouse);
 

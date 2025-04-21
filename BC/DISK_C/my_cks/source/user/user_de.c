@@ -232,7 +232,7 @@ void user_deliver(){
                 if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
                 {
                     currentUser.index = button[returned_index].index;//获取楼号编号
-                    delivers.index=currentUser.index;//保存楼号编号
+                    delivers.station=currentUser.index;//保存楼号编号
 
                     save_user(currentUser);//保存用户信息
                     save_Deliver(delivers);//保存订单信息
