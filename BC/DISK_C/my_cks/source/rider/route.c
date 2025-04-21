@@ -111,7 +111,7 @@ Node node [MAX_NODES] = {
     {891, 113, {82, 105, 168, 0, 0, 0}, {20, 56, 41, 20000, 20000, 20000}, 3, "104号路口"},
     {875, 112, {81, 104, 106, 0, 0, 0}, {20, 56, 26, 20000, 20000, 20000}, 3, "105号路口"},
     {868, 112, {105, 107, 108, 0, 0, 0}, {26, 39, 38, 20000, 20000, 20000}, 3, "106号路口"},
-    {868, 100, {83, 398, 0, 0, 0, 0}, {20, 25, 20000, 20000, 20000, 20000}, 2, "107号路口"},
+    {868, 100, {83, 398, 106, 0, 0, 0}, {20, 25, 106, 20000, 20000, 20000}, 3, "107号路口"},
     {867, 112, {104, 109, 361, 0, 0, 0}, {38, 40, 55, 20000, 20000, 20000}, 3, "108号路口"},
     {866, 112, {108, 110, 130, 362, 0, 0}, {40, 28, 42, 26, 20000, 20000}, 4, "109号路口"},
     {876, 133, {109, 111, 0, 0, 0, 0}, {28, 71, 20000, 20000, 20000, 20000}, 2, "110号路口"},
@@ -321,7 +321,7 @@ Node node [MAX_NODES] = {
     {121, 181, {310, 312, 0, 0, 0, 0}, {40, 92, 20000, 20000, 20000, 20000}, 2, "314号路口"},
     {129, 196, {310, 316, 386, 0, 0, 0}, {21, 41, 34, 20000, 20000, 20000}, 3, "315号路口"},
     {142, 192, {42, 313, 315, 0, 0, 0}, {20, 41, 41, 20000, 20000, 20000}, 3, "316号路口"},
-    {157, 188, {40, 307, 313, 0, 0, 0}, {20, 56, 56, 20000, 20000, 20000}, 3, "317号路口"},
+    {157, 188, {40, 307, 313, 39, 0, 0}, {20, 56, 56, 20, 20000, 20000}, 4, "317号路口"},
     {133, 209, {319, 385, 386, 0, 0, 0}, {40, 50, 15, 20000, 20000, 20000}, 3, "318号路口"},
     {144, 206, {41, 318, 320, 0, 0, 0}, {20, 40, 35, 20000, 20000, 20000}, 3, "319号路口"},
     {154, 203, {313, 319, 321, 0, 0, 0}, {49, 35, 30, 20000, 20000, 20000}, 3, "320号路口"},
@@ -418,87 +418,15 @@ Node node [MAX_NODES] = {
 
 RouteState route_state;
 
-// Acp_order acp_order [5] =
-// {
-//     {0001,1,39,2,1,123,18682353005}, //1号订单，韵苑食堂取餐，西一宿舍送餐，用户名：123，电话
-//     {0002,10,26,4,5,2,123,18682353005}, //2号订单，东三食堂取餐，紫菘5栋送餐，用户名：456，电话
-//     {0003,5,56,3,1,123,18682353005}, //3号订单，东教工食堂取餐，南一宿舍送餐，用户名：789，电话
-//     {0004,19,62,1,4,111,18682353005}, //4号订单，喻园超市取餐，东四宿舍送餐，用户名：111，电话
-//     {0005,16,95,5,24,222,18682353005} //5号订单，集锦园取餐，韵苑24东送餐，用户名：222
-// };
 
 int random_int(int min, int max) 
 {
     return rand() % (max - min + 1) + min;
 }
 
-
-
-// void route(Acp_order acp_orders[],int n_orders)
-// {
-//     int start_index,current_start_index,remaining;
-//     UserList UL = {0};
-//     USER *currentUser;
-//     ReadAllUser(&UL); // 读取用户列表
-//     //currentUser=&UL.elem[user_pos];// 获取当前用户信息
-//     mouse_off_arrow(&mouse);
-// 	draw_route();
-// 	mouse_on_arrow(mouse);
-//     srand(time(NULL));
-//     start_index = random_int(1, 409);
-//     remaining = n_orders * 2;
-//     current_start_index = arrange(start_index, acp_orders, n_orders, remaining); // 随机生成起点
-    
-// 	while(1)
-//     {
-// 		mouse_show_arrow(&mouse);
-
-// 		if(mouse_press(122, 50, 242, 150)==1)
-//         {
-//             DestroyUList(&UL); // 释放用户列表内存
-//             return;
-// 			//ride();//骑手首页
-// 		}
-//         else if(mouse_press(342, 50, 462, 150)==1)
-//         {
-//             accept_order();//接单页面
-//             //return后从这开始
-//             mouse_off_arrow(&mouse);
-//             bar1(200, 0, 1024, 768, white); // 清除接单界面残留
-//             draw_route();
-//             mouse_on_arrow(mouse);
-//         }
-//         else if(mouse_press(562, 50, 682, 150)==1)
-//         {
-            
-//             route(acp_orders,4);//骑手路线规划
-//             //return后从这开始
-//             mouse_off_arrow(&mouse);
-//             bar1(0, 0, 1024, 768, white); // 清除接单界面残留
-//             draw_route();
-//             mouse_on_arrow(mouse);
-//         }
-//         else if(mouse_press(782, 50, 902, 150)==1)//账户
-//         {
-//             account();//商家订单页面
-//             //return后从这开始
-//             mouse_off_arrow(&mouse);
-//             bar1(200, 0, 1024, 768, white); // 清除接单界面残留
-//             draw_route();
-//             mouse_on_arrow(mouse);
-//         }
-//         else if(mouse_press(900, 266, 1020, 316)==1)//已完成
-//         {
-//             bar1(0,150,1024,326,white);//清除已完成界面残留
-//             remaining--;
-//             current_start_index = arrange(current_start_index, acp_orders, n_orders, remaining); 
-//         }
-//     }
-// }
-
 void route(Acp_order acp_orders[], int n_orders) 
 {
-
+    char debug_buf[100];
     int start_index,next_index;
     UserList UL = {0};
     USER *currentUser;
@@ -513,6 +441,8 @@ void route(Acp_order acp_orders[], int n_orders)
     route_state.remaining = n_orders * 2;
     route_state.current_pos = random_int(1, 409);
     next_index = arrange(route_state.current_pos, acp_orders, n_orders); // 随机生成起点
+    sprintf(debug_buf,"%d",next_index);
+    PrintText(1,1,debug_buf,HEI,24,1,black);
     while(1)
     {
         mouse_show_arrow(&mouse);
@@ -567,12 +497,8 @@ void route(Acp_order acp_orders[], int n_orders)
                 {
                     route_state.delivered[next_index] = 1;
                 }
-                arrange(route_state.current_pos, acp_orders, n_orders);
+                next_index = arrange(route_state.current_pos, acp_orders, n_orders);
             } 
-            // else 
-            // {
-            //     show_completion_page();
-            // }
         }
     }
 }

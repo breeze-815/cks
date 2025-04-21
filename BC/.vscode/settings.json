@@ -84,7 +84,7 @@
     "busi_detail.h": "c",
     "EXIT.C": "cpp",
     "unordered_map": "c",
-    "FPERR.C": "cpp"
+    "RAND.C": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

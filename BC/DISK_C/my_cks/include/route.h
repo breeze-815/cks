@@ -34,6 +34,12 @@ typedef struct  RouteState {
 
 int random_int(int min, int max);
 void route(Acp_order acp_orders[], int n_orders);
+
+
 int dijkstra(Node *start, Node *end, int j);
+
+
+
+
 void draw_route();
 #endif

@@ -84,7 +84,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
     char order_number; // 打印订单号
-
+    char address[100]; // 打印用户地址
     int startIdx = 0;// 起始商品索引
     int itemsPerPage = 0;// 每页商品数量
     int endIdx = 0;// 结束商品索引
@@ -135,28 +135,30 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         if(index==0)
         {
             sprintf(order_number_str, "订单号：%d", currentOrder.id); // 订单号
-            switch(currentOrder.community){// 根据用户地址显示地址
-                case 1: strcpy(community,"地址：东区学生公寓"); break;
-                case 2: strcpy(community,"地址：西区学生公寓"); break;
-                case 3: strcpy(community,"地址：南区学生公寓"); break;
-                case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-                case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-                default: strcpy(community,"地址：未知"); break;
-            }
-            sprintf(building, "%d栋", currentOrder.building);
+            // switch(currentOrder.community){// 根据用户地址显示地址
+            //     case 1: strcpy(community,"地址：东区学生公寓"); break;
+            //     case 2: strcpy(community,"地址：西区学生公寓"); break;
+            //     case 3: strcpy(community,"地址：南区学生公寓"); break;
+            //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
+            //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
+            //     default: strcpy(community,"地址：未知"); break;
+            // }
+            // sprintf(building, "%d栋", currentOrder.building);
+            sprintf(address, "地址：%s", node[currentOrder.destination].name); // 用户地址
         }
         else 
         {
             sprintf(order_number_str, "订单号：%d", currentFood.id); // 订单号
-            switch(currentFood.community){// 根据用户地址显示地址
-                case 1: strcpy(community,"地址：东区学生公寓"); break;
-                case 2: strcpy(community,"地址：西区学生公寓"); break;
-                case 3: strcpy(community,"地址：南区学生公寓"); break;
-                case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-                case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-                default: strcpy(community,"地址：未知"); break;
-            }
-            sprintf(building, "%d栋", currentFood.building);
+            // switch(currentFood.community){// 根据用户地址显示地址
+            //     case 1: strcpy(community,"地址：东区学生公寓"); break;
+            //     case 2: strcpy(community,"地址：西区学生公寓"); break;
+            //     case 3: strcpy(community,"地址：南区学生公寓"); break;
+            //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
+            //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
+            //     default: strcpy(community,"地址：未知"); break;
+            // }
+            // sprintf(building, "%d栋", currentFood.building);
+            sprintf(address, "地址：%s", node[currentOrder.destination].name); // 用户地址
             PrintCC(750,250, canteen[currentFood.station-1].name, HEI, 24, 1, black);//显示食堂名称
         }
         
@@ -165,8 +167,8 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-        strcat(community,building);
-        PrintText(250, 250, community, HEI, 24, 1, black);
+        // strcat(community,building);
+        PrintText(250, 250, address, HEI, 24, 1, black);
 
         // 表头
         PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);

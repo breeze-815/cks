@@ -82,7 +82,7 @@ void press3(int x){
         {
             
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, deepblue);
-            Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,white);
+            Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "½Óµ¥", HEI, 24, 1, white);
             Fill_Rounded_Rectangle(562, 50, 682, 100, 25, white);
             Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,deepblue);
