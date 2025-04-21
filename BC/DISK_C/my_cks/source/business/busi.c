@@ -6,9 +6,10 @@ void business(int user_pos){
     USER currentUser;
     int shop_type=0;//商店类型，1为超市，2为餐厅
     int code[12]={0};//绑定码
-    int state=0;//状态，0为未绑定，1为已绑定
+    int state=0;//状态，0为未绑定，1为已输入绑定码，2为已绑定
     int page=0;//0为未选择，1为超市，2为餐厅
     int last_canteen_index = -1; // 记录上一个被按下的按钮
+    int temp_index = -1; // 临时变量,选择食堂/超市时不保存
     int index=-1;//食堂/超市编号
     
 
@@ -41,39 +42,21 @@ void business(int user_pos){
             if(strlen(currentUser.number)==11)
             {
                 save_user(currentUser);
-                PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                PrintCC(700,50,"保存成功",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(600,50,1024,100,white);
             }
             else
             {
-                PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                PrintCC(700,50,"长度不合法",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(600,50,1024,100,white);
             }
         }
-        else if(mouse_press(430, 185, 650, 235)==1)//输入绑定码
-        {
-            number_input(code, 435, 190, 645, 230); // 输入绑定码
-        }
-        else if(mouse_press(710, 185, 830, 235)==1)//确认绑定
-        {
-            if(strcmp(code,"111")==0)
-            {
-                PrintCC(800,50,"绑定成功",HEI,24,1,lightred);
-                delay(500);
-                bar1(800,50,1024,100,white);
-                state=1;//已绑定
-            }
-            else
-            {
-                PrintCC(800,50,"绑定失败",HEI,24,1,lightred);
-                delay(500);
-                bar1(800,50,1024,100,white);
-            }
-        }
+        
+        
 
-        //绑定后
+        //输入绑定码后
         if(state==1)
         {
             if(mouse_press(490, 260, 610, 310)==1)
@@ -89,39 +72,44 @@ void business(int user_pos){
                 shop_type=2;//餐厅
                 page=2;
             }
-            else if(mouse_press(40, 602, 160, 652)==1)//查看订单
+            else if(mouse_press(205, 325, 1024, 680)==1)//选择具体食堂/超市
             {
-                
-                business_order(index);//商家订单页面
-                
-                //return后从这开始
-                mouse_off_arrow(&mouse);
-                bar1(200, 0, 1024, 768, white); // 清除注册界面残留
-                draw_business();
-                mouse_on_arrow(mouse);
-    
-            }
-            else if(mouse_press(205, 325, 1024, 768)==1)//选择具体食堂/超市
-            {
-                
                 MouseGet(&mouse);
                 mouse_off_arrow(&mouse);
                 if(page==1)//超市
                 {
-                    index=0;//选择超市
+                    temp_index=0;//选择超市
                     choose_market(mouse.x, mouse.y);
                 }
 
                 if(page==2)//餐厅
                 {
-                    index=choose_canteen(mouse.x, mouse.y, &last_canteen_index);
+                    temp_index=choose_canteen(mouse.x, mouse.y, &last_canteen_index);
                 }
                 mouse_on_arrow(mouse);
             }
+            else if(mouse_press(800, 700, 1000, 750)==1)//确认绑定
+            {
+                index=temp_index;//保存
+                bar1(600,50,1024,100,white);
+                PrintCC(700,50,"绑定成功",HEI,24,1,lightred);
+                delay(500);
+                bar1(800,50,1024,100,white);
+                state=2;//已绑定
+                currentUser.state=index;//已绑定
+                save_user(currentUser);
+
+            }else if(mouse_press(40, 602, 160, 652)==1)//查看订单
+            {
+                PrintCC(750,50,"请先选择绑定的店铺",HEI,24,1,lightred);
+                delay(500);
+                bar1(800,50,1024,100,white);
+            }
+            
         }
 
         //未绑定
-        if(state==0)
+        if(state==0&&currentUser.state==-1)
         {
             if(mouse_press(490, 260, 610, 310)==1||
                mouse_press(670, 260, 790, 310)==1||
@@ -131,6 +119,48 @@ void business(int user_pos){
                 delay(500);
                 bar1(800,50,1024,100,white);
                 
+            }
+            else if(mouse_press(430, 185, 650, 235)==1)//输入绑定码
+            {
+                number_input(code, 435, 190, 645, 230); // 输入绑定码
+            }
+            else if(mouse_press(710, 185, 830, 235)==1)//确认绑定
+            {
+                if(strcmp(code,"111")==0)
+                {
+                    PrintCC(800,50,"验证成功",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,1024,100,white);
+                    state=1;//已绑定
+                }
+                else
+                {
+                    PrintCC(800,50,"验证失败",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(800,50,1024,100,white);
+                }
+            }
+        }
+
+        //已绑定
+        if(state==2||currentUser.state!=-1)
+        {
+        	if(mouse_press(40, 602, 160, 652)==1)//查看订单
+            {
+                if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
+                business_order(index);//商家订单页面
+                
+                //return后从这开始
+                mouse_off_arrow(&mouse);
+                bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+                draw_business();
+                mouse_on_arrow(mouse);
+    
+            }
+            if(mouse_press(205, 185, 1024,  680)==1)
+            {
+                bar1(600,50,1024,100,white);
+                PrintCC(650,50,"已绑定，无法更改",HEI,24,1,lightred);
             }
         }
     }
@@ -216,6 +246,11 @@ void draw_market(){
     Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,0x0235);
     PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,0x0235);
 
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 确认绑定
+    PrintCC(870, 715, "确定", HEI, 24, 1, deepblue);
+
+    PrintCC(600,50,"仅能绑定一次，请慎重操作",HEI,24,1,lightred);
+
 }
 
 void draw_canteen(){
@@ -231,6 +266,11 @@ void draw_canteen(){
             cnt++;
     	}
     }
+
+    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 确认绑定
+    PrintCC(870, 715, "确定", HEI, 24, 1, deepblue);
+
+    PrintCC(600,50,"仅能绑定一次，请慎重操作",HEI,24,1,lightred);
 
 }
 
@@ -248,6 +288,8 @@ void choose_market(int mx,int my){
         Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
         Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
         PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,deepblue);
+
+
 	}
     else if(mx>=500&&mx<=500+185&&my>=330&&my<=330+50)//沁苑
     {

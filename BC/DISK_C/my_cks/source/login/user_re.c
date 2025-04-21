@@ -6,6 +6,8 @@ void user_register(){
     
 	char judge[12]="\0";//用于判断的密码 
 
+    users.state=-1;//初始化为-1，代表未绑定
+
 	mouse_off_arrow(&mouse);
 	
 	draw_register();
