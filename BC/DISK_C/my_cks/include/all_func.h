@@ -41,6 +41,7 @@
 #include "HZK.h"
 #include "draw_shape.h"
 #include "arrange.h"
+#include "acp_det.h"
 extern MOUSE mouse;
 
 extern USER users;
@@ -58,7 +59,7 @@ extern FoodCart food_carts[12];
 extern ShoppingFood shopping_food;
 
 extern Order orders;
-extern Canteen canteen[18];
+extern Canteen canteen[17];
 
 extern Node node[410];
 extern Station stations[8];
