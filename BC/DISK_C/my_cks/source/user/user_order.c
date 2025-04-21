@@ -146,7 +146,7 @@ void user_order(){
 
                 currentUser.community = button[returned_index].commmunity;//获取社区编号
 
-                currentUser.building = button[returned_index].number;//获取楼号编号
+                currentUser.building = button[returned_index].index;//获取楼号编号
 
                 cur_index = returned_index;//更新当前按钮编号
 
@@ -178,7 +178,7 @@ void draw_user_order(int page){
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
-
+    char address[100]; // 打印用户地址
     int startIdx = 0;// 起始商品索引
     int itemsPerPage = 0;// 每页商品数量
     int endIdx = 0;// 结束商品索引
@@ -220,18 +220,21 @@ void draw_user_order(int page){
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-        switch(currentUser.community){// 根据用户地址显示地址
-            case 1: strcpy(community,"地址：东区学生公寓"); break;
-            case 2: strcpy(community,"地址：西区学生公寓"); break;
-            case 3: strcpy(community,"地址：南区学生公寓"); break;
-            case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-            case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-            default: strcpy(community,"地址：未知"); break;
-        }
 
-        sprintf(building, "%d栋", currentUser.building);
-        strcat(community,building);
-        PrintText(250, 250, community, HEI, 24, 1, black);
+
+        sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
+        // switch(currentUser.community){// 根据用户地址显示地址
+        //     case 1: strcpy(community,"地址：东区学生公寓"); break;
+        //     case 2: strcpy(community,"地址：西区学生公寓"); break;
+        //     case 3: strcpy(community,"地址：南区学生公寓"); break;
+        //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
+        //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
+        //     default: strcpy(community,"地址：未知"); break;
+        // }
+
+        // sprintf(building, "%d栋", currentUser.building);
+        // strcat(community,building);
+        PrintText(250, 250, address, HEI, 24, 1, black);
 
         // 表头
         PrintCC(250, 300, "商品详情：", HEI, 24, 1, black);
@@ -289,11 +292,22 @@ void draw_user_order(int page){
     }
 
     //存储订单信息
+
     strcpy(orders.order_time, current_time); // 下单时间
     strcpy(orders.user_name, currentUser.name); // 用户名
     strcpy(orders.user_phone, currentUser.number); // 用户手机号
+    // orders.destination = currentUser.community; // 用户地址
     orders.community=currentUser.community; // 用户社区
-    orders.building=currentUser.building; 
+    orders.destination=currentUser.index; 
+
+    if ( orders.destination >= 21 && orders.destination <=55 )
+    orders.pick_up_location = 20;
+    else if ( orders.destination >=56 && orders.destination <= 71 )
+    orders.pick_up_location = 19;
+    else if ( orders.destination >=72 && orders.destination <= 98 )
+    orders.pick_up_location = 18;
+    else if ( orders.destination >=99 && orders.destination <= 115 )
+    
     for (i = 0; i < cart.itemCount; i++) {
         orders.item[i] = carts[i]; // 购物车内商品信息
     }

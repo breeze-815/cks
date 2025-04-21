@@ -4,7 +4,8 @@
 typedef struct Button{
     int commmunity; // ÉçÇø±àºÅ
     int x1, y1, x2, y2; // °´Å¥×ø±ê
-    int number;          // Â¥¶°±àºÅ
+    int index;          // Â¥¶°Ë÷Òý
+    int number;        // Â¥¶°ºÅ
 } Button;
 void draw_button(int x); 
 int press_button(int mx, int my, int cur_index, int cur_community); // cur_index: µ±Ç°°´Å¥Ë÷Òý

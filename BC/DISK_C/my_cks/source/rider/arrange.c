@@ -4,7 +4,7 @@
 //test_demo
 Acp_order acp_orders[4] = {
     //  id        pick  dest  comm  bldg  user_name    user_phone
-    { "0001",    1,    39,    2,    1,   "张三",       "18682353005" }, // 1号订单，韵苑食堂取餐，西一宿舍送餐，用户名：张三，电话：18682353005
+    { "0001",    1,    40,    2,    2,   "张三",       "18682353005" }, // 1号订单，韵苑食堂取餐，西一宿舍送餐，用户名：张三，电话：18682353005
     { "0002",   10,    26,    4,    5,   "李四",       "18682353006" }, // 2号订单，东三食堂取餐，紫菘5栋送餐，用户名：李四，电话：18682353006
     { "0003",    5,    56,    3,    1,   "王五",       "18682353007" }, // 3号订单，东教工食堂取餐，南一宿舍送餐，用户名：王五，电话：18682353007
     { "0004",   19,    62,    1,    4,   "赵六",       "18682353008" } // 4号订单，喻园超市取餐，东四宿舍送餐，用户名：赵六，电话：18682353008  
@@ -48,13 +48,13 @@ int arrange(int start_idx, Acp_order acp_orders[], int n_orders)
     }
     while (temp_remaining > 0) {
         /*—— 找最近的可做任务 ——*/
-        best_dist = 20000;
+        best_dist = 30000;
         best_i    = -1;
         best_type = -1;
 
         for (i = 0; i < n_orders; i++) {
             /* 取餐任务 */
-            if (!temp_picked[i] ) {
+            if (!temp_picked[i]) {
                 dist = Manhattan_Distance(
                     node[temp_current].x, node[temp_current].y,
                     node[acp_orders[i].pick_up_index].x,
@@ -67,7 +67,7 @@ int arrange(int start_idx, Acp_order acp_orders[], int n_orders)
                 }
             }
             /* 送餐任务 */
-            else if (!temp_delivered[i] ) {
+            else if (!temp_delivered[i]) {
                 dist = Manhattan_Distance(
                     node[temp_current].x, node[temp_current].y,
                     node[acp_orders[i].destination_index].x,
@@ -116,12 +116,6 @@ int arrange(int start_idx, Acp_order acp_orders[], int n_orders)
         }
         temp_remaining--;
     }  
-    // for (i = 0; i < n_orders; i++) {
-    //     route_state.picked[i] = temp_picked[i];
-    //     route_state.delivered[i] = temp_delivered[i];
-    // }
-    // route_state.remaining = temp_remaining;
-    // route_state.current_pos = temp_current;
     return next_index; 
 }
 
@@ -148,7 +142,8 @@ void draw_arrange(int j, Acp_order acp_orders[], int start_index, int best_i, in
     char buf[20];
     int distance_m;
     float distance_km;
-    int time_min;
+    int time_min; // 假设最小时间为1分钟
+    int time_s;
 
     //Readbmp64k(0, 326, "bmp\\map4.bmp");
     Fill_Rounded_Rectangle(900, 266, 1020, 316, 5,deepblue);//已完成
@@ -161,7 +156,8 @@ void draw_arrange(int j, Acp_order acp_orders[], int start_index, int best_i, in
 
     distance_km = distance_m / 1000.0; // 转换为公里
     time_min = distance_m / 1000.0 * 60 / 20; // 假设平均速度为20km/h，计算时间
-
+    if(time_min < 1) 
+    time_s = time_min * 60; // 如果时间小于1分钟，转换为秒
     if(j==1) //第一个地点时打印起点
     {
         
@@ -191,6 +187,9 @@ void draw_arrange(int j, Acp_order acp_orders[], int start_index, int best_i, in
         calculate_centered_text(221*j-91+3, 185-16*2 , 10+221*j-3, 185 , buf, 16, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//距离
         //标注时间
+        if(time_min < 1)
+        sprintf(buf, "%ds", time_s);
+        else    
         sprintf(buf, "%dmin", time_min);
         calculate_centered_text(221*j-91+3, 185 , 10+221*j-3, 185+16*2 , buf, 16, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//时间
@@ -214,92 +213,12 @@ void draw_arrange(int j, Acp_order acp_orders[], int start_index, int best_i, in
         calculate_centered_text(220*j-1090+3 ,291-16*2 ,220*j-990-3 ,291 , buf, 16,&text_x,&text_y);
         PrintText(text_x,text_y , buf , HEI ,16 ,1 ,black);//距离
         //标注时间
-        sprintf(buf,"%dmin",time_min);
+        if(time_min < 1)
+        sprintf(buf, "%ds", time_s);
+        else    
+        sprintf(buf, "%dmin", time_min);
         calculate_centered_text(220*j-1090+3 ,291 ,220*j-990-3 ,291+16*2 , buf ,24,&text_x,&text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//时间
     }
 
 }
-
-// int get_next_target(Acp_order acp_orders[]) {
-//     int best_i = -1, best_type = -1;
-//     int best_dist = 20000;
-//     int dist;
-
-//     for (int i = 0; i < MAX_ORDERS; i++) {
-//         // 查找最近的未取餐订单
-//         if (!route_state.picked[i]) {
-//                 dist = Manhattan_Distance(
-//                 node[route_state.current_pos].x, node[route_state.current_pos].y,
-//                 node[acp_orders[i].pick_up_index].x,
-//                 node[acp_orders[i].pick_up_index].y
-//             );
-//             if (dist < best_dist) {
-//                 best_dist = dist;
-//                 best_i = i;
-//                 best_type = 0; // 取餐任务
-//             }
-//         }
-//         // 查找最近的未送餐订单
-//         else if (!route_state.delivered[i]) {
-//             int dist = Manhattan_Distance(
-//                 node[route_state.current_pos].x, node[route_state.current_pos].y,
-//                 node[acp_orders[i].destination_index].x,
-//                 node[acp_orders[i].destination_index].y
-//             );
-//             if (dist < best_dist) {
-//                 best_dist = dist;
-//                 best_i = i;
-//                 best_type = 1; // 送餐任务
-//             }
-//         }
-//     }
-
-//     // 返回下一个目标节点的索引
-//     if (best_i != -1) {
-//         return (best_type == 0) ? acp_orders[best_i].pick_up_index : acp_orders[best_i].destination_index;
-//     }
-
-//     // 如果没有目标任务，返回 -1
-//     return -1;
-// }
-
-// void draw_dynamic_route(Acp_order acp_orders[]) 
-// {
-//     // 绘制基础路线框架
-//     const int BOX_WIDTH = 120;
-//     const int HORIZONTAL_GAP = 30;
-//     int x = 10, y = 160;
-//     int i,prev_x;
-//     // 清除旧界面
-//     bar1(0, 150, 1024, 768, white);
-
-    
-//     // 绘制所有步骤
-//     for (i = 0; i <= route_state.step; i++) {
-//         // 动态布局计算
-//         if (i > 0 && (i % 4) == 0) {
-//             x = 10;
-//             y += 100;
-//         }
-
-//         // 绘制地点框
-//         Draw_Rounded_Rectangle(x, y, x+BOX_WIDTH, y+50, 5, 1, deepblue);
-        
-//         // 绘制连接箭头（非第一个节点）
-//         if (i > 0) {
-//             prev_x = x - (BOX_WIDTH + HORIZONTAL_GAP);
-//             Line_Thick(prev_x + BOX_WIDTH, y+25, x, y+25, 3, black);
-//             // 箭头头部绘制...
-//         }
-
-//         // 更新坐标
-//         x += (BOX_WIDTH + HORIZONTAL_GAP);
-//     }
-
-//     // 绘制当前路径
-//     if (route_state.step > 0) {
-//         dijkstra(&node[route_state.current_pos], 
-//                 &node[get_next_target(acp_orders)], 1);
-//     }
-// }

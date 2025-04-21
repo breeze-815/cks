@@ -130,8 +130,8 @@ void user(int user_pos){
             if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
             {
                 currentUser.community = button[returned_index].commmunity;//获取社区编号
-
-                currentUser.building = button[returned_index].number;//获取楼号编号
+                
+                currentUser.index = button[returned_index].index;//获取楼号编号
 
                 save_user(currentUser);//保存用户信息
             }
