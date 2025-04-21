@@ -1,7 +1,7 @@
 #include "all_func.h"
 
 Deliver delivers={0};//存储信息的快递结构体
-Station stations[8]={
+Company companys[8]={
     {"顺丰快递"},
     {"韵达快递"},
     {"申通快递"},
@@ -11,12 +11,23 @@ Station stations[8]={
     {"圆通快递"},
     {"其他快递"}
 };
+Station stations[8]={
+	{"韵苑1栋"},
+	{"韵苑2栋"},
+	{"韵苑3栋"},
+	{"东教工17栋"},
+    {"东4驿站"},
+    {"紫菘13栋"},
+    {"紫菘1栋"},
+    {"西十舍"},
+};
 
 void user_deliver(){
     UserList UL = {0};
     DeliverList DL = {0};
     USER currentUser;
     int last_index=-1;//记录上次选择的服务提供商
+    int last_index_station=-1;//记录上次选择的站点
     int state=0; //判断是否需要完善信息
 
     int cur_index = -1;
@@ -84,9 +95,15 @@ void user_deliver(){
             }
             else if(mouse_press(800, 700, 1000, 750)==1)//点击生成订单按钮
             {
-                if (delivers.station == 0) // 未选择服务提供商
+                if (delivers.company == 0) // 未选择服务提供商
                 { 
                     PrintCC(750, 120, "请选择服务提供商", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(750, 120, 1024, 160, white);
+                }
+                else if (delivers.station == 0) // 未选择站点
+                { 
+                    PrintCC(750, 120, "请选择驿站", HEI, 24, 1, lightred);
                     delay(500);
                     bar1(750, 120, 1024, 160, white);
                 }
@@ -95,7 +112,7 @@ void user_deliver(){
                     delay(500);
                     bar1(750, 120, 1024, 160, white);
                 }
-                else if (currentUser.community == '\0' || strlen(currentUser.number) == 0)// 判断用户信息是否完善
+                else if (currentUser.index == 0 || strlen(currentUser.number) == 0)// 判断用户信息是否完善
                 {
                     mouse_off_arrow(&mouse);
                     draw_info();
@@ -105,22 +122,38 @@ void user_deliver(){
                 else//输入正确,保存信息
                 {
                     strcpy(delivers.time, get_current_time()); // 保存时间
-                    save_Deliver(delivers);
+                    save_Deliver(delivers); // 保存订单信息
                     de_order();//进入订单页面
                 }
 
             }
-            else if(mouse_press(250,50, 750+185, 325+50)==1)//选择服务提供商
+            else if(mouse_press(250, 175, 750+185, 375)==1)//选择服务提供商
             {
                 int index;
                 MouseGet(&mouse);
                 mouse_off_arrow(&mouse);
                 
-                index=choose_station(mouse.x, mouse.y, &last_index);
+                index=choose_company(mouse.x, mouse.y, &last_index);
 
                 if(index!=-1)
                 {
-                    delivers.station=index;//记录选择的服务提供商
+                    delivers.company=index;//记录选择的服务提供商
+                    save_Deliver(delivers);
+                }
+
+                mouse_on_arrow(mouse);
+            }
+            else if(mouse_press(250, 455, 750+185, 655)==1)//选择驿站
+            {
+                int index_station;
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                
+                index_station=choose_station(mouse.x, mouse.y, &last_index_station);
+
+                if(index_station!=-1)
+                {
+                    delivers.station=index_station;//记录选择的站点
                     save_Deliver(delivers);
                 }
 
@@ -140,6 +173,8 @@ void user_deliver(){
                 if(strlen(currentUser.number)==11)
                 {
                     save_user(currentUser);
+                    strcpy(delivers.number, currentUser.number);//保存手机号
+                    save_Deliver(delivers);//保存手机号
                     PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                     delay(500);
                     bar1(800,50,950,100,white);
@@ -189,17 +224,21 @@ void user_deliver(){
                 cur_community=5;
             }
             else if (mouse_press(200, 310, 1024, 768) == 1) { 
+
                 MouseGet(&mouse);
                 mouse_off_arrow(&mouse);
                 returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
 
-                currentUser.community = button[returned_index].commmunity;//获取社区编号
+                if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
+                {
+                    currentUser.index = button[returned_index].index;//获取楼号编号
+                    delivers.index=currentUser.index;//保存楼号编号
 
-                currentUser.building = button[returned_index].number;//获取楼号编号
+                    save_user(currentUser);//保存用户信息
+                    save_Deliver(delivers);//保存订单信息
+                }
 
                 cur_index = returned_index;//更新当前按钮编号
-
-                save_user(currentUser);//保存用户信息
 
                 mouse_on_arrow(mouse);
 
@@ -218,6 +257,7 @@ void user_deliver(){
 }
 
 void draw_user_deliver(){
+    int i,j;
     bar1(200, 0, 1024, 768,white);
 
     Draw_Rounded_Rectangle(440, 35, 660, 85, 5, 1,deepblue);//取件码输入框 
@@ -225,38 +265,35 @@ void draw_user_deliver(){
 
     PrintCC(250,50,"请输入取件码：",HEI,24,1,deepblue);
     PrintCC(250,120,"请选择服务提供商：",HEI,24,1,deepblue);
+    PrintCC(250,400,"请选择驿站：",HEI,24,1,deepblue);
     PrintCC(765,50,"保存",HEI,24,1,deepblue);
 
-    Draw_Rounded_Rectangle(250, 175, 250+185, 175+50, 5,1,deepblue);
-    PrintCC(250+40,175+13,"顺丰快递",HEI,24,1,deepblue);
-    
-    Draw_Rounded_Rectangle(500, 175, 500+185, 175+50, 5,1,deepblue);
-    PrintCC(500+40,175+13,"韵达快递",HEI,24,1,deepblue);
+    for(i=0;i<3;i++)//绘制服务提供商按钮
+    {
+        for(j=0;j<3;j++)
+        {
+            if(i*3+j>=8) break; // 超出快递数量则退出
+            Draw_Rounded_Rectangle(250+250*j, 175+75*i, 250+185+250*j, 175+50+75*i, 5,1,deepblue);
+            PrintText(250+40+250*j,175+13+75*i,companys[i*3+j].name,HEI,24,1,deepblue);
+        }
+    }
 
-    Draw_Rounded_Rectangle(750, 175, 750+185, 175+50, 5,1,deepblue);
-    PrintCC(750+40,175+13,"申通快递",HEI,24,1,deepblue);
-
-    Draw_Rounded_Rectangle(250, 250, 250+185, 250+50, 5,1,deepblue);
-    PrintCC(250+40,250+13,"中通快递",HEI,24,1,deepblue);
-
-    Draw_Rounded_Rectangle(500, 250, 500+185, 250+50, 5,1,deepblue);
-    PrintCC(500+40,250+13,"京东快递",HEI,24,1,deepblue);  
-
-    Draw_Rounded_Rectangle(750, 250, 750+185, 250+50, 5,1,deepblue);
-    PrintCC(750+40,250+13,"邮政快递",HEI,24,1,deepblue);
-
-    Draw_Rounded_Rectangle(250, 325, 250+185, 325+50, 5,1,deepblue);
-    PrintCC(250+40,325+13,"圆通快递",HEI,24,1,deepblue);
-
-    Draw_Rounded_Rectangle(500, 325, 500+185, 325+50, 5,1,deepblue);
-    PrintCC(500+40,325+13,"其他快递",HEI,24,1,deepblue);
+    for(i=0;i<3;i++)//绘制驿站地址
+    {
+        for(j=0;j<3;j++)
+        {
+            if(i*3+j>=8) break; // 超出驿站数量则退出
+            Draw_Rounded_Rectangle(250+250*j, 455+75*i, 250+185+250*j, 455+50+75*i, 5,1,deepblue);
+            PrintText(250+40+250*j,455+13+75*i,stations[i*3+j].name,HEI,24,1,deepblue);
+        }
+    }
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 生成订单
     PrintCC(850, 715, "生成订单", HEI, 24, 1, deepblue);
 }
 
 
-int choose_station(int x, int y, int* last_index) {
+int choose_company(int x, int y, int* last_index) {
     int i, j;
     int index = -1;
     int station_count = 8;
@@ -286,16 +323,62 @@ int choose_station(int x, int y, int* last_index) {
 
                     Fill_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, white);
                     Draw_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, 1, deepblue);
-                    PrintCC(pre_x1 + 40, pre_y1 + 13, stations[*last_index].name, HEI, 24, 1, deepblue);
+                    PrintCC(pre_x1 + 40, pre_y1 + 13, companys[*last_index].name, HEI, 24, 1, deepblue);
                 }
 
                 // 当前按钮高亮
                 Fill_Rounded_Rectangle(x1, y1, x2, y2, 5, deepblue);
                 Draw_Rounded_Rectangle(x1, y1, x2, y2, 5, 1, deepblue);
-                PrintCC(x1 + 40, y1 + 13, stations[index].name, HEI, 24, 1, white);
+                PrintCC(x1 + 40, y1 + 13, companys[index].name, HEI, 24, 1, white);
 
                 *last_index = index;
                 return index + 1; // 返回快递公司编号（1~8）
+            }
+        }
+    }
+    return -1; // 未选中任何按钮
+}
+
+int choose_station(int x, int y, int* last_index_station) {
+    int i, j;
+    int index = -1;
+    int station_count = 8;
+
+    for (i = 0; i < 3; i++) {           // 行
+        for (j = 0; j < 3; j++) {       // 列
+            int x1 = 250 + 250 * j;
+            int y1 = 455 + 75 * i;
+            int x2 = x1 + 185;
+            int y2 = y1 + 50;
+            
+            index = i * 3 + j;
+            if (index >= station_count) break; // 超出快递数量则退出
+
+            
+
+            if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+
+                // 恢复上一个按钮
+                if (*last_index_station != -1 && *last_index_station != index) {
+                    int pre_row = *last_index_station / 3;
+                    int pre_col = *last_index_station % 3;
+                    int pre_x1 = 250 + 250 * pre_col;
+                    int pre_y1 = 455 + 75 * pre_row;
+                    int pre_x2 = pre_x1 + 185;
+                    int pre_y2 = pre_y1 + 50;
+
+                    Fill_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, white);
+                    Draw_Rounded_Rectangle(pre_x1, pre_y1, pre_x2, pre_y2, 5, 1, deepblue);
+                    PrintText(pre_x1 + 40, pre_y1 + 13, stations[*last_index_station].name, HEI, 24, 1, deepblue);
+                }
+
+                // 当前按钮高亮
+                Fill_Rounded_Rectangle(x1, y1, x2, y2, 5, deepblue);
+                Draw_Rounded_Rectangle(x1, y1, x2, y2, 5, 1, deepblue);
+                PrintText(x1 + 40, y1 + 13, stations[index].name, HEI, 24, 1, white);
+
+                *last_index_station = index;
+                return index + 1; // 返回驿站编号（1~8）
             }
         }
     }

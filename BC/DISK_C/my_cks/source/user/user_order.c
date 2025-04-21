@@ -142,15 +142,19 @@ void user_order(){
             else if (mouse_press(200, 310, 1024, 768) == 1) { 
                 MouseGet(&mouse);
                 mouse_off_arrow(&mouse);
+                
                 returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
 
-                currentUser.community = button[returned_index].commmunity;//获取社区编号
+                if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
+                {
+                    currentUser.community = button[returned_index].commmunity;//获取社区编号
+                    
+                    currentUser.index = button[returned_index].index;//获取楼号编号
 
-                currentUser.building = button[returned_index].index;//获取楼号编号
+                    save_user(currentUser);//保存用户信息
+                }
 
                 cur_index = returned_index;//更新当前按钮编号
-
-                save_user(currentUser);//保存用户信息
 
                 mouse_on_arrow(mouse);
 
@@ -225,17 +229,7 @@ void draw_user_order(int page){
             sprintf(address,"地址：未绑定地址");
         else
             sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
-        // switch(currentUser.community){// 根据用户地址显示地址
-        //     case 1: strcpy(community,"地址：东区学生公寓"); break;
-        //     case 2: strcpy(community,"地址：西区学生公寓"); break;
-        //     case 3: strcpy(community,"地址：南区学生公寓"); break;
-        //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-        //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-        //     default: strcpy(community,"地址：未知"); break;
-        // }
 
-        // sprintf(building, "%d栋", currentUser.building);
-        // strcat(community,building);
         PrintText(250, 250, address, HEI, 24, 1, black);
 
         // 表头

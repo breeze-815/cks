@@ -74,7 +74,7 @@ void user_cart() {
 
 
 void draw_user_cart(CartItem carts[], int cartCount, int page,float *sum) {
-    int i;
+    int i,k;
     int start = page * 4;// 起始商品索引
     int end = start + 4;// 结束商品索引
     char sum_str[20];//总价字符串
@@ -127,8 +127,9 @@ void draw_user_cart(CartItem carts[], int cartCount, int page,float *sum) {
         Line_Thick(950, y + 110, 950, y + 130, 1, black); // 加号竖
     }
 
-    for (i = 0; i < cart.itemCount; i++) {
-        int pIndex = carts[i].index_in_products;
+    *sum = 0;
+    for (k = 0; k < cart.itemCount; k++) {
+        int pIndex = carts[k].index_in_products;
         *sum += products[pIndex].price * products[pIndex].quantity;
     }//计算总价
 
@@ -171,7 +172,7 @@ void draw_user_cart_quantity(CartItem carts[], int index, int y) {
 
 // 添加或减少购物车中商品数量
 void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPage,float *sum) {
-    int i;
+    int i,k;
     int start = currentPage * 4;
     int end = start + 4;
     if (end > *itemCount) end = *itemCount;
@@ -185,9 +186,11 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
         if (mx >= 840 && mx <= 860 && my >= y + 115 && my <= y + 125) {
             if (products[productIndex].quantity > 1) {
                 products[productIndex].quantity--;
-                for (i = 0; i < cart.itemCount; i++) 
+                // 重新计算总价
+                *sum = 0;
+                for (k = 0; k < cart.itemCount; k++) 
                 {
-                    int pIndex = carts[i].index_in_products;
+                    int pIndex = carts[k].index_in_products;
                     *sum += products[pIndex].price * products[pIndex].quantity;
                 }
                 draw_user_cart_quantity(carts, i, y); // 仅更新该商品
@@ -202,9 +205,12 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
                     carts[j] = carts[j + 1];
                 }
                 (*itemCount)--;
-                for (i = 0; i < cart.itemCount; i++) 
+                
+                // 更新总价
+                *sum = 0;
+                for (k = 0; k < cart.itemCount; i++) 
                 {
-                    int pIndex = carts[i].index_in_products;
+                    int pIndex = carts[k].index_in_products;
                     *sum += products[pIndex].price * products[pIndex].quantity;
                 }
                 draw_user_cart(carts, *itemCount, currentPage,&sum); // 重绘整个页面
@@ -215,8 +221,8 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
         // 加号区域
         if (mx >= 940 && mx <= 960 && my >= y + 115 && my <= y + 125) {
             products[productIndex].quantity++;
-            for (i = 0; i < cart.itemCount; i++) {
-                int pIndex = carts[i].index_in_products;
+            for (k = 0; k < cart.itemCount; k++) {
+                int pIndex = carts[k].index_in_products;
                 *sum += products[pIndex].price * products[pIndex].quantity;
             }
             draw_user_cart_quantity(carts, i, y); // 仅更新该商品

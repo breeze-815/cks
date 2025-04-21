@@ -434,6 +434,12 @@ void hide_cursor(int x, int y)
 	Line1(x, y, x, y + 28, 0xffff);
 }
 
+//Òþ²Ø¹â±ê£¨»ÒÉ«£©
+void hide_cursor_grew(int x, int y)
+{
+	Line1(x, y, x, y + 28, lightgrew);
+}
+
 void cursor(int x, int y)
 {
 	static int i=0;
@@ -447,4 +453,18 @@ void cursor(int x, int y)
 	{
 		hide_cursor(x, y);
 	}
+}
+void cursor_grew(int x, int y)
+{
+    static int j=0;
+    j++;
+    j%=30000;
+    if(j<=15000)
+    {
+        draw_cursor(x, y);
+    }
+    else
+    {
+        hide_cursor_grew(x, y);
+    }
 }

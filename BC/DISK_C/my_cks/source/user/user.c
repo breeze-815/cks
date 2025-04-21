@@ -147,8 +147,9 @@ void user(int user_pos){
 
 void draw_user(USER currentUser)
 {
-    bar1(0, 0, 1024, 768,0xFFFF);
-    bar1(0, 0, 200, 768,0x0235);
+    bar1(0, 0, 1024, 768,white);
+    bar1(0, 0, 200, 768,deepblue);//×ó²à±³¾°
+    Readbmp64k(500, 0, "bmp\\hust1.bmp");//±³¾°Í¼
 
     Fill_Rounded_Rectangle(40, 113, 160, 163, 25,white);//ÌîÉ«
     Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//ÌîÉ«

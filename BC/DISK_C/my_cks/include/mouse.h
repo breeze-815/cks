@@ -33,7 +33,9 @@ void draw_mouse_arrow(int mx, int my);
 
 void draw_cursor(int x, int y);
 void hide_cursor(int x, int y);
+void hide_cursor_grew(int x, int y);
 void cursor(int x, int y);
+void cursor_grew(int x, int y);
 int mouse_location(int x1,int y1,int x2,int y2);
 unsigned int Getpixel64k(int x, int y);
 #endif // MOUSE_H

@@ -22,7 +22,7 @@ int welcome() {
 	while(1){
 		mouse_show_arrow(&mouse);
 
-		if(mouse_press(515, 490, 700, 540)==1)
+		if(mouse_press(515, 490, 650, 540)==1)
         {
             DestroyUList(&UL);
 			user_register();//进入注册页面
@@ -30,7 +30,7 @@ int welcome() {
 
             ReadAllUser(&UL);
             mouse_off_arrow(&mouse);
-            bar1(0, 0, 1024, 768, white); // 清除注册界面残留
+            Readbmp64k(0, 0, "bmp\\city.bmp");//清除页面残留
 	        draw_basic();
 	        mouse_on_arrow(mouse);
 		}
@@ -39,15 +39,15 @@ int welcome() {
             CloseSVGA();//关闭SVGA画图界面
             exit(100);
         }
-        else if(mouse_press(300, 330, 700, 380)==1)//点击账号框 
+        else if(mouse_press(350, 330, 650, 380)==1)//点击账号框 
 		{
-			input_mode(name,code,judge1, 305, 335, 695, 375,1,1);
+			input_mode(name,code,judge1, 355, 335, 645, 375,1,1);
 		}
-        else if(mouse_press(300, 410, 700, 460)==1)//点击密码框 
+        else if(mouse_press(350, 410, 650, 460)==1)//点击密码框 
 		{
-			input_mode(name,code,judge1, 305, 415, 695, 455,2,1);
+			input_mode(name,code,judge1, 355, 415, 645, 455,2,1);
 		}
-        else if(mouse_press(300,490, 485, 540)==1)//点击登录
+        else if(mouse_press(350, 490, 485, 540)==1)//点击登录
         {
             current=Check_info(UL,name,code);
             
@@ -84,15 +84,15 @@ int welcome() {
 			}
 			if(current==-2)//密码输入错误 
 			{
-				PrintCC(430,560,"密码错误",HEI,24,1,0XF800);
+				PrintCC(430,550,"密码错误",HEI,24,1,lightred);
                 delay(500);
-				bar1(430,560,580,590,snow);
+				bar1(430,550,580,580,white);
 			}
 			if(current==-3)//用户不存在 
 			{
-				PrintCC(430,560,"用户不存在",HEI,24,1,0XF800);
+				PrintCC(430,550,"用户不存在",HEI,24,1,lightred);
                 delay(500);
-				bar1(430,560,580,590,snow);
+				bar1(430,550,580,580,white);
 			} 
 		delay(15);
 	    }
@@ -101,25 +101,24 @@ int welcome() {
 
 void draw_basic()
 {
-    bar1(0, 0, 1024, 768,0xFFFF);
+    Readbmp64k(0, 0, "bmp\\city.bmp");//
 
-    //Readbmp64k(0, 0, "bmp\\hust.bmp");//读取背景图片
-    //Readbmp64k(0, 0, "bmp\\windows.bmp");//
-
-    //Fill_Rounded_Rectangle(200, 148, 824, 600, 30,snow);//填色
-    Draw_Rounded_Rectangle(200, 148, 824, 600, 30, 2,0x6B4D);//最外围灰色圆角矩形
+    Fill_Rounded_Rectangle(310, 200, 690, 580, 25,white);//填色
     
-    Draw_Rounded_Rectangle(300, 330, 700, 380, 5, 1,0xB71C);//账号栏圆角矩形
-    Draw_Rounded_Rectangle(300, 410, 700, 460, 5, 1,0xB71C);//密码栏圆角矩形
-    Fill_Rounded_Rectangle(300,490, 485, 540, 5,0x435c);//登录按钮//长185，宽50
-    Draw_Rounded_Rectangle(515, 490, 700, 540, 5,1,0x0235);//注册按钮//圆角方框，两字，x65，y+13
-    Draw_Rounded_Rectangle(950, 25, 1000, 75, 5,1,0x0235);//关闭按钮
+    Fill_Rounded_Rectangle(350, 330, 650, 380, 5,lightgrew);//账号栏填色
+    Fill_Rounded_Rectangle(350, 410, 650, 460, 5,lightgrew);//密码栏填色
 
-    PrintCC(305,225,"校园外卖快递平台",HEI,48,1,0);
-    PrintCC(305,345,"账号",HEI,24,1,0XC618);
-    PrintCC(305,425,"密码",HEI,24,1,0XC618);
-    PrintCC(365,503,"登录",HEI,24,1,0xFFFF);
-    PrintCC(580,503,"注册",HEI,24,1,0x0235);
-    //PrintText(100,100,"chp123",HEI,16,1,0XC618);
-    //Circlefill(50,50,3,0);
+    Fill_Rounded_Rectangle(350, 490, 485, 540, 5,0x435c);//登录按钮//长185，宽50
+    Draw_Rounded_Rectangle(515, 490, 650, 540, 5,1,0x0235);//注册按钮//圆角方框，两字，x65，y+13
+    
+
+    PrintCC(355,245,"校园外卖快递平台",HEI,32,1,0);
+    PrintCC(355,285,"基于华中科技大学校园制作",HEI,16,1,0XC618);
+    PrintCC(355,345,"账号",HEI,24,1,deepgrew);
+    PrintCC(355,425,"密码",HEI,24,1,deepgrew);
+    PrintCC(390,503,"登录",HEI,24,1,0xFFFF);
+    PrintCC(555,503,"注册",HEI,24,1,0x0235);
+    PrintCC(750,50,"关于我们",HEI,16,1,white);
+    PrintCC(900,50,"关于产品",HEI,16,1,white);
+
 }
