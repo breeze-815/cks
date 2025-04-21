@@ -221,8 +221,10 @@ void draw_user_order(int page){
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
 
-
-        sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
+        if (currentUser.index == 0)
+            sprintf(address,"地址：未绑定地址");
+        else
+            sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
         // switch(currentUser.community){// 根据用户地址显示地址
         //     case 1: strcpy(community,"地址：东区学生公寓"); break;
         //     case 2: strcpy(community,"地址：西区学生公寓"); break;

@@ -185,6 +185,11 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
         if (mx >= 840 && mx <= 860 && my >= y + 115 && my <= y + 125) {
             if (products[productIndex].quantity > 1) {
                 products[productIndex].quantity--;
+                for (i = 0; i < cart.itemCount; i++) 
+                {
+                    int pIndex = carts[i].index_in_products;
+                    *sum += products[pIndex].price * products[pIndex].quantity;
+                }
                 draw_user_cart_quantity(carts, i, y); // 仅更新该商品
             } else {
 				int j;
@@ -197,7 +202,11 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
                     carts[j] = carts[j + 1];
                 }
                 (*itemCount)--;
-
+                for (i = 0; i < cart.itemCount; i++) 
+                {
+                    int pIndex = carts[i].index_in_products;
+                    *sum += products[pIndex].price * products[pIndex].quantity;
+                }
                 draw_user_cart(carts, *itemCount, currentPage,&sum); // 重绘整个页面
             }
             return;
@@ -208,7 +217,7 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
             products[productIndex].quantity++;
             for (i = 0; i < cart.itemCount; i++) {
                 int pIndex = carts[i].index_in_products;
-                sum += products[pIndex].price * products[pIndex].quantity;
+                *sum += products[pIndex].price * products[pIndex].quantity;
             }
             draw_user_cart_quantity(carts, i, y); // 仅更新该商品
             return;
