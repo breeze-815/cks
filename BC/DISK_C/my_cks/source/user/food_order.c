@@ -127,6 +127,7 @@ void food_order(int index){
 }
 
 void draw_food_order(int page){
+    char address[100]; // 用户地址
     int i;
     UserList UL = {0};
     FoodList FL = {0};
@@ -179,19 +180,19 @@ void draw_food_order(int page){
         PrintText(250, 100, time_str, HEI, 24, 1, black);
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
+        sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
+        // switch(currentUser.community){// 根据用户地址显示地址
+        //     case 1: strcpy(community,"地址：东区学生公寓"); break;
+        //     case 2: strcpy(community,"地址：西区学生公寓"); break;
+        //     case 3: strcpy(community,"地址：南区学生公寓"); break;
+        //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
+        //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
+        //     default: strcpy(community,"地址：未知"); break;
+        // }
 
-        switch(currentUser.community){// 根据用户地址显示地址
-            case 1: strcpy(community,"地址：东区学生公寓"); break;
-            case 2: strcpy(community,"地址：西区学生公寓"); break;
-            case 3: strcpy(community,"地址：南区学生公寓"); break;
-            case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-            case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-            default: strcpy(community,"地址：未知"); break;
-        }
-
-        sprintf(building, "%d栋", currentUser.building);
-        strcat(community,building);
-        PrintText(250, 250, community, HEI, 24, 1, black);
+        // sprintf(building, "%d栋", currentUser.building);
+        // strcat(community,building);
+        PrintText(250, 250, address, HEI, 24, 1, black);
 
         PrintCC(750,250, canteen[Foodorders.station-1].name, HEI, 24, 1, black);//显示食堂名称
 
@@ -257,6 +258,8 @@ void draw_food_order(int page){
 
     Foodorders.community=currentUser.community; // 用户社区
     Foodorders.building=currentUser.building; 
+    //Foodorders.station=; // 用户取餐地点
+    Foodorders.destination=currentUser.index; // 用户送餐地点
 
     for (i = 0; i < shopping_food.itemCount; i++) {
         Foodorders.item[i] = food_carts[i]; // 购物车内商品信息

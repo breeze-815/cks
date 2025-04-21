@@ -15,6 +15,8 @@ typedef struct FoodOrder{
     int itemCount;//购物车内物品种类数量
     float total_amount;//总价
     int station;//食堂地址
+    int destination;//送达地址
+    int pick_up_location;//取餐地点
 } FoodOrder;//订单信息  
 
 typedef struct FoodList 
