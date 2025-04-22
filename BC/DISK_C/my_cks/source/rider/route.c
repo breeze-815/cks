@@ -425,7 +425,7 @@ int random_int(int min, int max)
     return rand() % (max - min + 1) + min;
 }
 
-void route(Acp_order acp_orders[], int n_orders) 
+void route(AcceptedOrder acp_orders[], int n_orders) 
 {
     char debug_buf[100];
     int start_index,next_index;

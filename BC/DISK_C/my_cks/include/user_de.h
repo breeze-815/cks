@@ -15,7 +15,7 @@ typedef struct Deliver
     char time[20]; // 下单时间 
     char code[10]; //取件码
     int station; // 站点
-    
+    int index;
 } Deliver;
 
 typedef struct DeliverList

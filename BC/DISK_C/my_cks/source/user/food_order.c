@@ -368,6 +368,7 @@ int save_food(FoodOrder Foodorders) {
 void DestroyFList(FoodList*FL)	
 {
 	free(FL->elem);
+    FL->elem=NULL;
 	FL->listsize=0;
 	FL->length=0;
 }

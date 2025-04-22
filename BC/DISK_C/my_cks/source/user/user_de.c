@@ -461,6 +461,7 @@ int save_Deliver(Deliver delivers) {
 void DestroyDList(DeliverList*DL)	
 {
 	free(DL->elem);
+    DL->elem=NULL;
 	DL->listsize=0;
 	DL->length=0;
 }

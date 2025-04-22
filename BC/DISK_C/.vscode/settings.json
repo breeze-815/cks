@@ -67,6 +67,13 @@
     "EWCONIO.C": "cpp",
     "TIME.H": "cpp",
     "typeinfo": "c",
-    "CALLTEST.C": "cpp"
+    "CALLTEST.C": "cpp",
+    "array": "c",
+    "istream": "c",
+    "ostream": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c",
+    "arrange.h": "c"
   }
 }
