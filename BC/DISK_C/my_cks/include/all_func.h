@@ -42,6 +42,10 @@
 #include "draw_shape.h"
 #include "arrange.h"
 #include "acp_det.h"
+#include "my_acp.h"
+// extern int acp_orders1[4];
+// extern int acp_count = 0;
+extern int total_cnt;
 extern MOUSE mouse;
 
 extern USER users;
@@ -66,7 +70,9 @@ extern Company companys[8];
 extern Station stations[8];
 
 extern Button button [79];
-extern Acp_order acp_orders[4];
+extern AcceptedOrder acp_orders[4];
+//extern Acp_order acp_orders[4];
+
 extern RouteState route_state;
 #define white 0xFFFF
 #define snow 0xFFDF

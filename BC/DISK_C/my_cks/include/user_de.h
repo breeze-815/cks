@@ -17,7 +17,7 @@ typedef struct Deliver
     char code[10]; //取件码
     int company; // 快递公司
     int station; // 站点
-    
+    int index;
 } Deliver;
 
 typedef struct DeliverList
