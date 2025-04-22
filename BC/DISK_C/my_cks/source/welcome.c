@@ -17,7 +17,7 @@ int welcome() {
 	
 	draw_basic();
 
-	mouse_on_arrow(mouse);
+	//mouse_on_arrow(mouse);
 
 	while(1){
 		mouse_show_arrow(&mouse);

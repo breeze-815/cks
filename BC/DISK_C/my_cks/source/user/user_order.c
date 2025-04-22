@@ -454,6 +454,7 @@ int save_order(Order orders) {
 void DestroyOList(OrderList*OL)	
 {
 	free(OL->elem);
+	OL->elem=NULL;
 	OL->listsize=0;
 	OL->length=0;
 }

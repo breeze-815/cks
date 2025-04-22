@@ -208,7 +208,7 @@ void AddSub_cart(int mx, int my, CartItem carts[], int* itemCount, int currentPa
                 
                 // 更新总价
                 *sum = 0;
-                for (k = 0; k < cart.itemCount; i++) 
+                for (k = 0; k < cart.itemCount; k++) 
                 {
                     int pIndex = carts[k].index_in_products;
                     *sum += products[pIndex].price * products[pIndex].quantity;

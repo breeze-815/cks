@@ -202,6 +202,7 @@ void UListDelete(UserList*L,int i)
 void DestroyUList(UserList*UL)	
 {
 	free(UL->elem);
+	UL->elem=NULL;
 	UL->listsize=0;
 	UL->length=0;
 }
