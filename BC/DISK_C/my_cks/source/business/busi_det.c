@@ -132,33 +132,15 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         char building[50]; // 楼栋字符串
 
 
-        if(index==0)
+        if(index==0)//超市订单
         {
             sprintf(order_number_str, "订单号：%d", currentOrder.id); // 订单号
-            // switch(currentOrder.community){// 根据用户地址显示地址
-            //     case 1: strcpy(community,"地址：东区学生公寓"); break;
-            //     case 2: strcpy(community,"地址：西区学生公寓"); break;
-            //     case 3: strcpy(community,"地址：南区学生公寓"); break;
-            //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-            //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-            //     default: strcpy(community,"地址：未知"); break;
-            // }
-            // sprintf(building, "%d栋", currentOrder.building);
             sprintf(address, "地址：%s", node[currentOrder.destination].name); // 用户地址
         }
-        else 
+        else //食堂订单
         {
             sprintf(order_number_str, "订单号：%d", currentFood.id); // 订单号
-            // switch(currentFood.community){// 根据用户地址显示地址
-            //     case 1: strcpy(community,"地址：东区学生公寓"); break;
-            //     case 2: strcpy(community,"地址：西区学生公寓"); break;
-            //     case 3: strcpy(community,"地址：南区学生公寓"); break;
-            //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-            //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-            //     default: strcpy(community,"地址：未知"); break;
-            // }
-            // sprintf(building, "%d栋", currentFood.building);
-            sprintf(address, "地址：%s", node[currentOrder.destination].name); // 用户地址
+            sprintf(address, "地址：%s", node[currentFood.destination].name); // 用户地址
             PrintCC(750,250, canteen[currentFood.station-1].name, HEI, 24, 1, black);//显示食堂名称
         }
         
@@ -167,7 +149,6 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
 
-        // strcat(community,building);
         PrintText(250, 250, address, HEI, 24, 1, black);
 
         // 表头
@@ -178,19 +159,19 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
 
         startIdx = 0;
         itemsPerPage = 6;
-    } else {
+    } else {// 其他页
         startIdx = 6 + (page - 1) * 12;
         itemsPerPage = 12;
     }
 
     endIdx = startIdx + itemsPerPage;
 
-    if (index==0)
+    if (index==0)//超市订单
     {
         if (endIdx > currentOrder.itemCount)// 防止越界
             endIdx = currentOrder.itemCount;
     }
-    else 
+    else //食堂订单
     {
         if (endIdx > currentFood.itemCount)// 防止越界
             endIdx = currentFood.itemCount;
@@ -201,7 +182,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         char total_str[50]; // 商品总价
         char quantity_str[20]; // 商品数量
 
-        if(index==0)
+        if(index==0)//超市订单
         {
             int quantity = currentOrder.item[i].quantity; // 商品数量
             float price = currentOrder.item[i].price; // 商品价格
@@ -211,7 +192,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
 
             PrintCC(250, item_y, currentOrder.item[i].name, HEI, 24, 1, black); // 商品名
         }
-        else 
+        else //食堂订单
         {
             int quantity = currentFood.item[i].quantity; // 商品数量
             float price = currentFood.item[i].price; // 商品价格
@@ -222,9 +203,6 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
             PrintCC(250, item_y, currentFood.item[i].name, HEI, 24, 1, black); // 商品名
         }
         
-
-        
-
         PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);// 商品数量
         PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);// 商品总价
 

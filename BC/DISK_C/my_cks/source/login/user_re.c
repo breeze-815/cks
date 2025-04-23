@@ -105,7 +105,7 @@ void draw_register()
 {
     Readbmp64k(0, 0, "bmp\\city.bmp");
 
-    Fill_Rounded_Rectangle(250, 200, 750, 580, 30,snow);//ÌîÉ«
+    Fill_Rounded_Rectangle(250, 200, 750, 580, 30,white);//ÌîÉ«
 
     Fill_Rounded_Rectangle(450, 250, 700, 300, 5,lightgrew);//ÕËºÅÀ¸ÌîÉ«
     Fill_Rounded_Rectangle(450, 330, 700, 380, 5,lightgrew);//ÃÜÂëÀ¸ÌîÉ«

@@ -69,7 +69,7 @@ void draw_de_order() {
     if (current.station == 0)
             sprintf(address,"地址：未绑定地址");
         else
-            sprintf(address, "地址：%s", node[current.station].name); // 用户地址
+            sprintf(address, "地址：%s", node[current.index].name); // 用户地址
     
     PrintText(250, 50, order_number, HEI, 24, 1, black);//显示订单号
     PrintText(250, 100, time_str, HEI, 24, 1, black);//显示下单时间

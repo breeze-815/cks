@@ -44,6 +44,7 @@ void user_deliver(){
     strcpy(delivers.number, currentUser.number);// 用户手机号
     delivers.community=currentUser.community;// 用户地址
     delivers.building=currentUser.building;// 用户楼栋
+    delivers.index=currentUser.index;// 
 
     DestroyUList(&UL); // 释放用户列表空间
 
@@ -174,7 +175,7 @@ void user_deliver(){
                 {
                     save_user(currentUser);
                     strcpy(delivers.number, currentUser.number);//保存手机号
-                    save_Deliver(delivers);//保存手机号
+                    save_Deliver(delivers);//保存手机号到订单信息中
                     PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                     delay(500);
                     bar1(800,50,950,100,white);
@@ -231,7 +232,10 @@ void user_deliver(){
 
                 if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
                 {
+                    currentUser.community = button[returned_index].commmunity;//获取社区编号
                     currentUser.index = button[returned_index].index;//获取楼号编号
+                    
+                    delivers.community=currentUser.community;//保存社区编号
                     delivers.station=currentUser.index;//保存楼号编号
 
                     save_user(currentUser);//保存用户信息

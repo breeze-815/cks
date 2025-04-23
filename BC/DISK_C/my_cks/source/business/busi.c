@@ -30,6 +30,7 @@ void business(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
+            DestroyUList(&UL); // 释放用户列表空间
             return;
 			//welcome();//首页
 		}
@@ -56,7 +57,7 @@ void business(int user_pos){
         
         
 
-        //输入绑定码后
+        //输入绑定码后但未选择店铺
         if(state==1)
         {
             if(mouse_press(490, 260, 610, 310)==1)
@@ -94,7 +95,7 @@ void business(int user_pos){
                 bar1(600,50,1024,100,white);
                 PrintCC(700,50,"绑定成功",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(600,50,1024,100,white);
                 state=2;//已绑定
                 currentUser.state=index;//已绑定
                 save_user(currentUser);
@@ -103,7 +104,7 @@ void business(int user_pos){
             {
                 PrintCC(750,50,"请先选择绑定的店铺",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(600,50,1024,100,white);
             }
             
         }
@@ -117,7 +118,7 @@ void business(int user_pos){
             {
                 PrintCC(800,50,"请先进行绑定操作",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,1024,100,white);
+                bar1(600,50,1024,100,white);
                 
             }
             else if(mouse_press(430, 185, 650, 235)==1)//输入绑定码
@@ -130,14 +131,14 @@ void business(int user_pos){
                 {
                     PrintCC(800,50,"验证成功",HEI,24,1,lightred);
                     delay(500);
-                    bar1(800,50,1024,100,white);
+                    bar1(600,50,1024,100,white);
                     state=1;//已绑定
                 }
                 else
                 {
                     PrintCC(800,50,"验证失败",HEI,24,1,lightred);
                     delay(500);
-                    bar1(800,50,1024,100,white);
+                    bar1(600,50,1024,100,white);
                 }
             }
         }
@@ -148,6 +149,7 @@ void business(int user_pos){
         	if(mouse_press(40, 602, 160, 652)==1)//查看订单
             {
                 if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
+                DestroyUList(&UL); // 释放用户列表空间
                 business_order(index);//商家订单页面
                 
                 //return后从这开始
@@ -261,6 +263,7 @@ void draw_canteen(){
     //打印食堂名称
     for(i=0;i<6;i++){
     	for(j=0;j<3;j++){
+            if(cnt==17) break;
     		Draw_Rounded_Rectangle(250+250*j, 330+60*i, 250+250*j+185, 330+60*i+50, 5,1,deepblue);
             PrintCC(250+250*j+17,330+60*i+13,canteen[cnt].name,HEI,24,1,deepblue);
             cnt++;
@@ -326,11 +329,13 @@ int choose_canteen(int x, int y, int* last_index) {
     int index = -1;
 
     for (i = 0; i < 6; i++) {
-        for (j = 0; j < 3; j++) {
+        for (j = 0; j < 3; j++) { 
             int x1 = 250 + 250 * j;
             int y1 = 330 + 60 * i;
             int x2 = x1 + 185;
             int y2 = y1 + 50;
+
+            if(i * 3 + j >= 17) break; // 超出食堂数量则退出
 
             if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
                 index = i * 3 + j;

@@ -10,6 +10,10 @@ void food_order(int index){
     int page = 0;// 初始页码
     int totalPage =(shopping_food.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
     int state = 0; // 判断是否需要完善信息
+
+    int cur_index = -1;
+    int cur_community=0;
+    int returned_index;
     
     ReadAllUser(&UL); // 读取用户列表
 
@@ -87,6 +91,8 @@ void food_order(int index){
                 if(strlen(currentUser.number)==11)
                 {
                     save_user(currentUser);
+                    strcpy(Foodorders.user_name, currentUser.number);//保存手机号
+                    save_food(Foodorders);//保存手机号到订单信息中
                     PrintCC(800,50,"保存成功",HEI,24,1,lightred);
                     delay(500);
                     bar1(800,50,950,100,snow);
@@ -100,24 +106,61 @@ void food_order(int index){
             }
             else if(mouse_press(440, 180, 560, 230)==1)
             {
-                press1(4);//紫菘
-                currentUser.community=1;//紫菘
-                save_user(currentUser);
+                cur_index = -1;
+                press1(4);//按钮状态切换
+                draw_button(1);
+                cur_community=1; 
+            
             }
             else if(mouse_press(620, 180, 740, 230)==1)
             {
-                press1(5);//沁苑
-                currentUser.community=2;//沁苑
-                save_user(currentUser);
+                cur_index = -1;
+                press1(5);//西区
+                draw_button(2);
+                cur_community=2;
             }
             else if(mouse_press(800, 180, 920, 230)==1)
             {
-                press1(6);//韵苑
-                currentUser.community=3;//韵苑
-                save_user(currentUser);
-            } 
+                cur_index = -1;
+                press1(6);//南区
+                draw_button(3);
+                cur_community=3;
+        
+            }
+            else if(mouse_press(530, 255, 650, 305)==1)
+            {
+                cur_index = -1;
+                press1(7);//紫菘
+                draw_button(4);
+                cur_community=4;
+            }
+            else if(mouse_press(750, 255, 870, 305)==1)
+            {
+                cur_index = -1;
+                press1(8);//韵苑
+                draw_button(5);
+                cur_community=5;
+            }
+            else if (mouse_press(200, 310, 1024, 768) == 1) { 
 
-            if(mouse_press(200, 250, 1024, 768)==1)
+                MouseGet(&mouse);
+                mouse_off_arrow(&mouse);
+                returned_index = press_button(mouse.x, mouse.y, cur_index, cur_community);//获取按钮编号
+
+                if(returned_index>=0)//如果返回值大于等于0,则说明选择了按钮
+                {
+                    currentUser.community = button[returned_index].commmunity;//获取社区编号
+                    currentUser.index = button[returned_index].index;//获取楼号编号
+                    
+                    Foodorders.community=currentUser.community;//保存社区编号
+                    Foodorders.station=currentUser.index;//保存楼号编号
+
+                    save_user(currentUser);//保存用户信息
+                    save_food(Foodorders);//保存订单信息
+                } 
+            }
+
+            if(mouse_press(950, 50, 975,75)==1)
             {
                 state = 0;
                 draw_food_order(page);
@@ -181,17 +224,6 @@ void draw_food_order(int page){
         PrintText(250, 150, user_name, HEI, 24, 1, black);
         PrintText(250, 200, user_phone, HEI, 24, 1, black);
         sprintf(address, "地址：%s", node[currentUser.index].name); // 用户地址
-        // switch(currentUser.community){// 根据用户地址显示地址
-        //     case 1: strcpy(community,"地址：东区学生公寓"); break;
-        //     case 2: strcpy(community,"地址：西区学生公寓"); break;
-        //     case 3: strcpy(community,"地址：南区学生公寓"); break;
-        //     case 4: strcpy(community,"地址：紫菘学生公寓"); break;
-        //     case 5: strcpy(community,"地址：韵苑学生公寓"); break;
-        //     default: strcpy(community,"地址：未知"); break;
-        // }
-
-        // sprintf(building, "%d栋", currentUser.building);
-        // strcat(community,building);
         PrintText(250, 250, address, HEI, 24, 1, black);
 
         PrintCC(750,250, canteen[Foodorders.station-1].name, HEI, 24, 1, black);//显示食堂名称
