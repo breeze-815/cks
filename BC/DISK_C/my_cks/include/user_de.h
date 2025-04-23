@@ -18,6 +18,8 @@ typedef struct Deliver
     int company; // 快递公司
     int station; // 站点
     int index;
+    int total_cnt;
+    int acp_count;
 } Deliver;
 
 typedef struct DeliverList

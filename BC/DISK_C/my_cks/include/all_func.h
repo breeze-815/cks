@@ -45,7 +45,8 @@
 #include "my_acp.h"
 // extern int acp_orders1[4];
 // extern int acp_count = 0;
-extern int total_cnt;
+// extern int total_cnt=0;
+// extern int acp_count=0;
 extern MOUSE mouse;
 
 extern USER users;
