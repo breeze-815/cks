@@ -14,7 +14,6 @@ typedef struct CartItem{
 typedef struct ShoppingCart{
     CartItem* items;//购物车内商品
     int itemCount;//购物车内商品种类数量
-    int capacity;//购物车容量
 } ShoppingCart;//购物车整体
 
 typedef struct Product

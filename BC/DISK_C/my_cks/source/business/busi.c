@@ -102,6 +102,7 @@ void business(int user_pos){
 
             }else if(mouse_press(40, 602, 160, 652)==1)//查看订单
             {
+                bar1(600,50,1024,100,white);
                 PrintCC(750,50,"请先选择绑定的店铺",HEI,24,1,lightred);
                 delay(500);
                 bar1(600,50,1024,100,white);
@@ -148,21 +149,50 @@ void business(int user_pos){
         {
         	if(mouse_press(40, 602, 160, 652)==1)//查看订单
             {
-                if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
-                DestroyUList(&UL); // 释放用户列表空间
-                business_order(index);//商家订单页面
-                
-                //return后从这开始
-                mouse_off_arrow(&mouse);
-                bar1(200, 0, 1024, 768, white); // 清除注册界面残留
-                draw_business();
-                mouse_on_arrow(mouse);
+                if(strlen(currentUser.number) == 0)//如果没有输入手机号
+                {
+                    PrintCC(800,50,"请先输入手机号",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(600,50,1024,100,white);
+                }
+                else
+                {
+                    if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
+                    DestroyUList(&UL); // 释放用户列表空间
+                    business_order(index);//商家订单页面
+                    
+                    //return后从这开始
+                    mouse_off_arrow(&mouse);
+                    bar1(200, 0, 1024, 768, white); // 清除注册界面残留
+                    draw_business();
+                    mouse_on_arrow(mouse);
+                }
     
             }
             if(mouse_press(205, 185, 1024,  680)==1)
             {
                 bar1(600,50,1024,100,white);
                 PrintCC(650,50,"已绑定，无法更改",HEI,24,1,lightred);
+            }
+            if(mouse_press(430, 110, 650, 160)==1)//输入手机号
+            {
+                number_input(currentUser.number, 435, 115, 645, 155); // 输入手机号
+            }
+            else if(mouse_press(710, 110, 830, 160)==1)//保存手机号
+            {
+                if(strlen(currentUser.number)==11)
+                {
+                    save_user(currentUser);
+                    PrintCC(700,50,"保存成功",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(600,50,1024,100,white);
+                }
+                else
+                {
+                    PrintCC(700,50,"长度不合法",HEI,24,1,lightred);
+                    delay(500);
+                    bar1(600,50,1024,100,white);
+                }
             }
         }
     }

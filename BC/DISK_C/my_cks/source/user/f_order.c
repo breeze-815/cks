@@ -14,6 +14,8 @@ void food_order(int index){
     int cur_index = -1;
     int cur_community=0;
     int returned_index;
+
+    float sum = 0.0; // 总金额
     
     ReadAllUser(&UL); // 读取用户列表
 
@@ -25,7 +27,7 @@ void food_order(int index){
 
     mouse_off_arrow(&mouse);
 
-    draw_food_order(page);
+    draw_food_order(page,&sum);
 
     mouse_on_arrow(mouse);
 
@@ -43,7 +45,7 @@ void food_order(int index){
             {
                 if (page > 0) {
                     page--;
-                    draw_food_order(page);// 绘制用户订单页面
+                    draw_food_order(page,&sum);// 绘制用户订单页面
                 } else {
                     // 提示：已是第一页
                     PrintCC(550, 25, "已是第一页", HEI, 24, 1, lightred);
@@ -55,7 +57,7 @@ void food_order(int index){
             {
                 if (page < totalPage - 1) {
                     page++;
-                    draw_food_order(page);// 绘制用户订单页面
+                    draw_food_order(page,&sum);// 绘制用户订单页面
                 } else {
                     // 提示：已是最后一页
                     PrintCC(550, 25, "已是最后一页", HEI, 24, 1, lightred);
@@ -70,7 +72,13 @@ void food_order(int index){
                     draw_info();
                     state = 1;
                 }
-                else
+                else if(sum<10.0)
+                {
+                    PrintText(700, 50, "未满10元，无法配送", HEI, 24, 1, lightred);
+                    delay(500);
+                    bar1(700, 50, 1024, 100, white);
+                }
+                else 
                 {
                     save_food(Foodorders); // 保存订单
                     PrintCC(800, 50, "订单已保存", HEI, 24, 1, lightred);
@@ -163,13 +171,13 @@ void food_order(int index){
             if(mouse_press(950, 50, 975,75)==1)
             {
                 state = 0;
-                draw_food_order(page);
+                draw_food_order(page,&sum);
             }
         }
     }
 }
 
-void draw_food_order(int page){
+void draw_food_order(int page,float *sum){
     char address[100]; // 用户地址
     int i;
     UserList UL = {0};
@@ -278,6 +286,8 @@ void draw_food_order(int page){
             food_carts[i].quantity = quantity; // 记录购物车商品数量
             food_carts[i].price = foods[productIndex].price; // 记录商品价格
         }
+
+        *sum=total_amount;
 
         sprintf(total_str, "总金额：%.2f 元", total_amount);
         PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);

@@ -37,16 +37,13 @@
 #include "ride.h"
 #include "route.h"
 #include "acp_or.h"
-#include "account.h"
+#include "m_act.h"
 #include "HZK.h"
 #include "shape.h"
 #include "arrange.h"
 #include "acp_det.h"
-#include "my_acp.h"
-// extern int acp_orders1[4];
-// extern int acp_count = 0;
-// extern int total_cnt=0;
-// extern int acp_count=0;
+#include "m_acp.h"
+
 extern MOUSE mouse;
 
 extern USER users;
@@ -70,7 +67,6 @@ extern Station stations[8];
 
 extern Button button [79];
 extern AcceptedOrder acp_orders[4];
-//extern Acp_order acp_orders[4];
 
 extern RouteState route_state;
 #define white 0xFFFF

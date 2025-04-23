@@ -1,13 +1,6 @@
 #include "all_func.h"
 
 void rider(int user_pos){
-    // OrderList OL = {0};
-    // FoodList FL = {0};
-    // DeliverList DL = {0};
-    // ReadAllDeliver(&DL); // 读取快递列表
-    // ReadAllOrder(&OL); // 读取订单列表
-    // ReadAllFood(&FL); // 读取食品列表
-    // mouse_off_arrow(&mouse);
 	
 	draw_rider();
 

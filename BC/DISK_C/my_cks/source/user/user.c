@@ -143,6 +143,7 @@ void user(int user_pos){
     }
 }
 
+//绘制用户界面
 void draw_user()
 {
     bar1(0, 0, 1024, 768,white);
@@ -336,6 +337,7 @@ void press_func(int x){
     mouse_on_arrow(mouse);
 }
 
+//输入手机号
 void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
@@ -402,10 +404,8 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 				else if(i>=11)
 				{
 					mouse_off_arrow(&mouse);
-					mouse_show_arrow(&mouse);
-					PrintCC(750,50,"长度超过限制",HEI,24,1,lightred);
-					delay(500);
-					bar1(750,50,900,75,white);
+                    hide_cursor(border,y1); //隐藏原光标
+                    break;//超出11字符就退出
 				}
 			}
 			else

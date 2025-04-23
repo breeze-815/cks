@@ -27,9 +27,8 @@ typedef struct FoodList
 }FoodList;//订单线性表 
 
 void food_order(int index);
-void draw_food_order(int page);
+void draw_food_order(int page,float *sum);
 
-void InitFList(FoodList*OL);
 void ReadAllFood(FoodList *OL);
 void DestroyFList(FoodList*OL);
 int FoodOrder_pos(FoodList OL,FoodOrder Foodorders);
