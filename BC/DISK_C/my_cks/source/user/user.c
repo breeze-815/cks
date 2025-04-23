@@ -1,12 +1,11 @@
 #include "all_func.h"
 
-Shop shops={0};//存储信息的商店结构体 
-
 void user(int user_pos){
-    char test_buf[20];
-    int cur_index = -1;
+
+    int cur_index = -1;//
     int cur_community=0;
     int returned_index;
+
     UserList UL = {0};
     USER currentUser;
 
@@ -18,7 +17,7 @@ void user(int user_pos){
     
     mouse_off_arrow(&mouse);
 	
-	draw_user(currentUser);
+	draw_user();
 
 	mouse_on_arrow(mouse);
 
@@ -27,41 +26,40 @@ void user(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            DestroyUList(&UL); // 释放用户列表空间
             return;
 			//welcome();//首页
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
-            press1(1);//进入超市页面
+            press_func(1);//进入超市页面
             user_shop();//用户超市页面 
             
             //return后从这开始 
             mouse_off_arrow(&mouse);
             bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
+	        draw_user();
 	        mouse_on_arrow(mouse);
         }
         else if(mouse_press(40, 439, 160, 489)==1)
         {
-            press1(2);//进入外卖页面
+            press_func(2);//进入外卖页面
             user_takeout();//用户外卖页面 
 
             //return后从这开始 
             mouse_off_arrow(&mouse);
             bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
+	        draw_user();
 	        mouse_on_arrow(mouse);
         }
         else if(mouse_press(40, 602, 160, 652)==1)
         {
-            press1(3);//进入快递页面
+            press_func(3);//进入快递页面
             user_deliver();//用户快递页面 
             
             //return后从这开始 
             mouse_off_arrow(&mouse);
             bar1(200, 0, 1024, 768, white); // 清除超市界面残留
-	        draw_user(currentUser);
+	        draw_user();
 	        mouse_on_arrow(mouse);
         }
         else if(mouse_press(430, 105, 650, 155)==1)
@@ -70,24 +68,24 @@ void user(int user_pos){
         }
         else if(mouse_press(710, 105, 830, 155)==1)
         {
-            if(strlen(currentUser.number)==11)
+            if(strlen(currentUser.number)==11)//判断手机号长度是否合法
             {
                 save_user(currentUser);
-                PrintCC(800,50,"保存成功",HEI,24,1,lightred);
+                PrintCC(250,260,"保存成功",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,950,100,white);
+                bar1(250,260,400,310,white);
             }
             else
             {
-                PrintCC(800,50,"长度不合法",HEI,24,1,lightred);
+                PrintCC(250,260,"长度不合法",HEI,24,1,lightred);
                 delay(500);
-                bar1(800,50,950,100,white);
+                bar1(250,260,400,310,white);
             }
         }
         else if(mouse_press(440, 180, 560, 230)==1)
         {
             cur_index = -1;
-            press1(4);//东区
+            press_func(4);//东区
             draw_button(1);
             cur_community=1; 
            
@@ -95,14 +93,14 @@ void user(int user_pos){
         else if(mouse_press(620, 180, 740, 230)==1)
         {
             cur_index = -1;
-            press1(5);//西区
+            press_func(5);//西区
             draw_button(2);
             cur_community=2;
         }
         else if(mouse_press(800, 180, 920, 230)==1)
         {
             cur_index = -1;
-            press1(6);//南区
+            press_func(6);//南区
             draw_button(3);
             cur_community=3;
       
@@ -110,14 +108,14 @@ void user(int user_pos){
         else if(mouse_press(530, 255, 650, 305)==1)
         {
             cur_index = -1;
-            press1(7);//紫菘
+            press_func(7);//紫菘
             draw_button(4);
             cur_community=4;
         }
         else if(mouse_press(750, 255, 870, 305)==1)
         {
             cur_index = -1;
-            press1(8);//韵苑
+            press_func(8);//韵苑
             draw_button(5);
             cur_community=5;
         }
@@ -145,7 +143,7 @@ void user(int user_pos){
     }
 }
 
-void draw_user(USER currentUser)
+void draw_user()
 {
     bar1(0, 0, 1024, 768,white);
     bar1(0, 0, 200, 768,deepblue);//左侧背景
@@ -183,12 +181,9 @@ void draw_user(USER currentUser)
     PrintCC(250,50,"当前账号类型为：用户",HEI,24,1,deepblue);
     PrintCC(250,120,"请输入手机号：",HEI,24,1,deepblue);
     PrintCC(250,190,"请选择住址：",HEI,24,1,deepblue);
-   
-    //Readbmp64k(201, 257, "bmp\\map.bmp");
-    
 }
 
-void press1(int x){
+void press_func(int x){
     mouse_off_arrow(&mouse);
     switch (x)
     {
@@ -415,7 +410,6 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 			}
 			else
 			{
-				
 				break;
 			}
 		}

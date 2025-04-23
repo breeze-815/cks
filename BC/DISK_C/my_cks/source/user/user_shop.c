@@ -127,19 +127,19 @@ void user_shop(){
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
-            press1(1);//进入超市页面
+            press_func(1);//进入超市页面
             user_shop();//用户超市页面 
             return;
         }
         else if(mouse_press(40, 439, 160, 489)==1)
         {
-            press1(2);//进入外卖页面
+            press_func(2);//进入外卖页面
             user_takeout();//用户外卖页面 
             return;
         }
         else if(mouse_press(40, 602, 160, 652)==1)
         {
-            press1(3);//进入快递页面
+            press_func(3);//进入快递页面
             user_deliver();//用户快递页面 
             return;
         }

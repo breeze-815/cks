@@ -64,19 +64,19 @@ void user_deliver(){
 		}
         else if(mouse_press(40, 276, 160, 326)==1)
         {
-            press1(1);//进入超市页面
+            press_func(1);//进入超市页面
             user_shop();//用户超市页面 
             return;
         }
         else if(mouse_press(40, 439, 160, 489)==1)
         {
-            press1(2);//进入外卖页面
+            press_func(2);//进入外卖页面
             user_takeout();//用户外卖页面 
             return;
         }
         else if(mouse_press(40, 602, 160, 652)==1)
         {
-            press1(3);//进入快递页面
+            press_func(3);//进入快递页面
             user_deliver();//用户快递页面 
             return;
         }
@@ -190,7 +190,7 @@ void user_deliver(){
             else if(mouse_press(440, 180, 560, 230)==1)
             {
                 cur_index = -1;
-                press1(4);//按钮状态切换
+                press_func(4);//按钮状态切换
                 draw_button(1);
                 cur_community=1; 
             
@@ -198,14 +198,14 @@ void user_deliver(){
             else if(mouse_press(620, 180, 740, 230)==1)
             {
                 cur_index = -1;
-                press1(5);//西区
+                press_func(5);//西区
                 draw_button(2);
                 cur_community=2;
             }
             else if(mouse_press(800, 180, 920, 230)==1)
             {
                 cur_index = -1;
-                press1(6);//南区
+                press_func(6);//南区
                 draw_button(3);
                 cur_community=3;
         
@@ -213,14 +213,14 @@ void user_deliver(){
             else if(mouse_press(530, 255, 650, 305)==1)
             {
                 cur_index = -1;
-                press1(7);//紫菘
+                press_func(7);//紫菘
                 draw_button(4);
                 cur_community=4;
             }
             else if(mouse_press(750, 255, 870, 305)==1)
             {
                 cur_index = -1;
-                press1(8);//韵苑
+                press_func(8);//韵苑
                 draw_button(5);
                 cur_community=5;
             }
