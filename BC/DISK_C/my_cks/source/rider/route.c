@@ -433,7 +433,7 @@ int random_int(int min, int max)
 
 void route(AcceptedOrder acp_orders[], int n_orders) 
 {
-    char debug_buf[100];
+    char debug_buf[120];
     int start_index,next_index;
     // UserList UL = {0};
     // USER *currentUser;

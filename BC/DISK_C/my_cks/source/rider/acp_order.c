@@ -13,7 +13,7 @@ void accept_order() //
     int clicked;
     int order_index;
     int type=0, local_index=0, global_index=0;
-    char debg[30];
+    char debg[200];
     //int delivers.acp_count; // 订单总数
     //int acp_count=0; //接单总数
     OrderList OL = {0};
@@ -175,9 +175,8 @@ void accept_order() //
             // sprintf(debg,"global=%d",global_index);
             // PrintText(250, 50, debg, HEI, 24, 1, Red);
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-            sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
-            PrintText(350, 30,debg, HEI, 24, 1, Red);
-            if ( delivers.acp_count== 4)
+            
+            if ( delivers.acp_count == 4)
             { 
                 PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
                 delay(500);
@@ -185,8 +184,13 @@ void accept_order() //
             }
             else
             {
+                sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
+                PrintText(350, 30,debg, HEI, 24, 1, Red);
+                //PrintText(0, 0,"jinruelse", HEI, 24, 1, Red);
                 rider_accept(&OL, &FL, &DL, type, local_index, page);
                 bar1(0, 150, 1024, 768, white);
+                sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
+                PrintText(0, 0,debg, HEI, 24, 1, Red);
                 draw_accept_order(page, &OL, &FL, &DL);
             }
            

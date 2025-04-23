@@ -13,7 +13,7 @@ AcceptedOrder acp_orders[4]={0};
 void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
     int type, int local_index, int page ) 
 {
-    char debg[20];
+    char debg[200];
     int global_index = page * ORDERS_PER_PAGE + local_index;
     int i;
     //extern int delivers.acp_count;
