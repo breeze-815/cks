@@ -51,8 +51,6 @@ extern MOUSE mouse;
 
 extern USER users;
 
-extern Shop shops;
-
 extern Product products[84];
 extern CartItem carts[84];
 extern ShoppingCart cart;

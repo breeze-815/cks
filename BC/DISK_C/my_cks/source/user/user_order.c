@@ -105,7 +105,7 @@ void user_order(){
             else if(mouse_press(440, 180, 560, 230)==1)
             {
                 cur_index = -1;
-                press1(4);//°´Å¥×´Ì¬ÇÐ»»
+                press_func(4);//°´Å¥×´Ì¬ÇÐ»»
                 draw_button(1);
                 cur_community=1; 
             
@@ -113,14 +113,14 @@ void user_order(){
             else if(mouse_press(620, 180, 740, 230)==1)
             {
                 cur_index = -1;
-                press1(5);//Î÷Çø
+                press_func(5);//Î÷Çø
                 draw_button(2);
                 cur_community=2;
             }
             else if(mouse_press(800, 180, 920, 230)==1)
             {
                 cur_index = -1;
-                press1(6);//ÄÏÇø
+                press_func(6);//ÄÏÇø
                 draw_button(3);
                 cur_community=3;
         
@@ -128,14 +128,14 @@ void user_order(){
             else if(mouse_press(530, 255, 650, 305)==1)
             {
                 cur_index = -1;
-                press1(7);//×ÏÝ¿
+                press_func(7);//×ÏÝ¿
                 draw_button(4);
                 cur_community=4;
             }
             else if(mouse_press(750, 255, 870, 305)==1)
             {
                 cur_index = -1;
-                press1(8);//ÔÏÔ·
+                press_func(8);//ÔÏÔ·
                 draw_button(5);
                 cur_community=5;
             }
