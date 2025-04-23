@@ -85,7 +85,11 @@
     "EXIT.C": "cpp",
     "unordered_map": "c",
     "RAND.C": "cpp",
-    "arrange.h": "c"
+    "arrange.h": "c",
+    "array": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
