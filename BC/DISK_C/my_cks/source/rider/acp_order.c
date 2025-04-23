@@ -13,20 +13,25 @@ void accept_order() //
     int clicked;
     int order_index;
     int type=0, local_index=0, global_index=0;
+    
     //int delivers.acp_count; // 订单总数
     //int acp_count=0; //接单总数
     OrderList OL = {0};
     FoodList FL = {0};
     DeliverList DL = {0};
-
+    delivers.acp_count=0;
     ReadAllDeliver(&DL); // 读取快递列表
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
-
-    delivers.acp_count = OL.length + FL.length + DL.length; // 计算订单总数
+    
+    delivers.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
     mouse_off_arrow(&mouse);
 	
 	draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
+
+    // DestroyDList(&DL);
+    // DestroyFList(&OL);
+    // DestroyOList(&OL);
 
 	mouse_on_arrow(mouse);
     
@@ -54,9 +59,15 @@ void accept_order() //
             draw_accept_order(page,&OL,&FL,&DL); // 重新绘制订单列表
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(782, 50, 902, 100)==1) //账户
+        else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
+            my_accept_order();
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
+            draw_accept_order(page,&OL,&FL,&DL); // 重新绘制订单列表
+            mouse_on_arrow(mouse);
         }
         else if (mouse_press(220, 700, 340, 750) == 1) // 上一页
 		{
@@ -88,7 +99,7 @@ void accept_order() //
         else if (mouse_press(750, 170 + 25, 850, 170 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 0;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-            if (global_index < delivers.acp_count) {
+            if (global_index < delivers.total_cnt) {
                 if (global_index < OL.length) {
                     type = ORDER_SUPERMARKET; local_index = global_index;
                 } else if (global_index < OL.length + FL.length) {
@@ -104,7 +115,7 @@ void accept_order() //
         else if (mouse_press(750, 290 + 25, 850, 290 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 1;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-            if (global_index < delivers.acp_count) {
+            if (global_index < delivers.total_cnt) {
                 
                 if (global_index < OL.length) {
                     type = ORDER_SUPERMARKET; local_index = global_index;
@@ -121,7 +132,7 @@ void accept_order() //
         else if (mouse_press(750, 410 + 25, 850, 410 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 2;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-            if (global_index < delivers.acp_count) {
+            if (global_index < delivers.total_cnt) {
                 
                 if (global_index < OL.length) {
                     type = ORDER_SUPERMARKET; local_index = global_index;
@@ -138,7 +149,7 @@ void accept_order() //
         else if (mouse_press(750, 530 + 25, 850, 530 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 3;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-            if (global_index < delivers.acp_count) {
+            if (global_index < delivers.total_cnt) {
                 
                 if (global_index < OL.length) {
                     type = ORDER_SUPERMARKET; local_index = global_index;
@@ -155,48 +166,80 @@ void accept_order() //
     else if (mouse_press(875, 170 + 25, 975, 170 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 0;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-        if (global_index < delivers.acp_count) {
-            //get_ordtyp_locind(global_index, &type, &local_index, &OL, &FL, &DL);
-            rider_accept(&OL, &FL, &DL, type, local_index, page);
-            //delivers.acp_count--;
-            bar1(0, 150, 1024, 768, white);
-            draw_accept_order(page, &OL, &FL, &DL);
+        if (global_index < delivers.total_cnt) {
+            if ( delivers.acp_count== 4)
+            { 
+                PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
+                delay(500);
+                bar1(100,100,500,130,deepblue);
+            }
+            else
+            {
+                rider_accept(&OL, &FL, &DL, type, local_index, page);
+                bar1(0, 150, 1024, 768, white);
+                draw_accept_order(page, &OL, &FL, &DL);
+            }
+           
         }
     }
     // 接单按钮 #2：对应列表第 1 条
     else if (mouse_press(875, 290 + 25, 975, 290 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 1;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-        if (global_index < delivers.acp_count) {
-            //get_ordtyp_locind(global_index, &type, &local_index, &OL, &FL, &DL);
-            rider_accept(&OL, &FL, &DL, type, local_index, page);
-            //delivers.acp_count--;
-            bar1(0, 150, 1024, 768, white);
-            draw_accept_order(page, &OL, &FL, &DL);
-        }
+            if (global_index < delivers.total_cnt) {
+                if ( delivers.acp_count== 4)
+                { 
+                    PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
+                    delay(500);
+                    bar1(100,100,500,130,deepblue);
+                }
+                else
+                {
+                    rider_accept(&OL, &FL, &DL, type, local_index, page);
+                    bar1(0, 150, 1024, 768, white);
+                    draw_accept_order(page, &OL, &FL, &DL);
+                }
+               
+            }
     }
     // 接单按钮 #3：对应列表第 2 条
     else if (mouse_press(875, 410 + 25, 975, 410 + 75) == 1) {
         global_index = page * ORDERS_PER_PAGE + 2;
         get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-        if (global_index < delivers.acp_count) {
-            //get_ordtyp_locind(global_index, &type, &local_index, &OL, &FL, &DL);
-            rider_accept(&OL, &FL, &DL, type, local_index, page);            
-            //delivers.acp_count--;
-            bar1(0, 150, 1024, 768, white);
-            draw_accept_order(page, &OL, &FL, &DL);
+        if (global_index < delivers.total_cnt) {
+            if ( delivers.acp_count== 4)
+            { 
+                PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
+                delay(500);
+                bar1(100,100,500,130,deepblue);
+            }
+            else
+            {
+                rider_accept(&OL, &FL, &DL, type, local_index, page);
+                bar1(0, 150, 1024, 768, white);
+                draw_accept_order(page, &OL, &FL, &DL);
+            }
+           
         }
     }
     // 接单按钮 #4：对应列表第 3 条
     else if (mouse_press(875, 530 + 25, 975, 530 + 75) == 1) {
         global_index = page * ORDERS_PER_PAGE + 3;
         get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-        if (global_index < delivers.acp_count) {
-            get_ordtyp_locind(global_index, &type, &local_index, &OL, &FL, &DL);
-            rider_accept(&OL, &FL, &DL, type, local_index, page);
-            //delivers.acp_count--;
-            bar1(0, 150, 1024, 768, white);
-            draw_accept_order(page, &OL, &FL, &DL);
+        if (global_index < delivers.total_cnt) {
+            if ( delivers.acp_count== 4)
+            { 
+                PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
+                delay(500);
+                bar1(100,100,500,130,deepblue);
+            }
+            else
+            {
+                rider_accept(&OL, &FL, &DL, type, local_index, page);
+                bar1(0, 150, 1024, 768, white);
+                draw_accept_order(page, &OL, &FL, &DL);
+            }
+           
         }
     }
     }
@@ -228,9 +271,9 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
     int start_index = page * 4; // 当前页的起始订单索引
     int end_index = start_index + 4; // 当前页的结束订单索引
 
-    if (end_index > delivers.acp_count) 
+    if (end_index > delivers.total_cnt) 
         {
-            end_index = delivers.acp_count; // 防止越界
+            end_index = delivers.total_cnt; // 防止越界
         }
     
     bar1(0, 150, 1024, 768, white); // 清空屏幕

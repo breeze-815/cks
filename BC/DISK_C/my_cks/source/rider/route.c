@@ -429,56 +429,59 @@ void route(AcceptedOrder acp_orders[], int n_orders)
 {
     char debug_buf[100];
     int start_index,next_index;
-    UserList UL = {0};
-    USER *currentUser;
-    ReadAllUser(&UL); // 读取用户列表
+    // UserList UL = {0};
+    // USER *currentUser;
+    // ReadAllUser(&UL); // 读取用户列表
     //currentUser=&UL.elem[user_pos];// 获取当前用户信息
+    // OrderList OL = {0};
+    // FoodList FL = {0};
+    // DeliverList DL = {0};
+    // ReadAllDeliver(&DL); // 读取快递列表
+    // ReadAllOrder(&OL); // 读取订单列表
+    // ReadAllFood(&FL); // 读取食品列表
     mouse_off_arrow(&mouse);
 	draw_route();
 	mouse_on_arrow(mouse);
     srand(time(NULL));
+
     // 初始化路线状态
     memset(&route_state, 0, sizeof(RouteState));
     route_state.remaining = n_orders * 2;
+    sprintf(debug_buf,"%d",route_state.remaining);
+    PrintText(1,1,debug_buf,HEI,24,1,black);
     route_state.current_pos = random_int(1, 409);
     next_index = arrange(route_state.current_pos, acp_orders, n_orders); // 随机生成起点
     sprintf(debug_buf,"%d",next_index);
     PrintText(1,1,debug_buf,HEI,24,1,black);
     while(1)
     {
-        mouse_show_arrow(&mouse);
-
-        if(mouse_press(122, 50, 242, 150)==1)
+        if(mouse_press(122, 50, 242, 100)==1) //返回
         {
-            DestroyUList(&UL); // 释放用户列表内存
+            // DestroyOList(&OL); // 释放订单列表内存
+            // DestroyFList(&FL); // 释放食品列表内存
+            // DestroyDList(&DL); // 释放快递列表内存
             return;
-            //ride();//骑手首页
-        }
-        else if(mouse_press(342, 50, 462, 150)==1)
+			//business(users.pos);
+		}
+        else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
-            accept_order();//接单页面
-            //return后从这开始
+            press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除接单界面残留
-            draw_route();
-            mouse_on_arrow(mouse);
-        }
-        else if(mouse_press(562, 50, 682, 150)==1)
-        {
-            
+            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
             route(acp_orders,4);//骑手路线规划
             //return后从这开始
-            mouse_off_arrow(&mouse);
-            bar1(0, 0, 1024, 768, white); // 清除接单界面残留
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_route();
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(782, 50, 902, 150)==1)//账户
+        else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
-            account();//商家订单页面
+            press3(3); //按钮高亮
+            my_accept_order();
             //return后从这开始
-            mouse_off_arrow(&mouse);
-            bar1(200, 0, 1024, 768, white); // 清除接单界面残留
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_route();
             mouse_on_arrow(mouse);
         }
