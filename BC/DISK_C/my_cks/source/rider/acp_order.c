@@ -52,7 +52,7 @@ void accept_order() //
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,4);//骑手路线规划
+            route(acp_orders,delivers.acp_count);//骑手路线规划
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留

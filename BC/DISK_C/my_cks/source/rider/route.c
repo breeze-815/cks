@@ -452,9 +452,10 @@ void route(AcceptedOrder acp_orders[], int n_orders)
     route_state.current_pos = random_int(1, 409);
     next_index = arrange(route_state.current_pos, acp_orders, n_orders); // 随机生成起点
     sprintf(debug_buf,"%d",next_index);
-    PrintText(1,1,debug_buf,HEI,24,1,black);
+    PrintText(20,1,debug_buf,HEI,24,1,black);
     while(1)
     {
+        mouse_show_arrow(&mouse);
         if(mouse_press(122, 50, 242, 100)==1) //返回
         {
             // DestroyOList(&OL); // 释放订单列表内存
@@ -463,12 +464,22 @@ void route(AcceptedOrder acp_orders[], int n_orders)
             return;
 			//business(users.pos);
 		}
+        else if(mouse_press(342, 50, 462, 100)==1)
+        {
+            press3(1);//进入接单界面
+            accept_order();//接单页面
+            //return后从这开始
+            mouse_off_arrow(&mouse);
+            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
+            draw_rider();
+            mouse_on_arrow(mouse);
+        }
         else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,4);//骑手路线规划
+            route(acp_orders,delivers.acp_count);//骑手路线规划
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留

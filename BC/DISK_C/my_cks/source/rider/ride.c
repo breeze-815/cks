@@ -35,7 +35,7 @@ void rider(int user_pos){
         else if(mouse_press(562, 50, 682, 100)==1)
         {
             press3(2);//进入路线规划界面
-            route(acp_orders,4);//进入路线规划界面
+            route(acp_orders,delivers.acp_count);//进入路线规划界面
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留

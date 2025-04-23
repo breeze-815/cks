@@ -23,6 +23,7 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
     int next_pos;
     int next_type;
 
+    char debuf[10];
     for(i = 0; i < n_orders; i++) 
     {
         temp_picked[i] = route_state.picked[i];
@@ -43,52 +44,53 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
         best_i    = -1;
         best_type = -1;
 
-        for (i = 0; i < n_orders; i++) {
+        for (i = 0; i < n_orders; i++) 
+        {
             /* 取餐任务 */
             int pu_idx, dst_idx;
 
-    if (!temp_picked[i]) {
-        // 取餐
-        if (acp_orders[i].type == ORDER_SUPERMARKET) {
-            pu_idx = acp_orders[i].data.order.pick_up_location;
-        } else if (acp_orders[i].type == ORDER_FOOD) {
-            pu_idx = acp_orders[i].data.food.pick_up_location;
-        } else {
-            pu_idx = acp_orders[i].data.deliver.station;
-        }
+            if (!temp_picked[i]) {
+                // 取餐
+                if (acp_orders[i].type == ORDER_SUPERMARKET) {
+                    pu_idx = acp_orders[i].data.order.pick_up_location;
+                } else if (acp_orders[i].type == ORDER_FOOD) {
+                    pu_idx = acp_orders[i].data.food.pick_up_location;
+                } else {
+                    pu_idx = acp_orders[i].data.deliver.station;
+                }
 
-        dist = Manhattan_Distance(
-            node[temp_current].x, node[temp_current].y,
-            node[pu_idx].x,        node[pu_idx].y
-        );
-        if (dist < best_dist && dist != 0) {
-            best_dist = dist;
-            best_i    = i;
-            best_type = 0;
-        }
-    }
-    else if (!temp_delivered[i]) {
-        // 送餐
-        if (acp_orders[i].type == ORDER_SUPERMARKET) {
-            dst_idx = acp_orders[i].data.order.destination;
-        } else if (acp_orders[i].type == ORDER_FOOD) {
-            dst_idx = acp_orders[i].data.food.destination;
-        } else {
-            dst_idx = acp_orders[i].data.deliver.index;
-        }
+                dist = Manhattan_Distance(
+                    node[temp_current].x, node[temp_current].y,
+                    node[pu_idx].x,        node[pu_idx].y
+                );
+                if (dist < best_dist && dist != 0) {
+                    best_dist = dist;
+                    best_i    = i;
+                    best_type = 0;
+                }
+            }
+            else if (!temp_delivered[i]) {
+                // 送餐
+                if (acp_orders[i].type == ORDER_SUPERMARKET) {
+                    dst_idx = acp_orders[i].data.order.destination;
+                } else if (acp_orders[i].type == ORDER_FOOD) {
+                    dst_idx = acp_orders[i].data.food.destination;
+                } else {
+                    dst_idx = acp_orders[i].data.deliver.index;
+                }
 
-        dist = Manhattan_Distance(
-            node[temp_current].x, node[temp_current].y,
-            node[dst_idx].x,      node[dst_idx].y
-        );
-        if (dist < best_dist && dist != 0) 
-        {
-            best_dist = dist;
-            best_i    = i;
-            best_type = 0;
+                dist = Manhattan_Distance(
+                    node[temp_current].x, node[temp_current].y,
+                    node[dst_idx].x,      node[dst_idx].y
+                );
+                if (dist < best_dist && dist != 0) 
+                {
+                    best_dist = dist;
+                    best_i    = i;
+                    best_type = 1;
+                }
+            }   
         }
-    }   
-}
 
         temp_step++;
         /*—— 如果没有找到任务，就跳出 ——*/\
@@ -135,7 +137,7 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
             } else {
                 temp_current = acp_orders[best_i].data.deliver.station;
             }
-            temp_picked[best_i] = 0;
+            temp_picked[best_i] = 1;
         } else {
             if (acp_orders[best_i].type == ORDER_SUPERMARKET) {
                 temp_current = acp_orders[best_i].data.order.destination;
