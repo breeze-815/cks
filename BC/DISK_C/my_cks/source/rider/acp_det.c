@@ -165,7 +165,7 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
     }
 }
 
-void accept_order_detail(int local_index, int type,int total_cnt) {
+void accept_order_detail(int local_index, int type) {
     OrderList OL = {0};
     FoodList FL = {0};
     DeliverList DL = {0};
@@ -207,7 +207,7 @@ void accept_order_detail(int local_index, int type,int total_cnt) {
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_accept_order(page,&OL,&FL,&DL,total_cnt); // 重新绘制订单列表
+            draw_accept_order(page,&OL,&FL,&DL); // 重新绘制订单列表
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //账户

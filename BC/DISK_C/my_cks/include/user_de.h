@@ -16,6 +16,8 @@ typedef struct Deliver
     char code[10]; //È¡¼şÂë
     int station; // Õ¾µã
     int index;
+    int total_cnt;
+    int acp_count;
 } Deliver;
 
 typedef struct DeliverList
