@@ -12,6 +12,7 @@ typedef struct USER
 	char number[12];//手机号
 	int community; //地址 1东区 2西区 3南区 4紫菘 5韵苑
 	int building;
+	int state;//判断商家是否绑定，为index，代表超市/食堂编号,未绑定为-1
 	int pos;//用户在列表中位置
 	int index; //用户住址索引
 }USER;

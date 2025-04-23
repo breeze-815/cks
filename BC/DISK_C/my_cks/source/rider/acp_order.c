@@ -13,7 +13,7 @@ void accept_order() //
     int clicked;
     int order_index;
     int type=0, local_index=0, global_index=0;
-    
+    char debg[30];
     //int delivers.acp_count; // 订单总数
     //int acp_count=0; //接单总数
     OrderList OL = {0};
@@ -35,7 +35,8 @@ void accept_order() //
 
 	mouse_on_arrow(mouse);
     
-
+    // sprintf(debg,"OL=%d,FL=%d,DL=%d",OL.length,FL.length,DL.length);
+    // PrintText(200, 50, debg, HEI, 24, 1, Red);
 	while(1){
 		mouse_show_arrow(&mouse);
     
@@ -62,6 +63,7 @@ void accept_order() //
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
+            mouse_off_arrow(&mouse);
             my_accept_order();
             //return后从这开始
             mouse_on_arrow(mouse);
@@ -108,12 +110,15 @@ void accept_order() //
                     type = ORDER_DELIVER; local_index = global_index - OL.length - FL.length;
                 }
                 accept_order_detail(local_index, type);
-                bar1(0,150,1024,768,white); draw_accept_order(page,&OL,&FL,&DL);
+                bar1(0,150,1024,768,white); 
+                draw_accept_order(page,&OL,&FL,&DL);
             }
         }
         // 第2条详情按钮：x[750,850], y[290+25,290+75]
         else if (mouse_press(750, 290 + 25, 850, 290 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 1;
+            sprintf(debg,"acp_count=%d",delivers.acp_count);
+            PrintText(100, 50, debg, HEI, 24, 1, Red);
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
             if (global_index < delivers.total_cnt) {
                 
@@ -125,7 +130,8 @@ void accept_order() //
                     type = ORDER_DELIVER; local_index = global_index - OL.length - FL.length;
                 }
                 accept_order_detail(local_index, type);
-                bar1(0,150,1024,768,white); draw_accept_order(page,&OL,&FL,&DL);
+                bar1(0,150,1024,768,white); 
+                draw_accept_order(page,&OL,&FL,&DL);
             }
         }
         // 第3条详情按钮：x[750,850], y[410+25,410+75]
@@ -142,7 +148,8 @@ void accept_order() //
                     type = ORDER_DELIVER; local_index = global_index - OL.length - FL.length;
                 }
                 accept_order_detail(local_index, type);
-                bar1(0,150,1024,768,white); draw_accept_order(page,&OL,&FL,&DL);
+                bar1(0,150,1024,768,white); 
+                draw_accept_order(page,&OL,&FL,&DL);
             }
         }
         // 第4条详情按钮：x[750,850], y[530+25,530+75]
@@ -162,11 +169,14 @@ void accept_order() //
                 bar1(0,150,1024,768,white); draw_accept_order(page,&OL,&FL,&DL);
             }
         }
-        // 接单按钮 #1：对应列表第 0 条
+        // 接单按钮 #1：对应列表第 1 条
     else if (mouse_press(875, 170 + 25, 975, 170 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 0;
+            // sprintf(debg,"global=%d",global_index);
+            // PrintText(250, 50, debg, HEI, 24, 1, Red);
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
-        if (global_index < delivers.total_cnt) {
+            sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
+            PrintText(350, 30,debg, HEI, 24, 1, Red);
             if ( delivers.acp_count== 4)
             { 
                 PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
@@ -181,11 +191,14 @@ void accept_order() //
             }
            
         }
-    }
-    // 接单按钮 #2：对应列表第 1 条
+    // 接单按钮 #2：对应列表第 2 条
     else if (mouse_press(875, 290 + 25, 975, 290 + 75) == 1) {
             global_index = page * ORDERS_PER_PAGE + 1;
+            //sprintf(debg,"global=%d",global_index);
+            //PrintText(350, 50, debg, HEI, 24, 1, Red);
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
+            sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
+            PrintText(350, 50, debg, HEI, 24, 1, Red);
             if (global_index < delivers.total_cnt) {
                 if ( delivers.acp_count== 4)
                 { 
@@ -202,10 +215,14 @@ void accept_order() //
                
             }
     }
-    // 接单按钮 #3：对应列表第 2 条
+    // 接单按钮 #3：对应列表第 3 条
     else if (mouse_press(875, 410 + 25, 975, 410 + 75) == 1) {
         global_index = page * ORDERS_PER_PAGE + 2;
+        // sprintf(debg,"global=%d",global_index);
+        //     PrintText(450, 50, debg, HEI, 24, 1, Red);
         get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
+        sprintf(debg,"OL=%d,FL=%d,DL=%d,gloidx=%d,locidx=%d,type=%d",OL.length,FL.length,DL.length,global_index,local_index,type);
+            PrintText(350, 70, debg, HEI, 24, 1, Red);
         if (global_index < delivers.total_cnt) {
             if ( delivers.acp_count== 4)
             { 
@@ -222,7 +239,7 @@ void accept_order() //
            
         }
     }
-    // 接单按钮 #4：对应列表第 3 条
+    // 接单按钮 #4：对应列表第 4 条
     else if (mouse_press(875, 530 + 25, 975, 530 + 75) == 1) {
         global_index = page * ORDERS_PER_PAGE + 3;
         get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
@@ -340,10 +357,10 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
             PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
 
             // 显示订单简略信息
-            sprintf(show_pick_up, "取货点：%s", node[food_order.station].name);
+            sprintf(show_pick_up, "取餐点：%s", node[food_order.station].name);
             PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, 0x0000);
 
-            sprintf(show_destination, "送货点：%s", node[food_order.destination].name);
+            sprintf(show_destination, "取餐点：%s", node[food_order.destination].name);
             PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, 0x0000);
 
             distance_m = dijkstra(&node[food_order.station], &node[food_order.destination],3); // 计算距离
@@ -372,7 +389,7 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
             Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
             PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
             // 显示订单简略信息
-            sprintf(show_pick_up, "取货点：%s", node[deliver.station].name);
+            sprintf(show_pick_up, "取货点：%s", node[deliver.station+408].name);
             PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, 0x0000);
 
             sprintf(show_destination, "送货点：%s", node[deliver.index].name);
@@ -398,20 +415,19 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
 } 
 
 
-// 将全局序号反推为 type/local_index
 void get_ordtyp_locind(int global_index,
     int *type, int *local_index,
     const OrderList *OL, const FoodList *FL, const DeliverList *DL)
 {
-    if (global_index <= OL->length) {
-        *type        = ORDER_SUPERMARKET;
+    if (global_index < OL->length) {
+        *type = ORDER_SUPERMARKET;
         *local_index = global_index;
-    } else if (global_index <= OL->length + FL->length  && global_index >OL->length) {
-        *type        = ORDER_FOOD;
+    } else if (global_index < OL->length + FL->length) {
+        *type = ORDER_FOOD;
         *local_index = global_index - OL->length;
-    } else if(global_index > OL->length+FL->length && global_index <= OL->length+FL->length+DL->length)
-    {
-        *type        = ORDER_DELIVER;
+    } else if (global_index < OL->length + FL->length + DL->length) {
+        *type = ORDER_DELIVER;
         *local_index = global_index - OL->length - FL->length;
     }
 }
+

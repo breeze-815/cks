@@ -11,9 +11,11 @@ typedef struct Deliver
     char name[10]; // 用户名
     char number[12];//手机号
     int community; //地址 1东区 2西区 3南区 4紫菘 5韵苑
-	int building;//楼栋
+	int building;//楼栋号
+    int destination;//送达地址
     char time[20]; // 下单时间 
     char code[10]; //取件码
+    int company; // 快递公司
     int station; // 站点
     int index;
     int total_cnt;
@@ -27,13 +29,18 @@ typedef struct DeliverList
 	short listsize;  //当前存储空间容量，改为 short
 }DeliverList;//订单线性表 
 
+typedef struct Company{//快递公司
+    char name[20];//名称
+}Company;
+
 typedef struct Station{//站点
     char name[20];//名称
 }Station;
 
 void user_deliver();
 void draw_user_deliver();
-void press_station(int x);
+int choose_company(int x, int y, int* last_index);
+int choose_station(int x, int y, int* last_index_station);
 
 void deliver_input(char *deliver_code,int bar_x1,int bar_y1,int bar_x2,int bar_y2);
 

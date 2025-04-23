@@ -26,6 +26,7 @@ void rider(int user_pos){
         {
             press3(1);//进入接单界面
             accept_order();//接单页面
+            
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留

@@ -3,6 +3,8 @@
 
 int welcome();
 void draw_basic();
+void draw_about_us();
+void draw_about_product();
 
 
 #endif

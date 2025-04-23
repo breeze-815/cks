@@ -28,7 +28,13 @@ void de_order() {
             press1(3);//进入快递页面
             user_deliver();//用户快递页面 
             return;
-        } 
+        }else if(mouse_press(800, 700, 1000, 750)==1)//确认并支付
+        {
+            PrintCC(600, 715,"保存成功",HEI,24,1,lightred); // 支付成功提示
+            delay(500);
+            bar1(600, 715,780,750,white); // 清除支付成功提示
+            return;
+        }
     }
 }
 
@@ -39,9 +45,11 @@ void draw_de_order() {
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
     char order_number[20]; // 打印订单号
+    char address[100]; // 打印用户地址
     char community[50]; // 社区字符串
     char building[50]; // 楼栋字符串
     char code[20]; // 取件码字符串
+    char company_str[20];// 快递公司字符串
     char station_str[20];// 站点字符串
 
     bar1(200, 0, 1024, 768,white);
@@ -55,29 +63,22 @@ void draw_de_order() {
     sprintf(user_name, "用户名：%s", current.name);
     sprintf(user_phone, "手机号：%s", current.number);
     sprintf(code, "取件码：%s", current.code);
-    sprintf(station_str, "快递商：%s", stations[current.station-1].name);
+    sprintf(company_str, "快递商：%s", companys[current.company-1].name);
+    sprintf(station_str, "站点：%s", stations[current.station-1].name);
+
+    if (current.station == 0)
+            sprintf(address,"地址：未绑定地址");
+        else
+            sprintf(address, "地址：%s", node[current.index].name); // 用户地址
     
     PrintText(250, 50, order_number, HEI, 24, 1, black);//显示订单号
     PrintText(250, 100, time_str, HEI, 24, 1, black);//显示下单时间
     PrintText(250, 150, user_name, HEI, 24, 1, black);//显示用户名
     PrintText(250, 200, user_phone, HEI, 24, 1, black);//显示手机号
-    PrintText(250, 250, code, HEI, 24, 1, black);//显示取件码
-    PrintText(250, 300, station_str, HEI, 24, 1, black);//显示站点
-
-    switch(current.community){// 根据用户地址显示地址
-        case 1: strcpy(community,"用户地址：东区学生公寓"); break;
-        case 2: strcpy(community,"用户地址：西区学生公寓"); break;
-        case 3: strcpy(community,"用户地址：南区学生公寓"); break;
-        case 4: strcpy(community,"用户地址：紫菘学生公寓"); break;
-        case 5: strcpy(community,"用户地址：韵苑学生公寓"); break;
-        default: strcpy(community,"用户地址：未知"); break;
-    }
-
-    sprintf(building, "%d栋", current.building);
-    strcat(community,building);
-    PrintText(250, 350, community, HEI, 24, 1, black);//显示地址
-
-
+    PrintText(250, 250, address, HEI, 24, 1, black);//显示地址
+    PrintText(250, 300, code, HEI, 24, 1, black);//显示取件码
+    PrintText(250, 350, company_str, HEI, 24, 1, black);//显示快递公司
+    PrintText(250, 400, station_str, HEI, 24, 1, black);//显示站点
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 确认并支付
     PrintCC(830, 715, "确认并支付", HEI, 24, 1, deepblue);

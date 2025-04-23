@@ -66,8 +66,10 @@ extern ShoppingFood shopping_food;
 extern Order orders;
 extern Canteen canteen[17];
 
-extern Node node[410];
+extern Node node[417];
+extern Company companys[8];
 extern Station stations[8];
+
 extern Button button [79];
 extern AcceptedOrder acp_orders[4];
 //extern Acp_order acp_orders[4];
@@ -82,6 +84,7 @@ extern RouteState route_state;
 #define grey 0xC618
 #define lightred 0XF800
 #define Red 0xF800
-#define deepgrew 0x6B4D
+#define deepgrew 0XC618
+#define lightgrew 0xDEFB
 #endif
 
