@@ -66,7 +66,7 @@ extern ShoppingFood shopping_food;
 extern Order orders;
 extern Canteen canteen[17];
 
-extern Node node[410];
+extern Node node[417];
 extern Company companys[8];
 extern Station stations[8];
 

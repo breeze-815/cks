@@ -158,7 +158,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
             //     default: strcpy(community,"地址：未知"); break;
             // }
             // sprintf(building, "%d栋", currentFood.building);
-            sprintf(address, "地址：%s", node[currentOrder.destination].name); // 用户地址
+            sprintf(address, "地址：%s", node[currentFood.destination].name); // 用户地址
             PrintCC(750,250, canteen[currentFood.station-1].name, HEI, 24, 1, black);//显示食堂名称
         }
         

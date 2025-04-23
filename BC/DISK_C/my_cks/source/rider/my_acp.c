@@ -19,16 +19,15 @@ void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
     //extern int delivers.acp_count;
     // 检查是否超过最大接单数量
     
-    // 根据类型，存储进 acp_orders 数组
     acp_orders[delivers.acp_count].type = type;
-    sprintf(debg,"%d",delivers.acp_count);
-    PrintText(100, 100, debg, HEI, 24, 1, Red);
+    
     if (type == ORDER_SUPERMARKET) 
     {
         acp_orders[delivers.acp_count].data.order = OL->elem[local_index];
-
-        sprintf(debg,"%d",acp_orders[delivers.acp_count].data.order.pick_up_location);
-        PrintText(120, 100, debg, HEI, 24, 1, Red);
+        sprintf(debg,"接超市");
+        PrintText(100,100,debg,HEI,24,1,black);
+        // sprintf(debg,"%d",acp_orders[delivers.acp_count].data.order.pick_up_location);
+        // PrintText(120, 100, debg, HEI, 24, 1, Red);
         // 从超市订单列表移除该单
         // 先把所有后续元素往前移一位
         for (i = local_index; i < OL->length - 1; i++) 
@@ -40,7 +39,8 @@ void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
     else if (type == ORDER_FOOD) 
     {
         acp_orders[delivers.acp_count].data.food = FL->elem[local_index];
-
+        sprintf(debg,"接食堂");
+        PrintText(200,100,debg,HEI,24,1,black);
         // 从食品订单列表移除该单
         for (i = local_index; i < FL->length - 1; i++) 
             FL->elem[i] = FL->elem[i + 1];
@@ -51,14 +51,17 @@ void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
     else if (type == ORDER_DELIVER) 
     {
         acp_orders[delivers.acp_count].data.deliver = DL->elem[local_index];
-
+        sprintf(debg,"接快递");
+        PrintText(300,100,debg,HEI,24,1,black);
         // 从快递订单列表移除该单
         for (i = local_index; i < DL->length - 1; i++)
             DL->elem[i] = DL->elem[i + 1];
         DL->length--;
     }
     delivers.acp_count++;
-    delivers.total_cnt--;
+    // sprintf(debg,"acp_count=%d",delivers.acp_count);
+    // PrintText(100, 50, debg, HEI, 24, 1, Red);
+    delivers.total_cnt = OL->length + FL->length + DL->length;  
     }
 
 
@@ -88,12 +91,23 @@ void my_accept_order() {
             return;
 			//business(users.pos);
 		}
+        else if(mouse_press(342, 50, 462, 100)==1)
+        {
+            press3(1);//进入接单界面
+            mouse_off_arrow(&mouse);
+            accept_order();//接单页面
+            //return后从这开始
+            mouse_off_arrow(&mouse);
+            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
+            draw_rider();
+            mouse_on_arrow(mouse);
+        }
         else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,4);//骑手路线规划
+            route(acp_orders,delivers.acp_count);//骑手路线规划
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
@@ -103,6 +117,7 @@ void my_accept_order() {
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
+            mouse_off_arrow(&mouse);
             my_accept_order();
             //return后从这开始
             mouse_on_arrow(mouse);
@@ -233,7 +248,7 @@ void draw_my_accept() {
     PrintText(150, 100, debg, HEI, 24, 1, Red);
 
     for (i = 0; i < delivers.acp_count; i++) {
-        AcceptedOrder *ao = &acp_orders[i];  // ← 用对数组！
+        AcceptedOrder *ao = &acp_orders[i]; 
         // 画框
         Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
 
@@ -258,7 +273,7 @@ void draw_my_accept() {
                 break;
             }
             case ORDER_FOOD: {
-                int pu   = ao->data.food.station;
+                int pu   = ao->data.food.pick_up_location;
                 int dst  = ao->data.food.destination;
                 amount   = ao->data.food.total_amount;
 
@@ -268,10 +283,12 @@ void draw_my_accept() {
                 break;
             }
             case ORDER_DELIVER: {
-                int pu   = ao->data.deliver.station;
+                int pu   = ao->data.deliver.station+408;
                 int dst  = ao->data.deliver.index;
                 amount   = 2.0f;
 
+                sprintf(debg,"deliver_station=%d",pu);
+                PrintText(200, 50, debg, HEI, 24, 1, 0x0000);
                 sprintf(pick_up, "取货点：%s", node[pu].name);
                 sprintf(dest,    "目的地：%s", node[dst].name);
                 distance_m = dijkstra(&node[pu], &node[dst], 3);

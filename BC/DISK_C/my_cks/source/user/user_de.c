@@ -44,6 +44,7 @@ void user_deliver(){
     strcpy(delivers.number, currentUser.number);// 用户手机号
     delivers.community=currentUser.community;// 用户地址
     delivers.building=currentUser.building;// 用户楼栋
+    delivers.index=currentUser.index;
 
     DestroyUList(&UL); // 释放用户列表空间
 
