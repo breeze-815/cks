@@ -72,7 +72,6 @@ extern Station stations[8];
 
 extern Button button [79];
 extern AcceptedOrder acp_orders[4];
-//extern Acp_order acp_orders[4];
 
 extern RouteState route_state;
 #define white 0xFFFF

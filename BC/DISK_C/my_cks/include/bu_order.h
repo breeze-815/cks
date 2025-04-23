@@ -4,5 +4,4 @@
 void business_order(int index);
 void draw_business_order(int page,OrderList *OL,FoodList *FL,int index);
 
-
 #endif
