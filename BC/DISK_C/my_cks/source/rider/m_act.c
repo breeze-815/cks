@@ -1,12 +1,12 @@
 #include <all_func.h>
 
-void account()
+void my_account()
 {
 
 
 }
 
-void draw_account()
+void draw_my_account()
 {
     
 }

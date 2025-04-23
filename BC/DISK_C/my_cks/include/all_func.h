@@ -43,7 +43,12 @@
 #include "arrange.h"
 #include "acp_det.h"
 #include "m_acp.h"
-
+#include "my.h"
+#include "m_hst.h"
+// extern int acp_orders1[4];
+// extern int acp_count = 0;
+// extern int total_cnt=0;
+// extern int acp_count=0;
 extern MOUSE mouse;
 
 extern USER users;

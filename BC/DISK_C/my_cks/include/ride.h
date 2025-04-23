@@ -4,5 +4,4 @@
 void rider(int user_pos);
 void draw_rider();
 void press3(int x);
-
 #endif
