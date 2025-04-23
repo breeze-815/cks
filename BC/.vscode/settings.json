@@ -89,7 +89,8 @@
     "array": "c",
     "tuple": "c",
     "type_traits": "c",
-    "utility": "c"
+    "utility": "c",
+    "my.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

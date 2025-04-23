@@ -64,7 +64,7 @@ void user(int user_pos){
         }
         else if(mouse_press(430, 105, 650, 155)==1)
         {
-            number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号
+            number_input(currentUser.number, 435, 110, 645, 150); // 输入手机号 //750，50
         }
         else if(mouse_press(710, 105, 830, 155)==1)
         {
