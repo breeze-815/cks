@@ -48,6 +48,7 @@ void deliver_input(char *deliver_code,int bar_x1,int bar_y1,int bar_x2,int bar_y
 int Deliver_pos(DeliverList DL,Deliver delivers);
 void DListInsert(DeliverList*DL,Deliver delivers);
 int save_Deliver(Deliver delivers);
+void save_DL(DeliverList *DL);
 void DestroyDList(DeliverList*DL);
 void ReadAllDeliver(DeliverList *DL);
 

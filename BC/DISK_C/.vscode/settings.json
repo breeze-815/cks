@@ -74,6 +74,8 @@
     "tuple": "c",
     "type_traits": "c",
     "utility": "c",
-    "arrange.h": "c"
+    "arrange.h": "c",
+    "FOPEN.C": "cpp",
+    "string_view": "c"
   }
 }

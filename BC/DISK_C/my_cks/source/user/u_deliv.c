@@ -547,6 +547,28 @@ int save_Deliver(Deliver delivers) {
     return 0;
 }
 
+//保存线性表
+void save_DL(DeliverList *DL) {
+    int i;
+    FILE *fp = NULL;
+
+	if ((fp = fopen("data\\Deliver.dat", "wb")) == NULL) {
+        printf("无法打开文件！\n");
+        return ;
+    }
+    // 重新将线性表写入文件
+    rewind(fp);//将文件指针移动到文件开头
+    fwrite(&DL->length, sizeof(short), 1, fp);//写入线性表长度
+    fwrite(&DL->listsize, sizeof(short), 1, fp);//写入线性表容量
+ 
+    // 逐个写入数据
+    for (i = 0; i < DL->length; i++) {
+        fwrite(&DL->elem[i], sizeof(Deliver), 1, fp);
+    }
+
+    fclose(fp);
+}
+
 void DestroyDList(DeliverList*DL)	
 {
 	free(DL->elem);

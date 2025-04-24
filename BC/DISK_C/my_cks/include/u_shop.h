@@ -32,7 +32,6 @@ typedef struct Product
 void user_shop();
 void draw_user_shop(Product products[],int productCount,int currentpage);
 void draw_user_shop_quantity(Product products[],int productCount,int currentpage);
-void init_Products(int *productCount);
 void AddSub(int mx, int my, int productCount, Product products[], CartItem carts[], int *cartCount, int currentPage);
 void addToCart(Product p, CartItem carts[], int *cartCount,int index);
 void removeFromCart(Product p, CartItem carts[], int *cartCount);
