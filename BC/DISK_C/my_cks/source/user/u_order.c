@@ -11,6 +11,7 @@ void user_order(){
     int totalPage =(cart.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
     int state = 0; // 判断是否需要完善信息
 
+    // 这三个变量在选择地址时使用
     int cur_index = -1;
     int cur_community=0;
     int returned_index;
@@ -328,7 +329,7 @@ void draw_info(){
     bar1(200, 0, 1024, 768, white);//清屏
     Draw_Rounded_Rectangle(225, 25, 1000, 750, 30, 2,0x6B4D);//最外围灰色圆角矩形框
 
-    Line_Thick(950, 50, 975, 75, 1, black);//
+    Line_Thick(950, 50, 975, 75, 1, black);//"X"
     Line_Thick(950, 75, 975, 50, 1, black);//
 
     PrintCC(250, 50, "请先完善个人信息", HEI, 24, 1, lightred);

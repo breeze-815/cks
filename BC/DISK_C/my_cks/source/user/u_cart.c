@@ -74,7 +74,7 @@ void user_cart() {
 
 
 void draw_user_cart(CartItem carts[], int cartCount, int page,float *sum) {
-    int i,k;
+    int i,k;//循环变量
     int start = page * 4;// 起始商品索引
     int end = start + 4;// 结束商品索引
     char sum_str[20];//总价字符串

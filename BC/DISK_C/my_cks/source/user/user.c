@@ -2,7 +2,8 @@
 
 void user(int user_pos){
 
-    int cur_index = -1;//
+    //这三个变量在选择地址时使用
+    int cur_index = -1;
     int cur_community=0;
     int returned_index;
 
@@ -417,7 +418,5 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 			hide_cursor(border,y1);//隐藏光标
 			break;
 		}	
-			
-	// hide_cursor(border,y1);	//隐藏光标
 	}
 }	

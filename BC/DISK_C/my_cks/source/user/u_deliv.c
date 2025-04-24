@@ -30,6 +30,7 @@ void user_deliver(){
     int last_index_station=-1;//记录上次选择的站点
     int state=0; //判断是否需要完善信息
 
+    //这三个变量在选择地址时使用
     int cur_index = -1;
     int cur_community=0;
     int returned_index;
@@ -47,6 +48,7 @@ void user_deliver(){
     delivers.index=currentUser.index;// 
 
     DestroyUList(&UL); // 释放用户列表空间
+    DestroyDList(&DL); // 释放订单列表空间
 
     mouse_off_arrow(&mouse);
 	

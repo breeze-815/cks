@@ -7,7 +7,7 @@ void business_detail(int order_index,int index) {
 
     int page = 0;// 初始页码
     int totalPage; // 总页数
-    int i;
+    int i;//循环变量
     int cnt=0;
 
     ReadAllOrder(&OL); // 读取订单列表

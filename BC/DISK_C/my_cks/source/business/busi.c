@@ -30,7 +30,6 @@ void business(int user_pos){
 
 		if(mouse_press(40, 113, 160, 163)==1)
         {
-            DestroyUList(&UL); // 释放用户列表空间
             return;
 			//welcome();//首页
 		}
