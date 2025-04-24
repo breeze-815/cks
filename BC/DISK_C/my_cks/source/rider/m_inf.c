@@ -8,11 +8,8 @@ void my_information(int user_pos)
     currentUser=UL.elem[user_pos];// 获取当前用户信息
     DestroyUList(&UL); // 释放用户列表空间
     mouse_off_arrow(&mouse);
-    PrintText(50,1,"draw前",HEI,32,1,black);
     draw_my_information(currentUser);
-    PrintText(100,1,"draw后",HEI,32,1,black);
 	mouse_on_arrow(mouse);
-    PrintText(1,1,"进入while",HEI,32,1,black);
 	while(1){
         //PrintText(1,1,"进入while",HEI,32,1,black);
 		mouse_show_arrow(&mouse);
@@ -78,9 +75,9 @@ void my_information(int user_pos)
 
 void draw_my_information(USER currentUser)
 {
-    char show_name[20];
-    char show_num[30];
-    char show_account[10];
+    char show_name[50];
+    char show_num[50];
+    char show_account[50];
     bar1(0, 150, 1024, 768,white);
     bar1(0,150,200,768,deepblue);
     sprintf(show_name,"用户：%s",currentUser.name);
