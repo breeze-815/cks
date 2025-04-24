@@ -34,6 +34,7 @@ void rider(int user_pos)
         else if(mouse_press(342, 50, 462, 100)==1) //接单
         {
             press3(1);//按钮高亮
+            mouse_off_arrow(&mouse);
             accept_order(user_pos);//进入接单页面
             //return后从这开始
             mouse_off_arrow(&mouse); //隐藏鼠标，防止留下残痕
@@ -44,6 +45,7 @@ void rider(int user_pos)
         else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
             press3(2);//按钮高亮
+            mouse_off_arrow(&mouse);
             route(cur_orders,num_of_orders.cur_count,user_pos);//进入路线界面
             //return后从这开始
             mouse_off_arrow(&mouse);
@@ -54,6 +56,7 @@ void rider(int user_pos)
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
+            mouse_off_arrow(&mouse);
             my_information(user_pos);//进入我的信息界面
             //return后从这开始
             mouse_on_arrow(mouse);

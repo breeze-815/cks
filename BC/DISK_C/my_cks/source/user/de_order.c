@@ -44,13 +44,13 @@ void draw_de_order() {
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
-    char order_number[20]; // 打印订单号
+    char order_number[100]; // 打印订单号
     char address[100]; // 打印用户地址
-    char community[50]; // 社区字符串
-    char building[50]; // 楼栋字符串
-    char code[20]; // 取件码字符串
-    char company_str[20];// 快递公司字符串
-    char station_str[20];// 站点字符串
+    char community[100]; // 社区字符串
+    char building[100]; // 楼栋字符串
+    char code[100]; // 取件码字符串
+    char company_str[100];// 快递公司字符串
+    char station_str[100];// 站点字符串
 
     bar1(200, 0, 1024, 768,white);
 

@@ -464,7 +464,7 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
 		}
         else if(mouse_press(342, 50, 462, 100)==1) //接单
         {
-            press3(1);//进入接单界面
+            press3(1);//按钮高亮
             mouse_off_arrow(&mouse);
             accept_order(user_pos);//接单页面
             //return后从这开始
@@ -580,7 +580,7 @@ int dijkstra(Node *start, Node *end, int count)
 
 void draw_route()
 {
-    bar1(0, 0, 1024, 768,white);
+    bar1(0, 150, 1024, 768,white);
     bar1(0, 0, 1024, 150,deepblue);
     Readbmp64k(0, 326, "bmp\\map4.bmp");
     
