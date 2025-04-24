@@ -4,6 +4,7 @@ Num_of_Orders num_of_orders;
 
 void rider(int user_pos)
 {
+    char debg[30];
     //获取当前用户信息
 	UserList UL = {0};
     USER currentUser;
@@ -13,9 +14,10 @@ void rider(int user_pos)
     mouse_off_arrow(&mouse);
 	draw_rider();//画骑手初始化界面
 	mouse_on_arrow(mouse);
-    if (currentUser.state == 0) //未初始化
+    if (currentUser.state == -1) //未初始化
     {
-        currentUser.state = rider_Init(currentUser); //初始化成功后将状态标志位置1
+        rider_Init(&currentUser); //初始化成功后将状态标志位置1
+        save_user(currentUser);
     }
     else 
     {
@@ -163,49 +165,51 @@ void press3(int x){
 }
 
 //骑手初始化函数，初始化成功返回1
-int rider_Init(USER currentUser)
+void rider_Init(USER *currentUser)
 {
     mouse_off_arrow(&mouse);
 	draw_rider_Init();//画骑手初始化界面
 	mouse_on_arrow(mouse);
     while (1)
     {
+        mouse_show_arrow(&mouse);
         if(mouse_press(430, 500, 650, 550)==1) //初始化时输入个人信息
         {
-            number_input(currentUser.number, 435, 505, 645, 545); // 输入手机号
+            number_input(currentUser->number, 435, 505, 645, 545); // 输入手机号
         }
-        else if(mouse_press(710, 500, 830, 550)==1 && currentUser.state)
+        
+        else if(mouse_press(440, 285, 560, 335)==1) //全职按钮
         {
-            if(strlen(currentUser.number)==11 && currentUser.ocp !=0)//判断手机号长度是否合法以及是否选择了骑手工作状态（全职or兼职）
+            press3(4);
+            currentUser->ocp=1;
+            save_user(*currentUser);
+
+        }
+        else if(mouse_press(620, 285, 740, 335)==1) //兼职按钮
+        {
+            press3(5);
+            currentUser->ocp=2;
+            save_user(*currentUser);
+        }
+        else if (mouse_press(710, 500, 830, 550) == 1) 
+        {   
+            // “确定”按钮，检查合法性
+            if (strlen(currentUser->number) == 11 && currentUser->number != 0) 
             {
-                save_user(currentUser);
+                currentUser->state = 1;         // 标记初始化完成
+                save_user(*currentUser);  // 保存完整信息
                 PrintCC(860,535,"保存成功",HEI,24,1,lightred);
                 delay(500);
                 bar1(860,535,1000,600,white);
                 break;
-            }
-            else
+            } else 
             {
                 PrintCC(860,535,"长度不合法",HEI,24,1,lightred);
                 delay(500);
                 bar1(860,535,1000,600,white);
             }
         }
-        else if(mouse_press(440, 285, 560, 335)==1) //全职按钮
-        {
-            press3(4);
-            currentUser.ocp=1;
-            save_user(currentUser);
-
-        }
-        else if(mouse_press(620, 285, 740, 335)==1) //兼职按钮
-        {
-            press3(5);
-            currentUser.ocp=2;
-            save_user(currentUser);
-        }
     }
-    return 1;    
 }
 
 //画骑手初始化界面
@@ -219,12 +223,12 @@ void draw_rider_Init()
 
     PrintCC(200,300,"请选择骑手类型：",HEI,24,1,deepblue);
     //全职按钮
-    Draw_Rounded_Rectangle(440, 285, 560, 335, 25, 1,deepblue);//轮廓
     Fill_Rounded_Rectangle(440, 285, 560, 335, 25, white);//填色
+    Draw_Rounded_Rectangle(440, 285, 560, 335, 25, 1,deepblue);//轮廓
     PrintCC(440+35,300,"全职",HEI,24,1,deepblue);//打字
     //兼职按钮
-    Draw_Rounded_Rectangle(620, 285, 740, 335, 25, 1,deepblue);
     Fill_Rounded_Rectangle(620, 285, 740, 335, 25, white); 
+    Draw_Rounded_Rectangle(620, 285, 740, 335, 25, 1,deepblue);
     PrintCC(620+35,300,"兼职",HEI,24,1,deepblue);
 }
 

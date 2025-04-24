@@ -11,7 +11,7 @@ typedef struct Num_of_Orders
 void rider(int user_pos);
 void draw_rider();
 void press3(int x);
-int rider_Init(USER currentUser);
+void rider_Init(USER *currentUser);
 void draw_rider_Init();
 void draw_welcome_rider(USER currentUser);
 

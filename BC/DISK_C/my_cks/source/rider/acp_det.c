@@ -5,7 +5,7 @@
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-void draw_order_detail_body(int type, int local_index,OrderList *OL, FoodList *FL, DeliverList *DL) 
+void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList *FL, DeliverList *DL) 
 {
     char buf[128];
     // 通用：下单时间、手机号
@@ -254,7 +254,8 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
 }
 
 //进入所接订单详情
-void accept_order_detail(int local_index, int type) {
+void show_order_detail(int local_index, int type, int user_pos) 
+{
     OrderList OL = {0};
     FoodList FL = {0};
     DeliverList DL = {0};
@@ -293,7 +294,7 @@ void accept_order_detail(int local_index, int type) {
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,4);//骑手路线规划
+            route(cur_orders,num_of_orders.cur_count,user_pos);//骑手路线规划
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
