@@ -18,7 +18,7 @@ FoodCart food_carts[12]={0};//购物车内的商品
 ShoppingFood shopping_food={0};//购物车整体
 
 void user_food(int index){
-    int foodCount=12;
+    int foodCount=12;//商品数量
     int state=0;//0为未选择排序，1为选择排序
 
     mouse_off_arrow(&mouse);
@@ -30,7 +30,7 @@ void user_food(int index){
 	while(1){
 		mouse_show_arrow(&mouse);
 
-		if(mouse_press(40, 113, 160, 163)==1)
+		if(mouse_press(40, 113, 160, 163)==1)//点击返回
         {
             int i;
             for(i=0;i<foodCount;i++)

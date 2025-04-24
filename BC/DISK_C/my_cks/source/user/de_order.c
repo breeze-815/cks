@@ -58,6 +58,8 @@ void draw_de_order() {
 
     current = DL.elem[DL.length-1]; // 当前订单
 
+    DestroyDList(&DL); // 释放订单列表空间
+
     sprintf(order_number, "订单号：%d", current.id); // 订单号
     sprintf(time_str, "下单时间：%s",current.time );
     sprintf(user_name, "用户名：%s", current.name);

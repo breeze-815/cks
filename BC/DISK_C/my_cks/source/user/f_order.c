@@ -408,6 +408,28 @@ int save_food(FoodOrder Foodorders) {
     return 0;
 }
 
+//保存线性表
+void save_FL(FoodList *FL) {
+    int i;
+    FILE *fp = NULL;
+
+	if ((fp = fopen("data\\Foodorder.dat", "wb")) == NULL) {
+        printf("无法打开文件！\n");
+        return ;
+    }
+    // 重新将线性表写入文件
+    rewind(fp);//将文件指针移动到文件开头
+    fwrite(&FL->length, sizeof(short), 1, fp);//写入线性表长度
+    fwrite(&FL->listsize, sizeof(short), 1, fp);//写入线性表容量
+ 
+    // 逐个写入数据
+    for (i = 0; i < FL->length; i++) {
+        fwrite(&FL->elem[i], sizeof(FoodOrder), 1, fp);
+    }
+
+    fclose(fp);
+}
+
 void DestroyFList(FoodList*FL)	
 {
 	free(FL->elem);

@@ -30,6 +30,7 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
         for (i = local_index; i < OL->length - 1; i++) 
             OL->elem[i] = OL->elem[i + 1];
         OL->length--;
+        save_OL(OL);
 
     }
     else if (type == ORDER_FOOD) 
@@ -44,6 +45,7 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
         for (i = local_index; i < FL->length - 1; i++) 
             FL->elem[i] = FL->elem[i + 1];
         FL->length--;
+        save_FL(FL);
     }
     else if (type == ORDER_DELIVER) 
     {
@@ -57,6 +59,7 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
         for (i = local_index; i < DL->length - 1; i++)
             DL->elem[i] = DL->elem[i + 1];
         DL->length--;
+        save_DL(DL);
     }
     num_of_orders.cur_count++; //当前接单增加
     num_of_orders.total_cnt--; //展示订单减少 

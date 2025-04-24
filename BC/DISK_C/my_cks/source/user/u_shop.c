@@ -33,14 +33,14 @@ Product products[84]=
     {26, 3, "达利园蛋糕", 1.00, "bmp\\shop\\dali.bmp", 0},
     {27, 3, "奥利奥饼干", 8.00, "bmp\\shop\\aoliao.bmp", 0},
     {28, 3, "辣条", 5.00, "bmp\\shop\\latiao.bmp", 0},
-    {29, 3, "大白兔奶糖", 1.00, "bmp\\shop\\dabaitu.bmp", 0},
-    {30, 3, "卤鹌鹑蛋", 1.00, "bmp\\shop\\ludan.bmp", 0},
-    {31, 3, "巧克力", 1.00, "bmp\\shop\\defu.bmp", 0},
-    {32, 3, "锅巴", 1.00, "bmp\\shop\\guoba.bmp", 0},
+    {29, 3, "大白兔奶糖", 0.50, "bmp\\shop\\dabaitu.bmp", 0},
+    {30, 3, "卤鹌鹑蛋", 2.00, "bmp\\shop\\ludan.bmp", 0},
+    {31, 3, "巧克力", 4.00, "bmp\\shop\\defu.bmp", 0},
+    {32, 3, "锅巴", 5.00, "bmp\\shop\\guoba.bmp", 0},
     {33, 3, "吐司面包", 1.00, "bmp\\shop\\tusi.bmp", 0},
-    {34, 3, "鸡腿", 1.00, "bmp\\shop\\jitui.bmp", 0},
-    {35, 3, "方便面", 1.00, "bmp\\shop\\paomian.bmp", 0},
-    {36, 3, "薄荷糖", 1.00, "bmp\\shop\\bohe.bmp", 0},
+    {34, 3, "鸡腿", 4.00, "bmp\\shop\\jitui.bmp", 0},
+    {35, 3, "方便面", 5.00, "bmp\\shop\\paomian.bmp", 0},
+    {36, 3, "薄荷糖", 5.00, "bmp\\shop\\bohe.bmp", 0},
 /*4===========================================================================*/
     {37, 4, "可口可乐", 3.00, "bmp\\shop\\kekou.bmp", 0},
     {38, 4, "百事可乐", 3.00, "bmp\\shop\\baishi.bmp", 0},
@@ -55,44 +55,44 @@ Product products[84]=
     {47, 4, "纯牛奶", 4.00, "bmp\\shop\\milk.bmp", 0},
     {48, 4, "酸奶", 5.00, "bmp\\shop\\suan.bmp", 0},
 /*5===========================================================================*/
-    {49, 5, "篮球", 10.00, "bmp\\shop\\lanqiu.bmp", 0},
-    {50, 5, "足球", 10.00, "bmp\\shop\\zuqiu.bmp", 0},
-    {51, 5, "羽毛球", 10.00, "bmp\\shop\\yu.bmp", 0},
-    {52, 5, "乒乓球", 10.00, "bmp\\shop\\ping.bmp", 0},
-    {53, 5, "网球", 10.00, "bmp\\shop\\wang.bmp", 0},
-    {54, 5, "排球", 10.00, "bmp\\shop\\pai.bmp", 0},
-    {55, 5, "网球拍", 10.00, "bmp\\shop\\wangpai.bmp", 0},
-    {56, 5, "羽毛球拍", 10.00, "bmp\\shop\\yupai.bmp", 0},    
-    {57, 5, "乒乓球拍", 10.00, "bmp\\shop\\pingpai.bmp", 0},
-    {58, 5, "跳绳", 10.00, "bmp\\shop\\tiao.bmp", 0},
-    {59, 5, "哑铃", 10.00, "bmp\\shop\\ya.bmp", 0},
+    {49, 5, "篮球", 50.00, "bmp\\shop\\lanqiu.bmp", 0},
+    {50, 5, "足球", 50.00, "bmp\\shop\\zuqiu.bmp", 0},
+    {51, 5, "羽毛球", 5.00, "bmp\\shop\\yu.bmp", 0},
+    {52, 5, "乒乓球", 3.00, "bmp\\shop\\ping.bmp", 0},
+    {53, 5, "网球", 8.00, "bmp\\shop\\wang.bmp", 0},
+    {54, 5, "排球", 50.00, "bmp\\shop\\pai.bmp", 0},
+    {55, 5, "网球拍", 100.00, "bmp\\shop\\wangpai.bmp", 0},
+    {56, 5, "羽毛球拍", 100.00, "bmp\\shop\\yupai.bmp", 0},    
+    {57, 5, "乒乓球拍", 100.00, "bmp\\shop\\pingpai.bmp", 0},
+    {58, 5, "跳绳", 20.00, "bmp\\shop\\tiao.bmp", 0},
+    {59, 5, "哑铃", 30.00, "bmp\\shop\\ya.bmp", 0},
     {60, 5, "运动背包", 50.00, "bmp\\shop\\beibao.bmp", 0},
 /*6===========================================================================*/
-    {61, 6, "苹果", 10.00, "bmp\\shop\\apple.bmp", 0},
+    {61, 6, "苹果", 3.00, "bmp\\shop\\apple.bmp", 0},
     {62, 6, "哈密瓜", 10.00, "bmp\\shop\\hami.bmp", 0},
-    {63, 6, "梨", 10.00, "bmp\\shop\\pear.bmp", 0},
-    {64, 6, "橘子", 10.00, "bmp\\shop\\orange.bmp", 0},
+    {63, 6, "梨", 3.00, "bmp\\shop\\pear.bmp", 0},
+    {64, 6, "橘子", 2.00, "bmp\\shop\\orange.bmp", 0},
     {65, 6, "草莓", 10.00, "bmp\\shop\\cao.bmp", 0},
-    {66, 6, "西瓜", 10.00, "bmp\\shop\\xigua.bmp", 0},
+    {66, 6, "西瓜", 15.00, "bmp\\shop\\xigua.bmp", 0},
     {67, 6, "火龙果", 10.00, "bmp\\shop\\huo.bmp", 0},
-    {68, 6, "芒果", 10.00, "bmp\\shop\\mango.bmp", 0},
-    {69, 6, "猕猴桃", 10.00, "bmp\\shop\\mihou.bmp", 0},
-    {70, 6, "蓝莓", 10.00, "bmp\\shop\\lan.bmp", 0},
+    {68, 6, "芒果", 5.00, "bmp\\shop\\mango.bmp", 0},
+    {69, 6, "猕猴桃", 5.00, "bmp\\shop\\mihou.bmp", 0},
+    {70, 6, "蓝莓", 5.00, "bmp\\shop\\lan.bmp", 0},
     {71, 6, "樱桃", 10.00, "bmp\\shop\\yingtao.bmp", 0},
     {72, 6, "圣女果", 10.00, "bmp\\shop\\shengnv.bmp", 0},
 /*7===========================================================================*/
-    {73, 7, "笔记本套装", 10.00, "bmp\\shop\\bijitao.bmp", 0},
-    {74, 7, "茶杯套装", 10.00, "bmp\\shop\\chatao.bmp", 0},
+    {73, 7, "笔记本套装", 30.00, "bmp\\shop\\bijitao.bmp", 0},
+    {74, 7, "茶杯套装", 30.00, "bmp\\shop\\chatao.bmp", 0},
     {75, 7, "书签套装", 10.00, "bmp\\shop\\shutao.bmp", 0},
-    {76, 7, "帆布包", 10.00, "bmp\\shop\\fanbu.bmp", 0},
-    {77, 7, "钥匙扣", 10.00, "bmp\\shop\\yaoshi.bmp", 0},
-    {78, 7, "明信片", 10.00, "bmp\\shop\\mingxin.bmp", 0},
+    {76, 7, "帆布包", 50.00, "bmp\\shop\\fanbu.bmp", 0},
+    {77, 7, "钥匙扣", 5.00, "bmp\\shop\\yaoshi.bmp", 0},
+    {78, 7, "明信片", 20.00, "bmp\\shop\\mingxin.bmp", 0},
     {79, 7, "文创直尺", 10.00, "bmp\\shop\\wenchi.bmp", 0},
-    {80, 7, "冰箱贴", 10.00, "bmp\\shop\\bingx.bmp", 0},
-    {81, 7, "文化衫", 10.00, "bmp\\shop\\wenshan.bmp", 0},
+    {80, 7, "冰箱贴", 5.00, "bmp\\shop\\bingx.bmp", 0},
+    {81, 7, "文化衫", 30.00, "bmp\\shop\\wenshan.bmp", 0},
     {82, 7, "金属书签", 10.00, "bmp\\shop\\jinqian.bmp", 0},
     {83, 7, "金属吊坠", 10.00, "bmp\\shop\\jinzhui.bmp", 0},
-    {84, 7, "校徽", 10.00, "bmp\\shop\\xiaohui.bmp", 0},
+    {84, 7, "校徽", 5.00, "bmp\\shop\\xiaohui.bmp", 0},
 /*===========================================================================*/
 };
 CartItem carts[84]={0};
@@ -280,10 +280,8 @@ void draw_user_shop(Product products[],int productCount,int currentpage){
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5,1,deepblue);//购物车按钮
 
-    Line_Thick(220,75,235,90,1,black);//
+    Line_Thick(220,75,235,90,1,black);//按价格排序按钮
     Line_Thick(235,90,250,75,1,black);//
-
-
 
     PrintCC(860,715,"购物车",HEI,24,1,deepblue);
     PrintCC(220,700,"喻园超市",HEI,48,1,deepblue);

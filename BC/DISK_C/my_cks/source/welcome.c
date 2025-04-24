@@ -158,12 +158,11 @@ void draw_about_us()
 {
 	Fill_Rounded_Rectangle(250, 200, 750, 580, 30, white); // 背景框
 
-    Line_Thick(700, 225, 720, 245, 1, black);//
+    Line_Thick(700, 225, 720, 245, 1, black);//"x"
     Line_Thick(700, 245, 720, 225, 1, black);//
 
     PrintText(270, 225, "联系我们", HEI, 32, 1, 0x0000); // 标题（黑色）
 
-    // 每行20个字，颜色统一为黑色
     PrintText(270, 300, "本系统由华中科技大学人工智能与自动化", HEI, 24, 1, 0x0000);
     PrintText(270, 330, "学院智能2402班的曹瀚鹏，张子恒完成。", HEI, 24, 1, 0x0000);
     PrintText(270, 360, "曹瀚鹏主要负责完成骑手端编写及路径", HEI, 24, 1, 0x0000);
@@ -177,12 +176,11 @@ void draw_about_product()
 {
     Fill_Rounded_Rectangle(250, 200, 750, 580, 30, white); // 背景框
 
-    Line_Thick(700, 225, 720, 245, 1, black);//
+    Line_Thick(700, 225, 720, 245, 1, black);//"X"
     Line_Thick(700, 245, 720, 225, 1, black);//
 
     PrintText(270, 225, "产品介绍", HEI, 32, 1, 0x0000); // 标题（黑色）
 
-    // 每行20个字，颜色统一为黑色
     PrintText(270, 300, "本系统模拟了校园内外卖配送超市购物配", HEI, 24, 1, 0x0000);
     PrintText(270, 330, "送及快递代取的完整流程，涵盖用户注册", HEI, 24, 1, 0x0000);
     PrintText(270, 360, "与管理、商家管理、订单处理、骑手配送", HEI, 24, 1, 0x0000);

@@ -31,11 +31,11 @@ void draw_info();
 
 char* get_current_time();
 
-void InitOList(OrderList*OL);
 void ReadAllOrder(OrderList *OL);
 void DestroyOList(OrderList*OL);
 int Order_pos(OrderList OL,Order orders);
 void OListInsert(OrderList*OL,struct Order e);
 int save_order(Order orders);
+void save_OL(OrderList *OL);
 
 #endif

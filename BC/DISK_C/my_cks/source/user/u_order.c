@@ -11,6 +11,7 @@ void user_order(){
     int totalPage =(cart.itemCount - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
     int state = 0; // 判断是否需要完善信息
 
+    // 这三个变量在选择地址时使用
     int cur_index = -1;
     int cur_community=0;
     int returned_index;
@@ -328,7 +329,7 @@ void draw_info(){
     bar1(200, 0, 1024, 768, white);//清屏
     Draw_Rounded_Rectangle(225, 25, 1000, 750, 30, 2,0x6B4D);//最外围灰色圆角矩形框
 
-    Line_Thick(950, 50, 975, 75, 1, black);//
+    Line_Thick(950, 50, 975, 75, 1, black);//"X"
     Line_Thick(950, 75, 975, 50, 1, black);//
 
     PrintCC(250, 50, "请先完善个人信息", HEI, 24, 1, lightred);
@@ -457,6 +458,28 @@ int save_order(Order orders) {
     fclose(fp);
     DestroyOList(&OL);
     return 0;
+}
+
+//保存线性表
+void save_OL(OrderList *OL) {
+    int i;
+    FILE *fp = NULL;
+
+	if ((fp = fopen("data\\order.dat", "wb")) == NULL) {
+        printf("无法打开文件！\n");
+        return ;
+    }
+    // 重新将线性表写入文件
+    rewind(fp);//将文件指针移动到文件开头
+    fwrite(&OL->length, sizeof(short), 1, fp);//写入线性表长度
+    fwrite(&OL->listsize, sizeof(short), 1, fp);//写入线性表容量
+ 
+    // 逐个写入数据
+    for (i = 0; i < OL->length; i++) {
+        fwrite(&OL->elem[i], sizeof(Order), 1, fp);
+    }
+
+    fclose(fp);
 }
 
 void DestroyOList(OrderList*OL)	

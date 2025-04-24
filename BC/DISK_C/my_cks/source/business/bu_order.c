@@ -56,9 +56,16 @@ void business_order(int index){
             //order_index对二者都适用
             //传入index是为了区分超市和不同食堂，如果是食堂就要用target来展示
 			MouseGet(&mouse);
+
+            DestroyDList(&OL); // 释放订单列表内存
+            DestroyDList(&FL); // 释放食品列表内存
+
             business_detail(order_index,index); // 显示订单详情
 
             //return后从这开始
+            ReadAllOrder(&OL); // 重新读取订单列表
+            ReadAllFood(&FL); // 重新读取食品列表
+            
             mouse_off_arrow(&mouse);
             bar1(200, 0, 1024, 768, white); // 清除订单详情界面残留
             draw_business_order(page,&OL,&FL,index); // 重新绘制订单列表

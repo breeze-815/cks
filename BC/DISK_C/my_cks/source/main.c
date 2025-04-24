@@ -4,8 +4,6 @@ int main()
 {
    
     int gd = DETECT, gm;
-    int distance;
-    distance = dijkstra(&node[18], &node[85],2);//测试dijkstra算法
     SetSVGA64k();//启动SVGA画图界面 
     
     mouse_init(); // 初始化鼠标
@@ -17,10 +15,7 @@ int main()
         mouse_show_arrow(&mouse);// 更新鼠标位置
 
         welcome();//首页
-             
     }
-    CloseSVGA();//关闭图形界面 
-    printf("Distance: %d\n", distance); // 打印距离
     return 0;
 }
 

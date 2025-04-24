@@ -33,9 +33,8 @@ void arrange(int start_idx, AcceptedOrder cur_orders[], int n_orders)
     temp_step = 0;
     /*—— 主循环 ——*/
 
-    if(temp_remaining == 0) 
-    {
-        //bar1(0,150,1024,326,white);
+    if(temp_remaining == 0) {
+        bar1(0,150,1024,326,white);
         PrintText(400, 250, "当前暂无任务", HEI, 36, 1, Red);
         return -1; // 返回-1表示没有可执行任务
     }

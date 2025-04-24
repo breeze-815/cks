@@ -30,6 +30,7 @@ void user_deliver(){
     int last_index_station=-1;//记录上次选择的站点
     int state=0; //判断是否需要完善信息
 
+    //这三个变量在选择地址时使用
     int cur_index = -1;
     int cur_community=0;
     int returned_index;
@@ -47,6 +48,7 @@ void user_deliver(){
     delivers.index=currentUser.index;// 
 
     DestroyUList(&UL); // 释放用户列表空间
+    DestroyDList(&DL); // 释放订单列表空间
 
     mouse_off_arrow(&mouse);
 	
@@ -543,6 +545,28 @@ int save_Deliver(Deliver delivers) {
     fclose(fp);
     DestroyDList(&DL);
     return 0;
+}
+
+//保存线性表
+void save_DL(DeliverList *DL) {
+    int i;
+    FILE *fp = NULL;
+
+	if ((fp = fopen("data\\Deliver.dat", "wb")) == NULL) {
+        printf("无法打开文件！\n");
+        return ;
+    }
+    // 重新将线性表写入文件
+    rewind(fp);//将文件指针移动到文件开头
+    fwrite(&DL->length, sizeof(short), 1, fp);//写入线性表长度
+    fwrite(&DL->listsize, sizeof(short), 1, fp);//写入线性表容量
+ 
+    // 逐个写入数据
+    for (i = 0; i < DL->length; i++) {
+        fwrite(&DL->elem[i], sizeof(Deliver), 1, fp);
+    }
+
+    fclose(fp);
 }
 
 void DestroyDList(DeliverList*DL)	

@@ -34,5 +34,6 @@ void DestroyFList(FoodList*OL);
 int FoodOrder_pos(FoodList OL,FoodOrder Foodorders);
 void FListInsert(FoodList*OL,struct FoodOrder e);
 int save_food(FoodOrder FoodOrders);
+void save_FL(FoodList *FL);
 
 #endif 
