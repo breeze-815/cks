@@ -140,11 +140,29 @@ void draw_my_order_detail_body(int type, int index)
 
 void my_accept_detail(int index , int user_pos) 
 {
+    OrderList OL = {0};
+    FoodList FL = {0};
+    int page = 0;
+    int totalPage = 1;
     
     int type;
     type=cur_orders[index].type;
+
+    ReadAllOrder(&OL); // 读取订单列表
+    ReadAllFood(&FL); // 读取食品列表
+
+    // 计算总页数//第一页4个，第二页后面9个
+    if (type == ORDER_SUPERMARKET) {
+        totalPage = (OL.elem[index].itemCount - 4 + 8) / 9 + 1;
+    } else if (type == ORDER_FOOD) {
+        totalPage = (FL.elem[index].itemCount - 4 + 8) / 9 + 1;
+    }
+    // ORDER_DELIVER 保持 totalPage=0
+
+    DestroyOList(&OL); // 释放快递列表内存
+    DestroyFList(&FL); // 释放食品列表内存
     
-    draw_my_order_detail(type, index);
+    draw_my_order_detail(type, index,page);
 
     mouse_on_arrow(mouse);
     while (1) 
@@ -165,7 +183,7 @@ void my_accept_detail(int index , int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); 
-            draw_my_order_detail(type, index);
+            draw_my_order_detail(type, index,page);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
@@ -176,37 +194,204 @@ void my_accept_detail(int index , int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white);  
-            draw_my_order_detail(type, index);
+            draw_my_order_detail(type, index,page);
         }
+        else if (mouse_press(220, 700, 340, 750) == 1) 
+		{
+            if (page > 0) {
+                page--;
+                draw_my_order_detail(type, index,page);
+            } else {
+                // 提示：已是第一页
+                PrintCC(630, 715, "已是第一页", HEI, 24, 1, lightred);
+				delay(500);
+				bar1(630, 715, 780, 765, white);
+            }
+        }
+		else if (mouse_press(420, 700, 540, 750) == 1) 
+		{
+			if (page < totalPage - 1) {
+				page++;
+				draw_my_order_detail(type, index,page);
+			} else {
+				// 提示：已是最后一页
+				PrintCC(630, 715, "已是最后一页", HEI, 24, 1, lightred);
+				delay(500);
+				bar1(630, 715, 780, 765, white);
+			}
+		}
         
     }
 }
 
-void draw_my_order_detail(int type,int index) 
+void draw_my_order_detail(int type,int index,int page) 
 {
+    int i;
+    Order currentOrder ; 
+    FoodOrder currentFood;
+    Deliver currentDeliver;
+    OrderList OL;
+    FoodList FL;
+    DeliverList DL;
+
+    char current_time[100]; // 获取当前时间
+    char time_str[100]; // 打印下单时间
+    char user_name[100]; // 打印用户名
+    char user_phone[100]; // 打印用户手机号
+    char order_number; // 打印订单号
+    char address[100]; // 打印用户地址
+    int startIdx = 0;// 起始商品索引
+    int itemsPerPage = 0;// 每页商品数量
+    int endIdx = 0;// 结束商品索引
+    int item_y = 0;// 商品框的y坐标
+
+    float total_amount = 0.0; // 总金额
+    char total_str[100]; // 总金额字符串
+    int fullPageItemCount = 0; // 满页商品数量
     // 清屏
     bar1(0, 150, 1024, 768, white);
 
+    ReadAllOrder(&OL); // 读取订单列表
+    ReadAllFood(&FL); // 读取食品列表
+    ReadAllDeliver(&DL); // 读取快递列表
+    currentOrder = OL.elem[index]; // 当前订单
+    currentFood = FL.elem[index]; // 当前订单
+    currentDeliver = DL.elem[index]; // 当前快递
+    DestroyOList(&OL); // 释放快递列表内存
+    DestroyFList(&FL); // 释放食品列表内存
+    DestroyDList(&DL); // 释放快递列表内存
 
     // 绘制主体部分
-    draw_my_order_detail_body(type, index);
+    
 
-    if (type == ORDER_DELIVER) //订单是快递代取
+    // 分页按钮（超市和外卖类型）
+    if (type != ORDER_DELIVER) {
+        Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue);
+        PrintCC(245, 715, "上一页", HEI, 24, 1, deepblue);
+        Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue);
+        PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
+    }
+
+    // 第一页绘制头部
+    if(page==0&&type!=ORDER_DELIVER)
     {
-        // 只额外展示取件码
+        draw_my_order_detail_body(type, index);
+
+        // 表头
+        PrintCC(200, 400, "商品详情", HEI, 24, 1, black);
+        PrintCC(650, 400, "数量", HEI, 24, 1, black);
+        PrintCC(800, 400, "金额", HEI, 24, 1, black);
+        PrintText(200, 420, "-------------------------------", HEI, 32, 1, black); 
+
+        startIdx = 0;
+        itemsPerPage = 4;//第一页4个，第二页后面9个
+    }
+    else if(page==0&&type==ORDER_DELIVER)
+    {
+        draw_my_order_detail_body(type, index);
+    }
+    else // 其他页
+    {
+        startIdx = 4 + (page - 1) * 9;
+        itemsPerPage = 9;
+    }
+
+    endIdx = startIdx + itemsPerPage;
+
+    if (type == ORDER_DELIVER) {
+        // 只展示取件码
         char code_buf[64];
-        sprintf(code_buf, "取件码：%s",cur_orders[index].data.deliver.code);//接取此单后取件码显示
-        PrintText(250, 400 + 150, code_buf, HEI, 32, 1, black);
-    } 
-    else //订单是超市外卖类型
-    {
-        // 购物清单表头
-        PrintCC(200, 330 + 150, "商品详情", HEI, 24, 1, black);
-        PrintCC(650, 330 + 150, "数量", HEI, 24, 1, black);
-        PrintCC(800, 330 + 150, "金额", HEI, 24, 1, black);
-        PrintText(150, 350 + 150, "------------------------------------", HEI, 32, 1, black);
-        // 清单列表
-        //draw_my_order_items(type, cur_orders[index]);
+        sprintf(code_buf, "取件码：%s", currentDeliver.code);
+        PrintText(200, 400, code_buf, HEI, 32, 1, black);
+    } else {
+        
+
+        if (type == ORDER_SUPERMARKET)//超市订单
+        {
+            if (endIdx > currentOrder.itemCount)// 防止越界
+                endIdx = currentOrder.itemCount;
+        }
+        else if(type==ORDER_FOOD)//食堂订单
+        {
+            if (endIdx > currentFood.itemCount)// 防止越界
+                endIdx = currentFood.itemCount;
+        }
+
+        item_y = (page == 0) ? 450 : 200;
+        for (i = startIdx; i < endIdx; i++) {
+            char total_str[100]; // 商品总价
+            char quantity_str[100]; // 商品数量
+
+            if(type == ORDER_SUPERMARKET)//超市订单
+            {
+                int quantity = currentOrder.item[i].quantity; // 商品数量
+                float price = currentOrder.item[i].price; // 商品价格
+
+                sprintf(total_str, "%.2f", price * quantity);
+                sprintf(quantity_str, "x%d", quantity);
+
+                PrintCC(200, item_y, currentOrder.item[i].name, HEI, 24, 1, black); // 商品名
+            }
+            else if(type==ORDER_FOOD)//食堂订单
+            {
+                int quantity = currentFood.item[i].quantity; // 商品数量
+                float price = currentFood.item[i].price; // 商品价格
+
+                sprintf(total_str, "%.2f", price * quantity);
+                sprintf(quantity_str, "x%d", quantity);
+
+                PrintCC(200, item_y, currentFood.item[i].name, HEI, 24, 1, black); // 商品名
+            }
+            
+            PrintText(650, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);// 商品数量
+            PrintText(800, item_y, (unsigned char*)total_str, HEI, 24, 1, black);// 商品总价
+
+            item_y += 50;
+        }
+
+        // 判断是否需要在此页显示总金额（当前页没有满）
+        fullPageItemCount = (page == 0) ? 4 : 9;// 第一页显示4个商品，其余页显示9个商品
+
+        if (type == ORDER_SUPERMARKET)
+        {
+            if ((endIdx - startIdx) < fullPageItemCount||endIdx==currentOrder.itemCount) {// 当前页商品数量不满一页或最后一个商品刚好满页都要打印出总金额
+                //如果不是最后一个商品但是满页就不打印总金额
+                // 打印分隔线
+                PrintText(200, item_y - 30, "-------------------------------", HEI, 32, 1, black);
+        
+                // 计算总金额
+                total_amount = 0.0;
+                for (i = 0; i < currentOrder.itemCount; i++) {
+                    int quantity = currentOrder.item[i].quantity; // 商品数量
+                    float price = currentOrder.item[i].price; // 商品价格
+                    total_amount += price * quantity;
+                }
+        
+                sprintf(total_str, "总金额：%.2f 元", total_amount);
+                PrintText(650, item_y + 10, total_str, HEI, 24, 1, black);
+            
+            }
+        }
+        else 
+        {
+            if ((endIdx - startIdx) < fullPageItemCount||endIdx==currentFood.itemCount) {// 当前页商品数量不满一页或最后一个商品刚好满页都要打印出总金额
+                //如果不是最后一个商品但是满页就不打印总金额
+                // 打印分隔线
+                PrintText(200, item_y - 30, "-------------------------------", HEI, 32, 1, black);
+        
+                // 计算总金额
+                total_amount = 0.0;
+                for (i = 0; i < currentFood.itemCount; i++) {
+                    int quantity = currentFood.item[i].quantity; // 商品数量
+                    float price = currentFood.item[i].price; // 商品价格
+                    total_amount += price * quantity;
+                }
+        
+                sprintf(total_str, "总金额：%.2f 元", total_amount);
+                PrintText(750, item_y + 10, total_str, HEI, 24, 1, black);
+            
+            }
+        }
     }
 }
 

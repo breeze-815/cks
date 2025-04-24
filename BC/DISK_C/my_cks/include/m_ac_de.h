@@ -3,6 +3,6 @@
 
 void draw_my_order_detail_body(int type, int index);
 void my_accept_detail(int index, int user_pos);
-void draw_my_order_detail(int type,int index);
+void draw_my_order_detail(int type,int index,int page);
 
 #endif

@@ -268,9 +268,9 @@ void show_order_detail(int local_index, int type, int user_pos)
 
     // 计算总页数//第一页4个，第二页后面9个
     if (type == ORDER_SUPERMARKET) {
-        totalPage = (OL.elem[local_index].itemCount - 4 + 9) / 10 + 1;
+        totalPage = (OL.elem[local_index].itemCount - 4 + 8) / 9 + 1;
     } else if (type == ORDER_FOOD) {
-        totalPage = (FL.elem[local_index].itemCount - 4 + 9) / 10 + 1;
+        totalPage = (FL.elem[local_index].itemCount - 4 + 8) / 9 + 1;
     }
     // ORDER_DELIVER 保持 totalPage=0
 
@@ -312,9 +312,9 @@ void show_order_detail(int local_index, int type, int user_pos)
                 draw_order_detail(type, &OL, &FL, &DL, local_index, page);
             } else {
                 // 提示：已是第一页
-                PrintCC(750, 250, "已是第一页", HEI, 24, 1, lightred);
+                PrintCC(630, 715, "已是第一页", HEI, 24, 1, lightred);
 				delay(500);
-				bar1(750, 250, 900, 300, white);
+				bar1(630, 715, 780, 765, white);
             }
         }
 		else if (mouse_press(420, 700, 540, 750) == 1) 
@@ -324,9 +324,9 @@ void show_order_detail(int local_index, int type, int user_pos)
 				draw_order_detail(type, &OL, &FL, &DL, local_index, page);
 			} else {
 				// 提示：已是最后一页
-				PrintCC(750, 250, "已是最后一页", HEI, 24, 1, lightred);
+				PrintCC(630, 715, "已是最后一页", HEI, 24, 1, lightred);
 				delay(500);
-				bar1(750, 250, 900, 300, white);
+				bar1(630, 715, 780, 765, white);
 			}
 		}
     }

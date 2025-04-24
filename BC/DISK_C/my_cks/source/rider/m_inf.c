@@ -50,7 +50,7 @@ void my_information(int user_pos)
             draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 439, 160, 489) == 1)
+        else if(mouse_press(40, 439, 160, 489) == 1)//当前
         {
             press4(2);
             my_accept_order(user_pos);
@@ -60,7 +60,7 @@ void my_information(int user_pos)
             draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 602, 160, 652) == 1)
+        else if(mouse_press(40, 602, 160, 652) == 1)//历史
         {
             press4(3);
             my_history_order(user_pos);

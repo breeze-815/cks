@@ -91,7 +91,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
     int item_y = 0;// 商品框的y坐标
 
     float total_amount = 0.0; // 总金额
-    char total_str[20]; // 总金额字符串
+    char total_str[100]; // 总金额字符串
     int fullPageItemCount = 0; // 满页商品数量
 
     bar1(200, 0, 1024, 768, white); // 清空屏幕
@@ -180,7 +180,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
     item_y = (page == 0) ? 350 : 50;
     for (i = startIdx; i < endIdx; i++) {
         char total_str[50]; // 商品总价
-        char quantity_str[20]; // 商品数量
+        char quantity_str[50]; // 商品数量
 
         if(index==0)//超市订单
         {
