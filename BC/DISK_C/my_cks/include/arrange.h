@@ -8,6 +8,7 @@ typedef struct AcceptedOrder{
         FoodOrder food;
         Deliver deliver;
     } data;
+    float deliver_price;
 } AcceptedOrder;//已接取的订单
 int arrange(int start_idx, struct AcceptedOrder acp_orders[], int n_orders);
 void draw_arrange(int j, struct AcceptedOrder acp_orders[], int start_index, int best_i, int best_type);

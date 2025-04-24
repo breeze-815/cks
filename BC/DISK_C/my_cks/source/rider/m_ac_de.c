@@ -5,7 +5,7 @@
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-void draw_order_detail_body(int type, int local_index,OrderList *OL, FoodList *FL, DeliverList *DL) 
+void draw_my_order_detail_body(int type, int index)
 {
     char buf[128];
     // 通用：下单时间、手机号
@@ -17,70 +17,72 @@ void draw_order_detail_body(int type, int local_index,OrderList *OL, FoodList *F
     float distance_km;
     float item_price;
     float deliver_price;
+    
     if (type == ORDER_SUPERMARKET) 
     {
-        Order *o = &OL->elem[local_index]; 
-        sprintf(time_str, "下单时间：%s", o->order_time);
-        sprintf(phone_str, "手机号：%s", o->user_phone);
+        sprintf(time_str, "下单时间：%s", cur_orders[index].data.order.order_time);
+        sprintf(phone_str, "手机号：%s", cur_orders[index].data.order.user_phone);
         // 取货点
-        sprintf(buf, "取货点：%s", node[o->pick_up_location].name);
+        sprintf(buf, "取货点：%s", node[cur_orders[index].data.order.pick_up_location].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
-        sprintf(buf, "用户地址：%s", node[o->destination].name);
+        sprintf(buf, "用户地址：%s", node[cur_orders[index].data.order.destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
         // 距离
-        distance_m = dijkstra(&node[o->pick_up_location], &node[o->destination],3); // 计算距离
+        distance_m = dijkstra(&node[cur_orders[index].data.order.pick_up_location], &node[cur_orders[index].data.order.destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
-        PrintText(200, 200 + 150, show_distance, HEI, 24, 1, 0x0000);
+        PrintText(200, 200 + 150, show_distance, HEI, 24, 1, black);
 
-        item_price = o->total_amount; // 获取商品价格
+        item_price = cur_orders[index].data.order.total_amount; // 获取商品价格
         deliver_price = rider_deliver_price(distance_m, item_price); // 计算配送费用
+        cur_orders[index].deliver_price=deliver_price; //将此单配送费存进结构体中
         sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
-        PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, 0x0000);
+        PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, black);
 
     }
     else if (type == ORDER_FOOD) 
     {
-        FoodOrder *f = &FL->elem[local_index];
-        sprintf(time_str, "下单时间：%s", f->order_time);
-        sprintf(phone_str, "手机号：%s", f->user_phone);
+        
+        sprintf(time_str, "下单时间：%s", cur_orders[index].data.food.order_time);
+        sprintf(phone_str, "手机号：%s", cur_orders[index].data.food.user_phone);
         // 取餐点
-        sprintf(buf, "取货点：%s", node[f->pick_up_location].name);
+        sprintf(buf, "取货点：%s", node[cur_orders[index].data.food.pick_up_location].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
-        sprintf(buf, "用户地址：%s", node[f->destination].name);
+        sprintf(buf, "用户地址：%s", node[cur_orders[index].data.food.destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
         //距离
-        distance_m = dijkstra(&node[f->pick_up_location], &node[f->destination],3); // 计算距离
+        distance_m = dijkstra(&node[cur_orders[index].data.food.pick_up_location], &node[cur_orders[index].data.food.destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
-        PrintText(200, 200 + 150, show_distance, HEI, 24, 1, 0x0000);
+        PrintText(200, 200 + 150, show_distance, HEI, 24, 1, black);
 
-        item_price = f->total_amount; // 获取商品价格
+        item_price = cur_orders[index].data.order.total_amount; // 获取商品价格
         deliver_price = rider_deliver_price(distance_m, item_price); // 计算配送费用
+        cur_orders[index].deliver_price=deliver_price;
         sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
-        PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, 0x0000);
+        PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, black);
     }
     else if (type == ORDER_DELIVER) 
     {
-        Deliver *d = &DL->elem[local_index];
-        sprintf(time_str, "下单时间：%s", d->time);
-        sprintf(phone_str, "手机号：%s", d->number);
+        sprintf(time_str, "下单时间：%s", cur_orders[index].data.deliver.time);
+        sprintf(phone_str, "手机号：%s", cur_orders[index].data.deliver.number);
         // 取货点
-        sprintf(buf, "取货点：%s", node[d->station].name);
+        sprintf(buf, "取货点：%s", node[cur_orders[index].data.deliver.station].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
-        sprintf(buf, "用户地址：%s", node[d->index].name);
+        sprintf(buf, "用户地址：%s", node[cur_orders[index].data.deliver.destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
         //距离
-        distance_m = dijkstra(&node[d->station], &node[d->index],3); // 计算距离
+        distance_m = dijkstra(&node[cur_orders[index].data.deliver.station], &node[cur_orders[index].data.deliver.destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
         PrintText(200, 200 + 150, show_distance, HEI, 24, 1, 0x0000);
 
         item_price = 2.0; // 获取商品价格
         deliver_price = rider_deliver_price(distance_m, item_price); // 计算配送费用
+        cur_orders[index].deliver_price=deliver_price;
         sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
         PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, 0x0000);
     }
@@ -90,9 +92,9 @@ void draw_order_detail_body(int type, int local_index,OrderList *OL, FoodList *F
 }
 
 
-//详情页面中展示订单具体内容，只有超市和外卖订单有
 //未改
-// void draw_items(int type, int local_index, OrderList *OL, FoodList *FL) 
+//详情页面中展示订单具体内容，只有超市和外卖订单有
+// void draw_my_order_items(int type, int index)
 // {
 //     int i;
 //     int page=0;
@@ -136,24 +138,13 @@ void draw_order_detail_body(int type, int local_index,OrderList *OL, FoodList *F
 //     }
 // }
 
-void show_order_detail(int local_index, int type,int user_pos) 
+void my_accept_detail(int index , int user_pos) 
 {
-    OrderList OL = {0};
-    FoodList FL = {0};
-    DeliverList DL = {0};
-    int totalPage=1;
-    ReadAllOrder(&OL);
-    ReadAllFood(&FL);
-    ReadAllDeliver(&DL);
-
     
-    // 计算商品列表总页数，只有超市订单和外卖订单需要根据商品数量计算，代取订单保持totalPage=1
-    if (type == ORDER_SUPERMARKET) 
-        totalPage = (OL.elem[local_index].itemCount + ORDERS_PER_PAGE - 1) / ORDERS_PER_PAGE;
-    else if (type == ORDER_FOOD) 
-        totalPage = (FL.elem[local_index].itemCount + ORDERS_PER_PAGE - 1) / ORDERS_PER_PAGE;
-
-    draw_show_order_detail(type, &OL, &FL, &DL, local_index, totalPage);
+    int type;
+    type=cur_orders[index].type;
+    
+    draw_my_order_detail(type, index);
 
     mouse_on_arrow(mouse);
     while (1) 
@@ -162,11 +153,8 @@ void show_order_detail(int local_index, int type,int user_pos)
         // 返回按钮
         if(mouse_press(122, 50, 242, 100)==1) //返回
         {
-            DestroyOList(&OL); // 释放订单列表内存
-            DestroyFList(&FL); // 释放食品列表内存
-            DestroyDList(&DL); // 释放快递列表内存
             return;
-			//accept_order(users.pos);
+			//my_accept_order(users.pos);
 		}
         else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
@@ -177,7 +165,7 @@ void show_order_detail(int local_index, int type,int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); 
-            //draw_show_order_detail(&OL,&FL,&DL); 
+            draw_my_order_detail(type, index);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
@@ -188,56 +176,26 @@ void show_order_detail(int local_index, int type,int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white);  
-            //draw_show_order_detail(page,&OL,&FL,&DL); 
+            draw_my_order_detail(type, index);
         }
-        else if(mouse_press(800, 700, 1000, 750)==1) //接单
-        {
-            if (num_of_orders.cur_count == 4)
-            { 
-                //打印提示
-                PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
-                delay(500);
-                bar1(100,100,500,130,deepblue);
-            }
-            else
-            {
-                //rider_accept(&OL, &FL, &DL, type, local_index, page); //加入接单列表
-                //return后从这返回
-                bar1(0, 150, 1024, 768, white);
-                //draw_accept_order(page, &OL, &FL, &DL);
-            }
-           
-        }
+        
     }
 }
 
-void draw_show_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL, int local_index, int totalPage) 
+void draw_my_order_detail(int type,int index) 
 {
-    int page=0;
     // 清屏
     bar1(0, 150, 1024, 768, white);
 
-    // 分页按钮（超市和外卖类型）
-    if (type != ORDER_DELIVER) {
-        Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue);
-        PrintCC(245, 715, "上一页", HEI, 24, 1, deepblue);
-        Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue);
-        PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
-    }
-
-    // 接单按钮
-    Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue);
-    PrintCC(850, 715, "接单", HEI, 24, 1, deepblue);
 
     // 绘制主体部分
-    draw_order_detail_body(type, local_index, OL, FL, DL);
+    draw_my_order_detail_body(type, index);
 
     if (type == ORDER_DELIVER) //订单是快递代取
     {
         // 只额外展示取件码
         char code_buf[64];
-        Deliver *d = &DL->elem[local_index];
-        sprintf(code_buf, "取件码：*******");//未接取此单前取件码不可见
+        sprintf(code_buf, "取件码：%s",cur_orders[index].data.deliver.code);//接取此单后取件码显示
         PrintText(250, 400 + 150, code_buf, HEI, 32, 1, black);
     } 
     else //订单是超市外卖类型
@@ -248,7 +206,7 @@ void draw_show_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *D
         PrintCC(800, 330 + 150, "金额", HEI, 24, 1, black);
         PrintText(150, 350 + 150, "------------------------------------", HEI, 32, 1, black);
         // 清单列表
-        //draw_items(type, local_index, OL, FL, page);
+        //draw_my_order_items(type, cur_orders[index]);
     }
 }
 

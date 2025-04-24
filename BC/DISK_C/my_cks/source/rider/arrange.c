@@ -6,7 +6,7 @@
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
+int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
 {
     int temp_picked[4]; // 临时数组，用于存储当前订单的取餐状态
     int temp_delivered[4];  // 临时数组，用于存储当前订单的送餐状态
@@ -51,12 +51,12 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
 
             if (!temp_picked[i]) {
                 // 取餐
-                if (acp_orders[i].type == ORDER_SUPERMARKET) {
-                    pu_idx = acp_orders[i].data.order.pick_up_location;
-                } else if (acp_orders[i].type == ORDER_FOOD) {
-                    pu_idx = acp_orders[i].data.food.pick_up_location;
+                if (cur_orders[i].type == ORDER_SUPERMARKET) {
+                    pu_idx = cur_orders[i].data.order.pick_up_location;
+                } else if (cur_orders[i].type == ORDER_FOOD) {
+                    pu_idx = cur_orders[i].data.food.pick_up_location;
                 } else {
-                    pu_idx = acp_orders[i].data.deliver.station;
+                    pu_idx = cur_orders[i].data.deliver.station;
                 }
 
                 dist = Manhattan_Distance(
@@ -71,12 +71,12 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
             }
             else if (!temp_delivered[i]) {
                 // 送餐
-                if (acp_orders[i].type == ORDER_SUPERMARKET) {
-                    dst_idx = acp_orders[i].data.order.destination;
-                } else if (acp_orders[i].type == ORDER_FOOD) {
-                    dst_idx = acp_orders[i].data.food.destination;
+                if (cur_orders[i].type == ORDER_SUPERMARKET) {
+                    dst_idx = cur_orders[i].data.order.destination;
+                } else if (cur_orders[i].type == ORDER_FOOD) {
+                    dst_idx = cur_orders[i].data.food.destination;
                 } else {
-                    dst_idx = acp_orders[i].data.deliver.index;
+                    dst_idx = cur_orders[i].data.deliver.index;
                 }
 
                 dist = Manhattan_Distance(
@@ -98,23 +98,23 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
         {
             if(best_type == 0)
             {
-                if (acp_orders[best_i].type == ORDER_SUPERMARKET) {
-                    next_pos = acp_orders[best_i].data.order.pick_up_location;
-                } else if (acp_orders[best_i].type == ORDER_FOOD) {
-                    next_pos = acp_orders[best_i].data.food.pick_up_location;
+                if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
+                    next_pos = cur_orders[best_i].data.order.pick_up_location;
+                } else if (cur_orders[best_i].type == ORDER_FOOD) {
+                    next_pos = cur_orders[best_i].data.food.pick_up_location;
                 } else {
-                    next_pos = acp_orders[best_i].data.deliver.station;
+                    next_pos = cur_orders[best_i].data.deliver.station;
                 }
                 next_type = 0;
             }
             else
             {
-                if (acp_orders[best_i].type == ORDER_SUPERMARKET) {
-                    next_pos = acp_orders[best_i].data.order.destination;
-                } else if (acp_orders[best_i].type == ORDER_FOOD) {
-                    next_pos = acp_orders[best_i].data.food.destination;
+                if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
+                    next_pos = cur_orders[best_i].data.order.destination;
+                } else if (cur_orders[best_i].type == ORDER_FOOD) {
+                    next_pos = cur_orders[best_i].data.food.destination;
                 } else {
-                    next_pos = acp_orders[best_i].data.deliver.index;
+                    next_pos = cur_orders[best_i].data.deliver.index;
                 }
                 next_type = 1;
             }
@@ -127,24 +127,24 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
             break;
         }
 
-        draw_arrange(temp_step, acp_orders, temp_current, best_i, best_type); 
-        // 在 arrange 函数中添加位置更新逻辑
+        draw_arrange(temp_step, cur_orders, temp_current, best_i, best_type); 
+
         if (best_type == 0) {
-            if (acp_orders[best_i].type == ORDER_SUPERMARKET) {
-                temp_current = acp_orders[best_i].data.order.pick_up_location;
-            } else if (acp_orders[best_i].type == ORDER_FOOD) {
-                temp_current = acp_orders[best_i].data.food.pick_up_location;
+            if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
+                temp_current = cur_orders[best_i].data.order.pick_up_location;
+            } else if (cur_orders[best_i].type == ORDER_FOOD) {
+                temp_current = cur_orders[best_i].data.food.pick_up_location;
             } else {
-                temp_current = acp_orders[best_i].data.deliver.station;
+                temp_current = cur_orders[best_i].data.deliver.station;
             }
             temp_picked[best_i] = 1;
         } else {
-            if (acp_orders[best_i].type == ORDER_SUPERMARKET) {
-                temp_current = acp_orders[best_i].data.order.destination;
-            } else if (acp_orders[best_i].type == ORDER_FOOD) {
-                temp_current = acp_orders[best_i].data.food.destination;
+            if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
+                temp_current = cur_orders[best_i].data.order.destination;
+            } else if (cur_orders[best_i].type == ORDER_FOOD) {
+                temp_current = cur_orders[best_i].data.food.destination;
             } else {
-                temp_current = acp_orders[best_i].data.deliver.index;
+                temp_current = cur_orders[best_i].data.deliver.index;
             }
             temp_delivered[best_i] = 1;
         }
@@ -153,7 +153,7 @@ int arrange(int start_idx,  AcceptedOrder acp_orders[], int n_orders)
     return next_index; 
 }
 
-void draw_arrange(int j, struct AcceptedOrder acp_orders[], int start_index, int best_i, int best_type) 
+void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int best_i, int best_type) 
 {
     int text_x,text_y;
     char buf[20];
@@ -163,44 +163,39 @@ void draw_arrange(int j, struct AcceptedOrder acp_orders[], int start_index, int
     int time_m;
     int time_s;
     int pu_idx, dst_idx; //取餐点和送餐点
-    //Readbmp64k(0, 326, "bmp\\map4.bmp");
     Fill_Rounded_Rectangle(900, 266, 1020, 316, 5,deepblue);//已完成
     Draw_Rounded_Rectangle(900, 266, 1020, 316, 5, 1, deepblue);//已完成
     PrintCC(910, 276, "已完成", HEI, 24, 1, white);
     if (best_type == 0) {
         // 取餐
-        switch (acp_orders[best_i].type) {
+        switch (cur_orders[best_i].type) {
         case 0:
-            pu_idx = acp_orders[best_i].data.order.pick_up_location;
+            pu_idx = cur_orders[best_i].data.order.pick_up_location;
             break;
         case 1:
-            pu_idx = acp_orders[best_i].data.food.station;
+            pu_idx = cur_orders[best_i].data.food.station;
             break;
         case 2:
-            pu_idx = acp_orders[best_i].data.deliver.station;
+            pu_idx = cur_orders[best_i].data.deliver.station;
             break;
         }
         distance_m = dijkstra(&node[start_index], &node[pu_idx], j);
     } else {
         // 送餐
-        switch (acp_orders[best_i].type) {
-        case 0:
-            dst_idx = acp_orders[best_i].data.order.destination;
-            break;
-        case 1:
-            dst_idx = acp_orders[best_i].data.food.destination;
-            break;
-        case 2:
-            dst_idx = acp_orders[best_i].data.deliver.index;
-            break;
+        switch (cur_orders[best_i].type) 
+        {
+            case 0:
+                dst_idx = cur_orders[best_i].data.order.destination;
+                break;
+            case 1:
+                dst_idx = cur_orders[best_i].data.food.destination;
+                break;
+            case 2:
+                dst_idx = cur_orders[best_i].data.deliver.index;
+                break;
         }
         distance_m = dijkstra(&node[start_index], &node[dst_idx], j);
     }
-
-    // if (best_type == 0)
-    // distance_m = dijkstra(&node[start_index], &node[acp_orders[best_i].pick_up_index],j);//计算最短路径
-    // else 
-    // distance_m = dijkstra(&node[start_index], &node[acp_orders[best_i].destination_index],j);//计算最短路径
 
     if(j==1) //第一个地点时打印起点
     {
@@ -210,7 +205,6 @@ void draw_arrange(int j, struct AcceptedOrder acp_orders[], int start_index, int
         calculate_centered_text(10, 160, 130, 210, buf, 24, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 24, 1, black);//起点
     }
-    
     if (j <= 4)  //地点在第一排
     {
         //画地点框
@@ -256,20 +250,10 @@ void draw_arrange(int j, struct AcceptedOrder acp_orders[], int start_index, int
         Draw_Rounded_Rectangle(220*j-990, 266, 220*j-870, 316, 5, 1, deepblue);//1号
         if(best_type == 0)
         {
-            // pu_idx = (acp_orders[best_i].type == 0)
-            //                  ? acp_orders[best_i].data.deliver.station
-            //                  : (acp_orders[best_i].type == 1) //先判断是否是超市单，后判断是否是外卖单
-            //                    ? acp_orders[best_i].data.food.station
-            //                    : acp_orders[best_i].data.order.pick_up_location;
             sprintf(buf, "%s",node[pu_idx].name);
         }
         else
         {
-            // dst_idx = (acp_orders[best_i].type == 0)
-            //                  ? acp_orders[best_i].data.deliver.index
-            //                  : (acp_orders[best_i].type == 1)
-            //                    ? acp_orders[best_i].data.food.destination
-            //                    : acp_orders[best_i].data.order.destination;
            sprintf(buf, "%s",node[dst_idx].name);
         }
         calculate_centered_text(220*j-990, 266, 220*j-870, 316, buf, 24, &text_x, &text_y);

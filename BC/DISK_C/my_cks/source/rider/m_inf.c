@@ -1,6 +1,6 @@
 #include <all_func.h>
 
-void my(int user_pos)
+void my_information(int user_pos)
 {
     UserList UL = {0};
     USER currentUser;
@@ -8,7 +8,7 @@ void my(int user_pos)
     currentUser=UL.elem[user_pos];// 获取当前用户信息
     DestroyUList(&UL); // 释放用户列表空间
     mouse_off_arrow(&mouse);
-    draw_my(currentUser);
+    draw_my_information(currentUser);
 	mouse_on_arrow(mouse);
     
 	while(1){
@@ -22,73 +22,75 @@ void my(int user_pos)
         else if(mouse_press(342, 50, 462, 100)==1) //接单
         {
             press3(1);//进入接单界面
-            accept_order();//接单页面
+            accept_order(user_pos);//接单页面
             
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(562, 50, 682, 100)==1)
         {
             press3(2);//进入路线规划界面
-            route(acp_orders,delivers.acp_count);//进入路线规划界面
+            route(cur_orders,num_of_orders.cur_count,user_pos);//进入路线规划界面
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
-            my_accept_order();
+            my_accept_order(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(40, 276, 160, 326) == 1)
         {
             press4(1);
-            my_account();
+            my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(40, 439, 160, 489) == 1)
         {
-            press4(1);
-            my_accept_order();
+            press4(2);
+            my_accept_order(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(40, 602, 160, 652) == 1)
         {
-            my_history_order();
+            press4(3);
+            my_history_order(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_my(currentUser);
+            draw_my_information(currentUser);
             mouse_on_arrow(mouse);
         }
     }
 }
 
-void draw_my(USER currentUser)
+void draw_my_information(USER currentUser)
 {
     char show_name[20];
     char show_num[30];
+    char show_account[10];
     bar1(0, 150, 1024, 768,white);
     bar1(0,150,200,768,deepblue);
-    sprintf(show_name,"账号：%s",currentUser.name);
+    sprintf(show_name,"用户：%s",currentUser.name);
     PrintText(350,200,show_name,HEI,32,1,black);
     sprintf(show_num,"手机号：%s",currentUser.number);
     PrintText(350,400,show_num,HEI,32,1,black);
@@ -97,6 +99,9 @@ void draw_my(USER currentUser)
     PrintText(350,600,"骑手类型：全职骑手",HEI,32,1,black);
     else if(currentUser.state == 1 && currentUser.type == 3)
     PrintText(350,600,"骑手类型：兼职骑手",HEI,32,1,black);
+
+    sprintf(show_account,"账户余额：%.2f",currentUser.account);
+    PrintText(350,800,show_account,HEI,32,1,black);
 
 
     Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//填色
