@@ -17,7 +17,7 @@ void business_detail(int order_index,int index) {
     //进行区分订单来源操作并且计算总页数
     if(index==0){
         totalPage =(OL.elem[order_index].itemCount  - 6 + 11 ) / 12 + 1 ; // 总页数(向上取整)
-    }else {
+    }else {//食堂订单
         for(i=0;i<FL.length;i++)
         {
         	if(FL.elem[i].station==index)//找到对应的订单
@@ -158,10 +158,10 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
         PrintText(250, 320, "-------------------------------", HEI, 32, 1, black);// 分隔线
 
         startIdx = 0;
-        itemsPerPage = 6;
+        itemsPerPage = 6;// 第一页显示6个商品，其余页显示12个商品
     } else {// 其他页
-        startIdx = 6 + (page - 1) * 12;
-        itemsPerPage = 12;
+        startIdx = 6 + (page - 1) * 12;// 计算起始商品索引
+        itemsPerPage = 12;// 每页显示12个商品
     }
 
     endIdx = startIdx + itemsPerPage;

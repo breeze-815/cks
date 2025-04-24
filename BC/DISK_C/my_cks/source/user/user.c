@@ -405,7 +405,6 @@ void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 				{
 					mouse_off_arrow(&mouse);
                     hide_cursor(border,y1); //隐藏原光标
-                    break;//超出11字符就退出
 				}
 			}
 			else

@@ -259,6 +259,7 @@ void draw_user_order(int page){
         sprintf(total_str, "%.2f", products[productIndex].price * quantity);
         sprintf(quantity_str, "x%d", quantity);
 
+        // 打印商品信息
         PrintCC(250, item_y, carts[i].name, HEI, 24, 1, black); // 商品名
         PrintText(750, item_y, (unsigned char*)quantity_str, HEI, 24, 1, black);// 商品数量
         PrintText(900, item_y, (unsigned char*)total_str, HEI, 24, 1, black);// 商品金额
@@ -297,16 +298,23 @@ void draw_user_order(int page){
     orders.destination=currentUser.index; 
 
     if ( orders.destination >= 21 && orders.destination <=55 )
-    orders.pick_up_location = 20;
+    {  
+        orders.pick_up_location = 20;
+    }
     else if ( orders.destination >=56 && orders.destination <= 71 )
-    orders.pick_up_location = 19;
+    {
+        orders.pick_up_location = 19;
+    }
     else if ( orders.destination >=72 && orders.destination <= 98 )
-    orders.pick_up_location = 18;
-    else if ( orders.destination >=99 && orders.destination <= 115 )
+    {
+        orders.pick_up_location = 18;
+    }
     
+    // 订单商品信息
     for (i = 0; i < cart.itemCount; i++) {
         orders.item[i] = carts[i]; // 购物车内商品信息
     }
+
     orders.itemCount = cart.itemCount; // 购物车内商品数量
     orders.total_amount = total_amount; // 总金额
 

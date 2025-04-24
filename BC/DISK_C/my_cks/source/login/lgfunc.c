@@ -281,7 +281,6 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 	while(1) 
     {
 		cursor_grew(border,y1);
-		//mouse_show_cursor(&mouse);
 		if(mouse_location(455,255,845,295)==1 && mouse_location(455,335,845,375)==1 && mouse_location(455,415,845,455)==1)
 			mouse_show_cursor(&mouse);
 		else
@@ -359,36 +358,10 @@ void input_mode(char *name,char *code,char *judge,int bar_x1,int bar_y1,int bar_
 					bar1(border,y1,border+12, y1+26, lightgrew);	//清空原字符
 					draw_cursor(border,y1);
 				}
-				// else if(temp=='\t')
-				// {
-				// 	if(mode==1)	//输入账号或密码模式
-				// 	{
-				// 		hide_cursor(border,y1);//隐藏光标
-				// 		bar1(430,560,580,590,snow);
-				// 		input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
-				// 		break;
-				// 	}
-				// 	else if(mode==2)
-				// 	{
-				// 		hide_cursor(border,y1);//隐藏光标
-				// 		bar1(430,560,580,590,snow);
-				// 		input_mode(name,code,judge,bar_x1, bar_y1+80, bar_x2, bar_y2+80,mode+1); 
-				// 		break;
-				// 	}
-				// 	else if(mode == 3)
-				// 	{
-				// 		hide_cursor(border,y1);//隐藏光标
-				// 		bar1(430,560,580,590,snow);
-				// 		break;
-				// 	}
-				// }
 				else if(i>=10)
 				{
 					mouse_off_arrow(&mouse);
-					mouse_show_arrow(&mouse);
-					PrintCC(570,575,"输入超过长度限制",HEI,24,1,0XF800);
-					delay(500);
-					bar1(570,575,800,600,snow);
+					hide_cursor_grew(border,y1);
 				}
 			}
 			else

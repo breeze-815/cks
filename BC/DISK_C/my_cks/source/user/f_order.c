@@ -303,6 +303,7 @@ void draw_food_order(int page,float *sum){
     //Foodorders.station=; // 用户取餐地点
     Foodorders.destination=currentUser.index; // 用户送餐地点
 
+    //逐个写入商品信息
     for (i = 0; i < shopping_food.itemCount; i++) {
         Foodorders.item[i] = food_carts[i]; // 购物车内商品信息
     }
