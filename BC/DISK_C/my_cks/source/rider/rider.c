@@ -56,23 +56,20 @@ void rider(int user_pos)
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
-            mouse_off_arrow(&mouse);
+            press4(1);
             my_information(user_pos);//进入我的信息界面
             //return后从这开始
-            mouse_on_arrow(mouse);
+            mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); 
             draw_rider();
             mouse_on_arrow(mouse);
         }
-        
-        
     }
-
 }
 
 
-void draw_rider(){
-
+void draw_rider()
+{
     bar1(0, 0, 1024, 768, white);
     bar1(0, 0, 1024, 150, deepblue);//上侧按钮栏底色
 
@@ -96,13 +93,13 @@ void draw_rider(){
 }
 
 //点击按钮反色功能
-void press3(int x){
+void press3(int x)
+{
     mouse_off_arrow(&mouse);
     switch (x)
     { 
         case 1: //点击接单
         {
-            
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, deepblue);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, white);

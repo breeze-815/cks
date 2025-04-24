@@ -10,18 +10,15 @@ void accept_order(int user_pos) // 接单界面
     int page = 0; // 当前页码
     int clicked;
     int type=0, local_index=0, global_index=0; //type为订单种类，超市为0，外卖为1，代取为2；local_index为各订单在当前种类中的序号；global_index为各订单在所有订单中的序号
-    
     OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
     FoodList FL = {0};
     DeliverList DL = {0};
+    mouse_off_arrow(&mouse);
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
     ReadAllDeliver(&DL); // 读取快递列表
-
     num_of_orders.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
     num_of_orders.cur_count=0;//初始化当前接单数为0
-
-    mouse_off_arrow(&mouse);
 	draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
     // DestroyDList(&DL); //摧毁了后会显示异常
     // DestroyFList(&OL);
@@ -142,6 +139,7 @@ void accept_order(int user_pos) // 接单界面
         {
             global_index = page * ORDERS_PER_PAGE + 0;
             get_ordtyp_locind(global_index,&type,&local_index,&OL,&FL,&DL);
+            
             if (num_of_orders.cur_count == 4)
             { 
                 //打印提示

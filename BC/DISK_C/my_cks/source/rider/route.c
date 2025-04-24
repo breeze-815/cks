@@ -435,13 +435,15 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
 {
     UserList UL = {0};
     USER currentUser;
-    int start_index,next_index;
+    int idx,order_idx; // 步序号// 对应订单
+    int type,from,to; // type 0取餐/1送餐
+    char debg[200];
+    int distance;
+    int i;
+    mouse_off_arrow(&mouse);
     ReadAllUser(&UL); // 读取用户列表
     currentUser=UL.elem[user_pos];// 获取当前用户信息
     DestroyUList(&UL); // 释放用户列表空间
-    
-
-    mouse_off_arrow(&mouse);
 	draw_route();
 	mouse_on_arrow(mouse);
 
@@ -449,8 +451,34 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
     srand(time(NULL));
     memset(&route_state, 0, sizeof(RouteState));
     route_state.remaining = n_orders * 2;
-    route_state.current_pos = random_int(1, 409);
-    next_index = arrange(route_state.current_pos, cur_orders, n_orders); // 随机生成起点
+    
+    arrange(route_state.current_pos, cur_orders, num_of_orders.cur_count);
+    from = random_int(1, 409);
+    to = route_state.seq_pos[0];
+    idx = route_state.seq_cursor;                 
+    order_idx = route_state.seq_order[idx];      
+    type = route_state.seq_type[idx]; 
+
+    if(route_state.remaining == 0)
+    {
+        bar1(0, 150, 1024, 326, white); // 清除已完成界面残留
+        PrintCC(400,200,"当前暂无任务",HEI,32,1,Red);
+    }
+    else
+    {
+        //画出路线规划表
+        for(i=0; i<route_state.remaining;i++)
+        {
+            if(i==0) //第一次以随机起点作为两点间起点
+            draw_arrange(1, cur_orders, from,route_state.seq_pos[0]);
+            else
+            draw_arrange(i+1,cur_orders,route_state.seq_pos[i-1],route_state.seq_pos[i]);
+        }
+        //地图上显示第一步
+        dijkstra(&node[from],&node[route_state.seq_pos[0]],1);
+    }
+    
+
     while(1)
     {
         mouse_show_arrow(&mouse);
@@ -487,25 +515,36 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
         else if (mouse_press(900, 266, 1020, 316))  //点击到达按钮
         {
             mouse_off_arrow(&mouse);
-            bar1(0, 150, 1024, 326, white); // 清除已完成界面残留
+            
             Readbmp64k(0, 326, "bmp\\map4.bmp");
             if (route_state.remaining > 0) 
             {
-                route_state.remaining--;
-                route_state.current_pos = route_state.next_pos;
-                if(route_state.next_type == 0) 
-                {
-                    route_state.picked[next_index] = 1;
+                idx = route_state.seq_cursor;                 // 步序号
+                order_idx = route_state.seq_order[idx];       // 对应订单
+                type = route_state.seq_type[idx];             // 0取餐/1送餐
+                // 标记订单状态
+                if (type == 0) 
+                route_state.picked[order_idx] = 1;
+                else if(type == 1)
+                {          
+                route_state.delivered[order_idx] = 1;
+                move_to_history(cur_orders,order_idx);
+                currentUser.account+=cur_orders[order_idx].deliver_price;
+                save_user(currentUser);
                 }
-                else 
-                {
-                    route_state.delivered[next_index] = 1;
-                    //add_to_history(cur_orders[next_index]);
-                    cut_current_order(next_index);
-                    currentUser.account+=cur_orders[next_index].deliver_price;
-                }
-                next_index = arrange(route_state.current_pos, cur_orders, n_orders);
+                // 前进到下一节点
+                from = route_state.seq_pos[idx];
+                to   = route_state.seq_pos[idx+1];
+                route_state.current_pos = to;
+                route_state.seq_cursor++;
+                // 画线
+                dijkstra(&node[from], &node[to], 1);
             } 
+            if(route_state.remaining == 0)
+            {
+                bar1(0, 150, 1024, 326, white); // 清除已完成界面残留
+                PrintCC(400,200,"当前暂无任务",HEI,32,1,Red);
+            }
         }
     }
 }

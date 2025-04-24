@@ -5,7 +5,7 @@ int main()
    
     int gd = DETECT, gm;
     int distance;
-    distance = dijkstra(&node[10], &node[344],2);//测试dijkstra算法
+    distance = dijkstra(&node[18], &node[85],2);//测试dijkstra算法
     SetSVGA64k();//启动SVGA画图界面 
     
     mouse_init(); // 初始化鼠标
