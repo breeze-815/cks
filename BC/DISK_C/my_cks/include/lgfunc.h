@@ -12,7 +12,8 @@ typedef struct USER
 	char number[12];//手机号
 	int community; //地址 1东区 2西区 3南区 4紫菘 5韵苑
 	int building;//楼栋号，此项只有商家用到
-	int state;//判断用户是否初始化，为index，代表超市/食堂编号,未绑定为-1 若为骑手，state=0为全职，state=1为专职
+	int state;//判断用户是否初始化，为index，代表超市/食堂编号,未绑定为-1,0为超市,1-17为食堂编号 若为骑手，state=0为全职，state=1为专职
+	int market_index;//超市编号（1，2，3）此项只有商家用到
 	int pos;//用户在列表中位置
 	int index; //用户住址索引，此项只有消费者用到
 	float account; //账户余额，此项只有骑手用到

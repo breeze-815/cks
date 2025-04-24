@@ -11,6 +11,7 @@ void business(int user_pos){
     int last_canteen_index = -1; // 记录上一个被按下的按钮
     int temp_index = -1; // 临时变量,选择食堂/超市时不保存
     int index=-1;//食堂/超市编号
+    int market_index=0;//超市编号
     
 
     ReadAllUser(&UL); // 读取用户列表
@@ -79,7 +80,7 @@ void business(int user_pos){
                 if(page==1)//超市
                 {
                     temp_index=0;//选择超市
-                    choose_market(mouse.x, mouse.y);
+                    choose_market(mouse.x, mouse.y,&market_index);
                 }
 
                 if(page==2)//餐厅
@@ -97,6 +98,7 @@ void business(int user_pos){
                 bar1(600,50,1024,100,white);
                 state=2;//已绑定
                 currentUser.state=index;//已绑定
+                currentUser.market_index=market_index;//超市编号
                 save_user(currentUser);
 
             }else if(mouse_press(40, 602, 160, 652)==1)//查看订单
@@ -146,17 +148,47 @@ void business(int user_pos){
         //已绑定
         if(state==2||currentUser.state!=-1)
         {
+            char information[100];
+            
+            if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
+
+            if(index>0)//食堂
+            {
+                sprintf(information,"当前绑定的店铺为：%s",canteen[index-1].name);
+            }
+            else//超市
+            {
+                char market_name[100];
+
+                switch(currentUser.market_index)
+                {
+                    case 1:
+                        strcpy(market_name,"韵苑喻园超市");
+                        break;
+                    case 2:
+                        strcpy(market_name,"沁苑喻园超市");
+                        break;
+                    case 3:
+                        strcpy(market_name,"紫菘喻园超市");
+                        break;
+                }
+
+                sprintf(information,"当前绑定的店铺为：%s",market_name);	
+            }
+            PrintText(250, 700, information, HEI, 24, 1, black);
+
         	if(mouse_press(40, 602, 160, 652)==1)//查看订单
             {
                 if(strlen(currentUser.number) == 0)//如果没有输入手机号
                 {
+                    bar1(600,50,1024,100,white);
                     PrintCC(800,50,"请先输入手机号",HEI,24,1,lightred);
                     delay(500);
                     bar1(600,50,1024,100,white);
                 }
                 else
                 {
-                    if(currentUser.state!=-1) index=currentUser.state;//如果已经存在文件里直接读取
+                    
                     DestroyUList(&UL); // 释放用户列表空间
                     business_order(index);//商家订单页面
                     
@@ -306,7 +338,7 @@ void draw_canteen(){
 
 }
 
-void choose_market(int mx,int my){
+void choose_market(int mx,int my,int *market_index){//选择超市
 	if(mx>=250&&mx<=250+185&&my>=330&&my<=330+50)//韵苑
     {
         Fill_Rounded_Rectangle(250, 330, 250+185, 330+50, 5,deepblue);
@@ -321,7 +353,7 @@ void choose_market(int mx,int my){
         Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
         PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,deepblue);
 
-
+        *market_index=1;//韵苑超市
 	}
     else if(mx>=500&&mx<=500+185&&my>=330&&my<=330+50)//沁苑
     {
@@ -336,6 +368,8 @@ void choose_market(int mx,int my){
         Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,white);
         Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
         PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,deepblue);
+
+        *market_index=2;//沁苑超市
 	}
     else if(mx>=750&&mx<=750+185&&my>=330&&my<=330+50)//紫菘
     {
@@ -350,6 +384,8 @@ void choose_market(int mx,int my){
         Fill_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,deepblue);
         Draw_Rounded_Rectangle(750, 330, 750+185, 330+50, 5,1,deepblue);
         PrintCC(750+17,330+13,"紫菘喻园超市",HEI,24,1,white);
+
+        *market_index=3;//紫菘超市
 	}
 }
 

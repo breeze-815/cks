@@ -70,7 +70,12 @@ void business_detail(int order_index,int index) {
 				delay(500);
 				bar1(550, 25, 700, 60, white);
 			}
-		}
+		}else if(mouse_press(800, 700, 1000, 750)==1)//备货完成
+        {
+            PrintCC(550, 25, "已提醒骑手到店取单", HEI, 24, 1, lightred);
+			delay(500);
+			bar1(550, 25, 800, 60, white);
+        }
     }
 }
 
@@ -103,7 +108,7 @@ void draw_business_detail(OrderList *OL ,FoodOrder target_order[],int order_inde
     PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
 
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue); // 开始备货
-    PrintCC(850, 715, "开始备货", HEI, 24, 1, deepblue);
+    PrintCC(850, 715, "备货完成", HEI, 24, 1, deepblue);
 
     if(index==0)
     {
