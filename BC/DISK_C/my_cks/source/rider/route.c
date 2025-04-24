@@ -431,34 +431,26 @@ int random_int(int min, int max)
     return rand() % (max - min + 1) + min;
 }
 
-void route(AcceptedOrder acp_orders[], int n_orders) 
+void route(AcceptedOrder cur_orders[], int n_orders,int user_pos) 
 {
-    char debug_buf[120];
+    UserList UL = {0};
+    USER currentUser;
     int start_index,next_index;
-    // UserList UL = {0};
-    // USER *currentUser;
-    // ReadAllUser(&UL); // 读取用户列表
-    //currentUser=&UL.elem[user_pos];// 获取当前用户信息
-    // OrderList OL = {0};
-    // FoodList FL = {0};
-    // DeliverList DL = {0};
-    // ReadAllDeliver(&DL); // 读取快递列表
-    // ReadAllOrder(&OL); // 读取订单列表
-    // ReadAllFood(&FL); // 读取食品列表
+    ReadAllUser(&UL); // 读取用户列表
+    currentUser=UL.elem[user_pos];// 获取当前用户信息
+    DestroyUList(&UL); // 释放用户列表空间
+    
+
     mouse_off_arrow(&mouse);
 	draw_route();
 	mouse_on_arrow(mouse);
-    srand(time(NULL));
 
     // 初始化路线状态
+    srand(time(NULL));
     memset(&route_state, 0, sizeof(RouteState));
     route_state.remaining = n_orders * 2;
-    sprintf(debug_buf,"%d",route_state.remaining);
-    PrintText(1,1,debug_buf,HEI,24,1,black);
     route_state.current_pos = random_int(1, 409);
-    next_index = arrange(route_state.current_pos, acp_orders, n_orders); // 随机生成起点
-    sprintf(debug_buf,"%d",next_index);
-    PrintText(20,1,debug_buf,HEI,24,1,black);
+    next_index = arrange(route_state.current_pos, cur_orders, n_orders); // 随机生成起点
     while(1)
     {
         mouse_show_arrow(&mouse);
@@ -470,25 +462,14 @@ void route(AcceptedOrder acp_orders[], int n_orders)
             return;
 			//business(users.pos);
 		}
-        else if(mouse_press(342, 50, 462, 100)==1)
+        else if(mouse_press(342, 50, 462, 100)==1) //接单
         {
             press3(1);//进入接单界面
-            accept_order();//接单页面
+            mouse_off_arrow(&mouse);
+            accept_order(user_pos);//接单页面
             //return后从这开始
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            draw_rider();
-            mouse_on_arrow(mouse);
-        }
-        else if(mouse_press(562, 50, 682, 100)==1) //路线
-        {
-            press3(2); //按钮高亮
-            mouse_off_arrow(&mouse);
-            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,delivers.acp_count);//骑手路线规划
-            //return后从这开始
-            mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_route();
             mouse_on_arrow(mouse);
         }
@@ -496,14 +477,15 @@ void route(AcceptedOrder acp_orders[], int n_orders)
         {
             press3(3); //按钮高亮
             mouse_off_arrow(&mouse);
-            my_accept_order();
+            my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_route();
             mouse_on_arrow(mouse);
         }
-        else if (mouse_press(900, 266, 1020, 316)) {
+        else if (mouse_press(900, 266, 1020, 316))  //点击到达按钮
+        {
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 326, white); // 清除已完成界面残留
             Readbmp64k(0, 326, "bmp\\map4.bmp");
@@ -518,8 +500,11 @@ void route(AcceptedOrder acp_orders[], int n_orders)
                 else 
                 {
                     route_state.delivered[next_index] = 1;
+                    //add_to_history(cur_orders[next_index]);
+                    cut_current_order(next_index);
+                    currentUser.account+=cur_orders[next_index].deliver_price;
                 }
-                next_index = arrange(route_state.current_pos, acp_orders, n_orders);
+                next_index = arrange(route_state.current_pos, cur_orders, n_orders);
             } 
         }
     }
@@ -610,13 +595,13 @@ void draw_route()
     Draw_Rounded_Rectangle(122, 50, 242, 100, 25, 1,deepblue);//返回
     Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);//接单
     Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,white);//路线
-    Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,deepblue);//账户
+    Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,deepblue);//我的
 
     
     PrintCC(122+35, 65, "返回", HEI, 24, 1, deepblue);
     PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);
     PrintCC(562+35, 65, "路线", HEI, 24, 1, white);
-    PrintCC(782+35, 65, "账户", HEI, 24, 1, deepblue);
+    PrintCC(782+35, 65, "我的", HEI, 24, 1, deepblue);
     
     PrintCC(250, 10, "当前账号类型为：骑手", HEI, 24, 1, deepblue);
 

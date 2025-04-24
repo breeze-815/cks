@@ -11,8 +11,8 @@ typedef struct Node {
 
 // 在route函数外部定义任务状态结构体
 typedef struct  RouteState {
-    int picked[4];       // 记录4个订单的取餐状态
-    int delivered[4];    // 记录4个订单的送餐状态
+    int picked[10];       // 记录10个订单的取餐状态
+    int delivered[10];    // 记录10个订单的送餐状态
     int remaining;       // 剩余任务数
     int current_pos;     // 当前位置索引
     int next_pos;
@@ -20,7 +20,7 @@ typedef struct  RouteState {
 } RouteState;
 
 int random_int(int min, int max);
-void route( AcceptedOrder acp_orders[], int n_orders);
+void route( AcceptedOrder acp_orders[], int n_orders,int user_pos);
 
 int dijkstra(Node *start, Node *end, int j);
 

@@ -1,36 +1,34 @@
 #include "all_func.h"
 
-#define MAX_COMBINED_ORDERS 20
-#define ORDERS_PER_PAGE   4     // 每页显示商品数
-
+#define ORDERS_PER_PAGE   4     
 #define ORDER_SUPERMARKET 0
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
 void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList *FL, DeliverList *DL) 
 {
-
     char buf[128];
     // 通用：下单时间、手机号
     char time_str[64];
     char phone_str[64];
-    char show_distance[20];
-    char show_deliver_price[20];
+    char show_distance[30];
+    char show_deliver_price[30];
     int distance_m;
     float distance_km;
     float item_price;
     float deliver_price;
-    if (type == ORDER_SUPERMARKET) {
-        Order *o = &OL->elem[local_index];
+    if (type == ORDER_SUPERMARKET) 
+    {
+        Order *o = &OL->elem[local_index]; 
         sprintf(time_str, "下单时间：%s", o->order_time);
         sprintf(phone_str, "手机号：%s", o->user_phone);
-        // 取货点（相对区域顶部偏移 +150）
+        // 取货点
         sprintf(buf, "取货点：%s", node[o->pick_up_location].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
         sprintf(buf, "用户地址：%s", node[o->destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
-        //距离
+        // 距离
         distance_m = dijkstra(&node[o->pick_up_location], &node[o->destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
@@ -42,11 +40,12 @@ void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList 
         PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, 0x0000);
 
     }
-    else if (type == ORDER_FOOD) {
+    else if (type == ORDER_FOOD) 
+    {
         FoodOrder *f = &FL->elem[local_index];
         sprintf(time_str, "下单时间：%s", f->order_time);
         sprintf(phone_str, "手机号：%s", f->user_phone);
-        // 取货点（相对区域顶部偏移 +150）
+        // 取餐点
         sprintf(buf, "取货点：%s", node[f->pick_up_location].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
@@ -63,11 +62,12 @@ void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList 
         sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
         PrintText(500, 200+150, show_deliver_price, HEI, 24, 1, 0x0000);
     }
-    else if (type == ORDER_DELIVER) {
+    else if (type == ORDER_DELIVER) 
+    {
         Deliver *d = &DL->elem[local_index];
         sprintf(time_str, "下单时间：%s", d->time);
         sprintf(phone_str, "手机号：%s", d->number);
-        // 取货点（相对区域顶部偏移 +150）
+        // 取货点
         sprintf(buf, "取货点：%s", node[d->station].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
@@ -124,7 +124,7 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
         PrintCC(445, 715, "下一页", HEI, 24, 1, deepblue);
     }
 
-    // 接单按钮（替换开始备货）
+    // 接单按钮
     Draw_Rounded_Rectangle(800, 700, 1000, 750, 5, 1, deepblue);
     PrintCC(850, 715, "接单", HEI, 24, 1, deepblue);
 
@@ -254,7 +254,8 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
 }
 
 //进入所接订单详情
-void accept_order_detail(int local_index, int type) {
+void show_order_detail(int local_index, int type, int user_pos) 
+{
     OrderList OL = {0};
     FoodList FL = {0};
     DeliverList DL = {0};
@@ -293,7 +294,7 @@ void accept_order_detail(int local_index, int type) {
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,4);//骑手路线规划
+            route(cur_orders,num_of_orders.cur_count,user_pos);//骑手路线规划
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留

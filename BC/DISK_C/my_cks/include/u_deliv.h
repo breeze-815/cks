@@ -20,6 +20,7 @@ typedef struct Deliver
     int index;
     int total_cnt;
     int acp_count;
+    int hst_count;
 } Deliver;
 
 typedef struct DeliverList

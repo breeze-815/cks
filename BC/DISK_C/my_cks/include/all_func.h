@@ -34,7 +34,7 @@
 #include "bu_order.h"
 #include "bu_det.h"
 
-#include "ride.h"
+#include "rider.h"
 #include "route.h"
 #include "acp_or.h"
 #include "m_act.h"
@@ -43,15 +43,17 @@
 #include "arrange.h"
 #include "acp_det.h"
 #include "m_acp.h"
-#include "my.h"
+#include "m_inf.h"
 #include "m_hst.h"
-// extern int acp_orders1[4];
+#include "m_ac_de.h"
+// extern int cur_orders1[4];
 // extern int acp_count = 0;
 // extern int total_cnt=0;
 // extern int acp_count=0;
 extern MOUSE mouse;
 
 extern USER users;
+
 
 extern Product products[84];
 extern CartItem carts[84];
@@ -71,8 +73,9 @@ extern Company companys[8];
 extern Station stations[8];
 
 extern Button button [79];
-extern AcceptedOrder acp_orders[4];
-
+extern AcceptedOrder cur_orders[4];
+extern AcceptedOrder hst_orders[6];
+extern Num_of_Orders num_of_orders;
 extern RouteState route_state;
 #define white 0xFFFF
 #define snow 0xFFDF
@@ -81,6 +84,7 @@ extern RouteState route_state;
 #define lightblue 0x435c
 #define skyblue 0xB71C
 #define grey 0xC618
+#define deepgrey 0x6B4D
 #define lightred 0XF800
 #define Red 0xF800
 #define deepgrew 0XC618

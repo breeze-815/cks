@@ -7,78 +7,77 @@
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-AcceptedOrder acp_orders[4]={0};
+AcceptedOrder cur_orders[4]={0};
 
-// 接单处理：从对应列表中移除，并加入 acp_orders
-void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
-    int type, int local_index, int page ) 
+// 接单处理：从对应展示列表中移除，并加入 cur_orders
+void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int local_index) 
 {
-    char debg[200];
-    int global_index = page * ORDERS_PER_PAGE + local_index;
     int i;
-    //extern int delivers.acp_count;
-    // 检查是否超过最大接单数量
-    
-    acp_orders[delivers.acp_count].type = type;
+   //防止越界
+    cur_orders[num_of_orders.cur_count].type = type;
     
     if (type == ORDER_SUPERMARKET) 
     {
-        acp_orders[delivers.acp_count].data.order = OL->elem[local_index];
-        sprintf(debg,"接超市");
-        PrintText(100,100,debg,HEI,24,1,black);
-        // sprintf(debg,"%d",acp_orders[delivers.acp_count].data.order.pick_up_location);
-        // PrintText(120, 100, debg, HEI, 24, 1, Red);
+        cur_orders[num_of_orders.cur_count].data.order = OL->elem[local_index];
         // 从超市订单列表移除该单
-        // 先把所有后续元素往前移一位
+        // 先把所有后续元素往前移一位，再把订单表长减一
         for (i = local_index; i < OL->length - 1; i++) 
             OL->elem[i] = OL->elem[i + 1];
         OL->length--;
 
     }
-
     else if (type == ORDER_FOOD) 
     {
-        acp_orders[delivers.acp_count].data.food = FL->elem[local_index];
-        sprintf(debg,"接食堂");
-        PrintText(200,100,debg,HEI,24,1,black);
+        cur_orders[num_of_orders.cur_count].data.food = FL->elem[local_index];
         // 从食品订单列表移除该单
         for (i = local_index; i < FL->length - 1; i++) 
             FL->elem[i] = FL->elem[i + 1];
         FL->length--;
     }
-
-
     else if (type == ORDER_DELIVER) 
     {
-        acp_orders[delivers.acp_count].data.deliver = DL->elem[local_index];
-        sprintf(debg,"接快递");
-        PrintText(300,100,debg,HEI,24,1,black);
+        cur_orders[num_of_orders.cur_count].data.deliver = DL->elem[local_index];
         // 从快递订单列表移除该单
         for (i = local_index; i < DL->length - 1; i++)
             DL->elem[i] = DL->elem[i + 1];
         DL->length--;
     }
-    
-    delivers.acp_count++;
-    // sprintf(debg,"acp_count=%d",delivers.acp_count);
-    // PrintText(100, 50, debg, HEI, 24, 1, Red);
-    delivers.total_cnt = OL->length + FL->length + DL->length;  
-    }
+    num_of_orders.cur_count++; //当前接单增加
+    num_of_orders.total_cnt--; //展示订单减少 
+}
 
-
-
-void my_accept_order() {
-    int page = 0;
-    int total_cnt;
-    int type, local,global;
-    OrderList OL = {0};
+//从我的列表中移除
+void delete_my_order(int index)
+{
+    int type;
+    OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
     FoodList FL = {0};
     DeliverList DL = {0};
-    ReadAllDeliver(&DL); // 读取快递列表
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
-    //total_cnt = OL.length + FL.length + DL.length;
-    //draw_accept_order(page, &OL, &FL, &DL, total_cnt);
+    ReadAllDeliver(&DL); // 读取快递列表
+    type = cur_orders[index].type;
+
+    cut_current_order(index); 
+    
+    if (type == ORDER_SUPERMARKET) 
+    {
+        save_order(cur_orders[index].data.order);
+    }
+
+    if (type == ORDER_FOOD) 
+    {
+        save_food(cur_orders[index].data.food);
+    }
+
+    if (type == ORDER_DELIVER) 
+    {
+        save_Deliver(cur_orders[index].data.deliver);
+    }
+}
+    
+void my_accept_order(int user_pos) 
+{
     draw_my_accept();
     mouse_on_arrow(mouse);
 
@@ -86,64 +85,154 @@ void my_accept_order() {
         mouse_show_arrow(&mouse);
         if(mouse_press(122, 50, 242, 100)==1) //返回
         {
-            DestroyOList(&OL); // 释放订单列表内存
-            DestroyFList(&FL); // 释放食品列表内存
-            DestroyDList(&DL); // 释放快递列表内存
+         
             return;
-			//business(users.pos);
+			//my_information(users.pos);
 		}
-        else if(mouse_press(342, 50, 462, 100)==1)
+        else if(mouse_press(342, 50, 462, 100)==1) //接单
         {
-            press3(1);//进入接单界面
+            press3(1);//按钮高亮
             mouse_off_arrow(&mouse);
-            accept_order();//接单页面
+            accept_order(user_pos);//接单页面
             //return后从这开始
             mouse_off_arrow(&mouse);
-            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            draw_rider();
+            bar1(0, 150, 1024, 768, white); // 清屏
+            draw_my_accept();
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(562, 50, 682, 100)==1) //路线
         {
             press3(2); //按钮高亮
             mouse_off_arrow(&mouse);
-            bar1(0, 150, 1024, 768, white); // 清除接单界面残留
-            route(acp_orders,delivers.acp_count);//骑手路线规划
+            route(cur_orders,num_of_orders.cur_count,user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_accept_order(page,&OL,&FL,&DL); // 重新绘制订单列表
+            bar1(0, 150, 1024, 768, white); 
+            draw_my_accept();  
             mouse_on_arrow(mouse);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
             mouse_off_arrow(&mouse);
-            my_accept_order();
+            my_information(user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); 
+            draw_my_accept();  
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(40, 276, 160, 326) == 1)
+        {
+            press4(1);
+            my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
-            draw_accept_order(page,&OL,&FL,&DL); // 重新绘制订单列表
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(40, 602, 160, 652) == 1)
+        {
+            press4(3);
+            my_history_order(user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(750, 195, 850, 245) == 1) //点击订单1详情
+        {
+            my_accept_detail(0,user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(750, 315, 850, 365)==1) //点击订单2详情
+        {
+            my_accept_detail(1,user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); //
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(750, 435, 850, 485) == 1) //点击订单3详情
+        {
+            my_accept_detail(2,user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(750, 555, 850, 605) == 1) //点击订单4详情
+        {
+            my_accept_detail(3,user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(875, 195, 975, 245) == 1) //点击取消订单1
+        {
+            delete_my_order(0);
+            //删除后更新我的当前列表
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(875, 315, 975, 365)==1) //点击取消订单2
+        {
+            delete_my_order(1);
+            //删除后更新我的当前列表
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); //
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(875, 435, 975, 485) == 1) //点击取消订单3
+        {
+            delete_my_order(2);
+            //删除后更新我的当前列表
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(875, 555, 975, 605) == 1) //点击取消订单4
+        {
+            delete_my_order(3);
+            //删除后更新我的当前列表
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); // 
+            draw_my_accept();
             mouse_on_arrow(mouse);
         }
     }
 }
 
-void draw_my_accept() {
+void draw_my_accept() 
+{
     int y_offset = 170;
     char pick_up[100], dest[100], distance_str[50], price_str[50];
     int distance_m;
     float dist_km, amount, fee;
     int i;
     char debg[20];
-    bar1(0, 150, 1024, 768, white);
-    sprintf(debg,"%d",delivers.acp_count);
+    bar1(200, 150, 1024, 768, white);
+    sprintf(debg,"%d",num_of_orders.cur_count);
     PrintText(150, 100, debg, HEI, 24, 1, Red);
 
-    for (i = 0; i < delivers.acp_count; i++) {
-        AcceptedOrder *ao = &acp_orders[i]; 
+    for (i = 0; i < num_of_orders.cur_count; i++) {
+        AcceptedOrder *ao = &cur_orders[i]; 
         // 画框
-        Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
+        Draw_Rounded_Rectangle(220, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
 
         Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
         Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
@@ -195,8 +284,8 @@ void draw_my_accept() {
         dist_km = distance_m / 1000.0f;
         fee     = rider_deliver_price(distance_m, amount);
 
-        PrintText(50,  y_offset + 10, pick_up, HEI, 24, 1, BLACK);
-        PrintText(50,  y_offset + 60, dest,    HEI, 24, 1, BLACK);
+        PrintText(250,  y_offset + 10, pick_up, HEI, 24, 1, BLACK);
+        PrintText(250,  y_offset + 60, dest,    HEI, 24, 1, BLACK);
         sprintf(distance_str, "距离：%.2fkm", dist_km);
         PrintText(500, y_offset + 10, distance_str, HEI, 24, 1, BLACK);
         sprintf(price_str,    "配送费：%.1f元", fee);
@@ -205,5 +294,17 @@ void draw_my_accept() {
         
         y_offset += 120;
     }
+}
 
+void cut_current_order(int index) //从列表中删除某个索引
+{
+    int i;
+    for ( i = index; i < num_of_orders.cur_count - 1; i++) 
+    {
+        cur_orders[i] = cur_orders[i+1];//后面的订单将前面的覆盖
+        route_state.picked[i]   = route_state.picked[i+1];// 同步移动 picked[] / delivered[] 数组
+        route_state.delivered[i]= route_state.delivered[i+1];
     }
+    num_of_orders.cur_count--; 
+}
+
