@@ -121,7 +121,7 @@ void draw_button(int x)
 
 int press_button(int mx, int my, int cur_index, int cur_community) {
     int i, new_index = -1;
-    char buffer[20], test_buf[20];
+    char buffer[100], test_buf[100];
     int deta_x;
     int is_cur_index_valid;
     // 条件 1: 检查 cur_index 有效性

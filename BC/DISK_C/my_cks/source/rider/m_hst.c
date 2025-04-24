@@ -7,7 +7,7 @@
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-AcceptedOrder hst_orders[6]={0};
+AcceptedOrder hst_orders[10]={0};
 
 void my_history_order(int user_pos)
 {   
@@ -28,6 +28,7 @@ void my_history_order(int user_pos)
         mouse_show_arrow(&mouse);
         if(mouse_press(122, 50, 242, 100)==1) //返回
         {
+            mouse_off_arrow(&mouse);
             // DestroyOList(&OL); // 释放订单列表内存
             // DestroyFList(&FL); // 释放食品列表内存
             // DestroyDList(&DL); // 释放快递列表内存
@@ -91,14 +92,19 @@ void my_history_order(int user_pos)
     }
 }
 
-// void add_to_history(Order o) 
-// {
-//     if (num_of_orders.hst_count < 6) 
-//     {
-//         memcpy(&hst_orders[num_of_orders.hst_count], o, sizeof(Order));
-//         num_of_orders.hst_count++;
-//     }
-// }
+void move_to_history(AcceptedOrder cur_orders[], int order_idx) 
+{
+    int j;
+    if (num_of_orders.hst_count < 10 && num_of_orders.cur_count >= 0 && order_idx < num_of_orders.cur_count) \
+    {
+        // 复制到历史列表末尾
+        hst_orders[num_of_orders.hst_count++] = cur_orders[order_idx];
+        // 从 cur_orders 中移除：后续元素前移
+        for ( j = order_idx; j < num_of_orders.cur_count - 1; j++) 
+            cur_orders[j] = cur_orders[j + 1];
+        num_of_orders.cur_count--;
+    }
+}
 
 void draw_my_history_order()
 {
@@ -107,9 +113,10 @@ void draw_my_history_order()
     int distance_m;
     float dist_km, amount, fee;
     int i;
-    
+    char debg[20];
     bar1(200, 150, 1024, 768, white);
-
+    sprintf(debg,"%d",num_of_orders.hst_count);
+    PrintText(0,  0, debg, HEI, 24, 1, BLACK);
     for (i = 0; i < num_of_orders.cur_count; i++) 
     {
         AcceptedOrder *ho = &hst_orders[i]; 

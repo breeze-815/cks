@@ -12,13 +12,19 @@ AcceptedOrder cur_orders[4]={0};
 // 接单处理：从对应展示列表中移除，并加入 cur_orders
 void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int local_index) 
 {
-    int i;
+    int i,distance_m;
+    float item_price,distance_km;;
    //防止越界
     cur_orders[num_of_orders.cur_count].type = type;
     
     if (type == ORDER_SUPERMARKET) 
     {
         cur_orders[num_of_orders.cur_count].data.order = OL->elem[local_index];
+        distance_m = dijkstra(&node[cur_orders[num_of_orders.cur_count].data.order.pick_up_location], 
+            &node[cur_orders[num_of_orders.cur_count].data.order.destination],3); // 计算距离
+        distance_km = distance_m / 1000.0; // 转换为公里
+        item_price = cur_orders[num_of_orders.cur_count].data.order.total_amount;
+        cur_orders[num_of_orders.cur_count].deliver_price=rider_deliver_price(distance_m, item_price);
         // 从超市订单列表移除该单
         // 先把所有后续元素往前移一位，再把订单表长减一
         for (i = local_index; i < OL->length - 1; i++) 
@@ -30,6 +36,11 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
     else if (type == ORDER_FOOD) 
     {
         cur_orders[num_of_orders.cur_count].data.food = FL->elem[local_index];
+        distance_m = dijkstra(&node[cur_orders[num_of_orders.cur_count].data.food.pick_up_location], 
+            &node[cur_orders[num_of_orders.cur_count].data.food.destination],3); // 计算距离
+        distance_km = distance_m / 1000.0; // 转换为公里
+        item_price = cur_orders[num_of_orders.cur_count].data.food.total_amount;
+        cur_orders[num_of_orders.cur_count].deliver_price=rider_deliver_price(distance_m, item_price);
         // 从食品订单列表移除该单
         for (i = local_index; i < FL->length - 1; i++) 
             FL->elem[i] = FL->elem[i + 1];
@@ -39,6 +50,11 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
     else if (type == ORDER_DELIVER) 
     {
         cur_orders[num_of_orders.cur_count].data.deliver = DL->elem[local_index];
+        distance_m = dijkstra(&node[cur_orders[num_of_orders.cur_count].data.deliver.station], 
+            &node[cur_orders[num_of_orders.cur_count].data.deliver.index],3); // 计算距离
+        distance_km = distance_m / 1000.0; // 转换为公里
+        item_price = 2.0;
+        cur_orders[num_of_orders.cur_count].deliver_price=rider_deliver_price(distance_m, item_price);
         // 从快递订单列表移除该单
         for (i = local_index; i < DL->length - 1; i++)
             DL->elem[i] = DL->elem[i + 1];
@@ -53,12 +69,12 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
 void delete_my_order(int index)
 {
     int type;
-    OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
-    FoodList FL = {0};
-    DeliverList DL = {0};
-    ReadAllOrder(&OL); // 读取订单列表
-    ReadAllFood(&FL); // 读取食品列表
-    ReadAllDeliver(&DL); // 读取快递列表
+    // OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
+    // FoodList FL = {0};
+    // DeliverList DL = {0};
+    // ReadAllOrder(&OL); // 读取订单列表
+    // ReadAllFood(&FL); // 读取食品列表
+    // ReadAllDeliver(&DL); // 读取快递列表
     type = cur_orders[index].type;
 
     cut_current_order(index); 
@@ -81,14 +97,15 @@ void delete_my_order(int index)
     
 void my_accept_order(int user_pos) 
 {
+    mouse_off_arrow(&mouse);
     draw_my_accept();
     mouse_on_arrow(mouse);
-
-    while (1) {
+    while (1) 
+    {
         mouse_show_arrow(&mouse);
         if(mouse_press(122, 50, 242, 100)==1) //返回
         {
-         
+            mouse_off_arrow(&mouse);
             return;
 			//my_information(users.pos);
 		}
@@ -125,17 +142,17 @@ void my_accept_order(int user_pos)
             draw_my_accept();  
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 276, 160, 326) == 1)
+        else if(mouse_press(40, 276, 160, 326) == 1) //信息
         {
             press4(1);
             my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 清除路线界面残留
+            bar1(0, 150, 1024, 768, white); //清屏
             draw_my_accept();
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 602, 160, 652) == 1)
+        else if(mouse_press(40, 602, 160, 652) == 1) //历史
         {
             press4(3);
             my_history_order(user_pos);
@@ -186,7 +203,7 @@ void my_accept_order(int user_pos)
             delete_my_order(0);
             //删除后更新我的当前列表
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 
+            bar1(0, 150, 1024, 768, white);
             draw_my_accept();
             mouse_on_arrow(mouse);
         }

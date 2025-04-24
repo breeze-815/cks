@@ -74,7 +74,7 @@ extern Station stations[8];
 
 extern Button button [79];
 extern AcceptedOrder cur_orders[4];
-extern AcceptedOrder hst_orders[6];
+extern AcceptedOrder hst_orders[10];
 extern Num_of_Orders num_of_orders;
 extern RouteState route_state;
 #define white 0xFFFF

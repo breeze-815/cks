@@ -1,12 +1,11 @@
 #include <all_func.h>
-#define MAX_COMBINED_ORDERS 20
 #define ORDERS_PER_PAGE   4
 
 #define ORDER_SUPERMARKET 0
 #define ORDER_FOOD        1
 #define ORDER_DELIVER     2
 
-int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
+void arrange(int start_idx, AcceptedOrder cur_orders[], int n_orders)
 {
     int temp_picked[4]; // 临时数组，用于存储当前订单的取餐状态
     int temp_delivered[4];  // 临时数组，用于存储当前订单的送餐状态
@@ -23,7 +22,8 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
     int next_pos;
     int next_type;
     char debuf[10];
-    for(i = 0; i < n_orders; i++) 
+    int step=0;
+    for(i = 0; i < n_orders; i++)  //拷贝数据状态
     {
         temp_picked[i] = route_state.picked[i];
         temp_delivered[i] = route_state.delivered[i];
@@ -38,7 +38,8 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
         PrintText(400, 250, "当前暂无任务", HEI, 36, 1, Red);
         return -1; // 返回-1表示没有可执行任务
     }
-    while (temp_remaining > 0) {
+    while (temp_remaining > 0) 
+    {
         /*—— 找最近的可做任务 ——*/
         best_dist = 20000;
         best_i    = -1;
@@ -91,69 +92,48 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
                 }
             }   
         }
-
-        temp_step++;
-        /*—— 如果没有找到任务，就跳出 ——*/\
-        if(temp_step==1)
-        {
-            if(best_type == 0)
-            {
-                if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
-                    next_pos = cur_orders[best_i].data.order.pick_up_location;
-                } else if (cur_orders[best_i].type == ORDER_FOOD) {
-                    next_pos = cur_orders[best_i].data.food.pick_up_location;
-                } else {
-                    next_pos = cur_orders[best_i].data.deliver.station;
-                }
-                next_type = 0;
-            }
-            else
-            {
-                if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
-                    next_pos = cur_orders[best_i].data.order.destination;
-                } else if (cur_orders[best_i].type == ORDER_FOOD) {
-                    next_pos = cur_orders[best_i].data.food.destination;
-                } else {
-                    next_pos = cur_orders[best_i].data.deliver.index;
-                }
-                next_type = 1;
-            }
-            next_index = best_i;
-            route_state.next_pos = next_pos;
-            route_state.next_type = next_type;
-        }
-        if (best_i < 0) {
-            PrintText(50, 50, "调度异常：无可执行任务", HEI, 24, 1, black);
+        if (best_i < 0)
             break;
-        }
-
-        draw_arrange(temp_step, cur_orders, temp_current, best_i, best_type); 
-
-        if (best_type == 0) {
+        if(best_type == 0)
+        {
             if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
-                temp_current = cur_orders[best_i].data.order.pick_up_location;
+                next_pos = cur_orders[best_i].data.order.pick_up_location;
             } else if (cur_orders[best_i].type == ORDER_FOOD) {
-                temp_current = cur_orders[best_i].data.food.pick_up_location;
+                next_pos = cur_orders[best_i].data.food.pick_up_location;
             } else {
-                temp_current = cur_orders[best_i].data.deliver.station;
+                next_pos = cur_orders[best_i].data.deliver.station;
             }
+            next_type = 0;
+        }
+        else
+        {
+            if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
+                next_pos = cur_orders[best_i].data.order.destination;
+            } else if (cur_orders[best_i].type == ORDER_FOOD) {
+                next_pos = cur_orders[best_i].data.food.destination;
+            } else {
+                next_pos = cur_orders[best_i].data.deliver.index;
+            }
+            next_type = 1;
+        }        
+        // 存入序列
+        route_state.seq_pos[step]  = next_pos;
+        route_state.seq_type[step] = best_type;
+        route_state.seq_order[step] = best_i;
+        // 标记已完成
+        if (best_type == 0) 
             temp_picked[best_i] = 1;
-        } else {
-            if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
-                temp_current = cur_orders[best_i].data.order.destination;
-            } else if (cur_orders[best_i].type == ORDER_FOOD) {
-                temp_current = cur_orders[best_i].data.food.destination;
-            } else {
-                temp_current = cur_orders[best_i].data.deliver.index;
-            }
+        else               
             temp_delivered[best_i] = 1;
-        }
+        temp_current = next_pos;
         temp_remaining--;
-    }  
-    return next_index; 
+        step++;
+    }
+    route_state.seq_len = step;
 }
 
-void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int best_i, int best_type) 
+//step是步数，cur_orders[]为当前接单的结构体，start_index为起点，best_i为下一个点的订单数，best_
+void draw_arrange(int step, struct AcceptedOrder cur_orders[], int start_index, int end_index) 
 {
     int text_x,text_y;
     char buf[100];
@@ -162,74 +142,39 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
     float time_min; // 假设最小时间为1分钟
     int time_m;
     int time_s;
-    int pu_idx, dst_idx; //取餐点和送餐点
+    
+    //绘制已完成按钮
     Fill_Rounded_Rectangle(900, 266, 1020, 316, 5,deepblue);//已完成
     Draw_Rounded_Rectangle(900, 266, 1020, 316, 5, 1, deepblue);//已完成
     PrintCC(910, 276, "已完成", HEI, 24, 1, white);
-    if (best_type == 0) {
-        // 取餐
-        switch (cur_orders[best_i].type) {
-        case 0:
-            pu_idx = cur_orders[best_i].data.order.pick_up_location;
-            break;
-        case 1:
-            pu_idx = cur_orders[best_i].data.food.station;
-            break;
-        case 2:
-            pu_idx = cur_orders[best_i].data.deliver.station;
-            break;
-        }
-        distance_m = dijkstra(&node[start_index], &node[pu_idx], j);
-    } else {
-        // 送餐
-        switch (cur_orders[best_i].type) 
-        {
-            case 0:
-                dst_idx = cur_orders[best_i].data.order.destination;
-                break;
-            case 1:
-                dst_idx = cur_orders[best_i].data.food.destination;
-                break;
-            case 2:
-                dst_idx = cur_orders[best_i].data.deliver.index;
-                break;
-        }
-        distance_m = dijkstra(&node[start_index], &node[dst_idx], j);
-    }
 
-    if(j==1) //第一个地点时打印起点
-    {
-        
-        Draw_Rounded_Rectangle(10, 160, 130, 210, 5, 1, deepblue);//起点
-        sprintf(buf, "%s",node[start_index].name);
-        calculate_centered_text(10, 160, 130, 210, buf, 24, &text_x, &text_y);
-        PrintText(text_x, text_y, buf, HEI, 24, 1, black);//起点
-    }
-    //计算距离和时间
+    //计算两点间距离和时间
+    distance_m = dijkstra(&node[start_index], &node[end_index], 3);
     distance_km = distance_m / 1000.0; // 转换为公里
     time_min = distance_m / 1000.0 * 60 / 20; // 假设平均速度为20km/h，计算时间
-    if (j <= 4)  //地点在第一排
+
+    if(step==1) //第一个地点时打印起点
+    {
+        Draw_Rounded_Rectangle(10, 160, 130, 210, 5, 1, deepblue);
+        sprintf(buf, "%s",node[start_index].name);
+        calculate_centered_text(10, 160, 130, 210, buf, 24, &text_x, &text_y);
+        PrintText(text_x, text_y, buf, HEI, 24, 1, black);
+    }
+    
+    if (step <= 4)  //地点在第一排
     {
         //画地点框
-        Draw_Rounded_Rectangle(10 + 221*j, 160, 130 + 221*j, 210, 5, 1, deepblue);//1号
-        if(best_type == 0)
-        {
-            sprintf(buf, "%s",node[pu_idx].name);
-        }
-        else
-        {
-           sprintf(buf, "%s",node[dst_idx].name);
-        }
-
-        calculate_centered_text(10 + 221*j, 160, 130 + 221*j, 210, buf, 24, &text_x, &text_y);
+        Draw_Rounded_Rectangle(10 + 221*step, 160, 130 + 221*step, 210, 5, 1, deepblue);//1号
+        sprintf(buf, "%s",node[end_index].name);
+        calculate_centered_text(10 + 221*step, 160, 130 + 221*step, 210, buf, 24, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 24, 1, black);//1号
         //画箭头
-        Line_Thick(221*j-91+3, 185, 10 + 221*j-3, 185, 3, black);//连线
-        Line_Thick(10+221*j-3, 185, 221*j-10-3, 165, 3, black);
-        Line_Thick(10+221*j-3, 185, 221*j-10-3, 205, 3, black);//箭头
+        Line_Thick(221*step-91+3, 185, 10 + 221*step-3, 185, 3, black);//连线
+        Line_Thick(10+221*step-3, 185, 221*step-10-3, 165, 3, black);
+        Line_Thick(10+221*step-3, 185, 221*step-10-3, 205, 3, black);//箭头
         //标注距离
         sprintf(buf, "%.2fkm", distance_km);
-        calculate_centered_text(221*j-91+3, 185-16*2 , 10+221*j-3, 185 , buf, 16, &text_x, &text_y);
+        calculate_centered_text(221*step-91+3, 185-16*2 , 10+221*step-3, 185 , buf, 16, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//距离
         //标注时间
         if(time_min < 1.0) 
@@ -242,30 +187,23 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
             time_m = (int)(time_min + 0.5);
             sprintf(buf, "%dmin", time_m);
         }
-        calculate_centered_text(221*j-91+3, 185 , 10+221*j-3, 185+16*2 , buf, 16, &text_x, &text_y);
+        calculate_centered_text(221*step-91+3, 185 , 10+221*step-3, 185+16*2 , buf, 16, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//时间
     }
     else
     {
         //画地点框
-        Draw_Rounded_Rectangle(220*j-990, 266, 220*j-870, 316, 5, 1, deepblue);//1号
-        if(best_type == 0)
-        {
-            sprintf(buf, "%s",node[pu_idx].name);
-        }
-        else
-        {
-           sprintf(buf, "%s",node[dst_idx].name);
-        }
-        calculate_centered_text(220*j-990, 266, 220*j-870, 316, buf, 24, &text_x, &text_y);
+        Draw_Rounded_Rectangle(220*step-990, 266, 220*step-870, 316, 5, 1, deepblue);//1号
+        sprintf(buf, "%s",node[end_index].name);
+        calculate_centered_text(220*step-990, 266, 220*step-870, 316, buf, 24, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 24, 1, black);//1号
         //画箭头
-        Line_Thick(220*j-1090+3, 291, 220*j-990-3, 291, 3, black);//连线
-        Line_Thick(220*j-990-3, 291, 220*j-1010+3, 271, 3, black);
-        Line_Thick(220*j-990-3, 291, 220*j-1010+3, 311, 3, black);//箭头
+        Line_Thick(220*step-1090+3, 291, 220*step-990-3, 291, 3, black);//连线
+        Line_Thick(220*step-990-3, 291, 220*step-1010+3, 271, 3, black);
+        Line_Thick(220*step-990-3, 291, 220*step-1010+3, 311, 3, black);//箭头
         //标注距离
         sprintf(buf, "%.2fkm", distance_km);
-        calculate_centered_text(220*j-1090+3 ,291-16*2 ,220*j-990-3 ,291 , buf, 16,&text_x,&text_y);
+        calculate_centered_text(220*step-1090+3 ,291-16*2 ,220*step-990-3 ,291 , buf, 16,&text_x,&text_y);
         PrintText(text_x,text_y , buf , HEI ,16 ,1 ,black);//距离
         //标注时间
         if(time_min < 1.0) 
@@ -278,10 +216,12 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
             time_m = (int)(time_min + 0.5);
             sprintf(buf, "%dmin", time_m);
         }
-        calculate_centered_text(220*j-1090+3 ,291 ,220*j-990-3 ,291+16*2 , buf ,24,&text_x,&text_y);
+        calculate_centered_text(220*step-1090+3 ,291 ,220*step-990-3 ,291+16*2 , buf ,24,&text_x,&text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//时间
     }
 }
+
+
 
 void calculate_centered_text(int rect_x1, int rect_y1, int rect_x2, int rect_y2, const char *text, int font_size, int *text_x, int *text_y)
 {

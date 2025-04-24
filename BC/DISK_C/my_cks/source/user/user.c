@@ -342,7 +342,7 @@ void press_func(int x){
 void number_input(char *number,int bar_x1,int bar_y1,int bar_x2,int bar_y2)
 {
 	int length;
-    char number_temp[12]={'\0'};//重新进入该页面时输入框清零
+    char number_temp[100]={'\0'};//重新进入该页面时输入框清零
 	char showtemp[2]= "\0";//存储输入字符,用于输入框展示
 	int i=0,k,temp;  // i为字符个数,temp为从键盘上读取输入字符的ACSII码
 	int border; //光标的横坐标	    
