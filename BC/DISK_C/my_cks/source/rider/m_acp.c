@@ -69,12 +69,12 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
 void delete_my_order(int index)
 {
     int type;
-    OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
-    FoodList FL = {0};
-    DeliverList DL = {0};
-    ReadAllOrder(&OL); // 读取订单列表
-    ReadAllFood(&FL); // 读取食品列表
-    ReadAllDeliver(&DL); // 读取快递列表
+    // OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
+    // FoodList FL = {0};
+    // DeliverList DL = {0};
+    // ReadAllOrder(&OL); // 读取订单列表
+    // ReadAllFood(&FL); // 读取食品列表
+    // ReadAllDeliver(&DL); // 读取快递列表
     type = cur_orders[index].type;
 
     cut_current_order(index); 

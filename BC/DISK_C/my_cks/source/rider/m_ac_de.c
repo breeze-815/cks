@@ -91,53 +91,6 @@ void draw_my_order_detail_body(int type, int index)
     PrintText(200, 100 + 150, phone_str, HEI, 24, 1, black);
 }
 
-
-//未改
-//详情页面中展示订单具体内容，只有超市和外卖订单有
-// void draw_my_order_items(int type, int index)
-// {
-//     int i;
-//     int page=0;
-//     int start;
-//     int end; 
-//     int y = 500;  // 纵坐标初始偏移量
-//     char name_buf[64], qty_buf[32], price_buf[32];
-    
-//     start = page * ORDERS_PER_PAGE;
-//     end = start + ORDERS_PER_PAGE;
-//     if (type == ORDER_SUPERMARKET) 
-//     {
-//         Order *o = &OL->elem[local_index];
-        
-//         if (end > o->itemCount) //防止越界
-//         end = o->itemCount;
-//         for (i = start; i < end; i++) {
-//             sprintf(name_buf, "%s", o->item[i].name);
-//             sprintf(qty_buf, "x%d", o->item[i].quantity);
-//             sprintf(price_buf, "%.2f", o->item[i].price * o->item[i].quantity);
-//             PrintText(250, y, name_buf, HEI, 24, 1, black);
-//             PrintText(750, y, qty_buf, HEI, 24, 1, black);
-//             PrintText(900, y, price_buf, HEI, 24, 1, black);
-//             y += 50;
-//         }
-//     }
-//     else if (type == ORDER_FOOD) {
-//         FoodOrder *f = &FL->elem[local_index];
-//         end = start + ORDERS_PER_PAGE;
-//         if (end > f->itemCount) 
-//         end = f->itemCount;
-//         for (i = start; i < end; i++) {
-//             sprintf(name_buf, "%s", f->item[i].name);
-//             sprintf(qty_buf, "x%d", f->item[i].quantity);
-//             sprintf(price_buf, "%.2f", f->item[i].price * f->item[i].quantity);
-//             PrintText(250, y, name_buf, HEI, 24, 1, black);
-//             PrintText(750, y, qty_buf, HEI, 24, 1, black);
-//             PrintText(900, y, price_buf, HEI, 24, 1, black);
-//             y += 50;
-//         }
-//     }
-// }
-
 void my_accept_detail(int index , int user_pos) 
 {
     OrderList OL = {0};
