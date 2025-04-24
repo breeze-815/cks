@@ -16,6 +16,7 @@ void my_information(int user_pos)
 
 		if(mouse_press(122, 50, 242, 100)==1)
         {
+            mouse_off_arrow(&mouse);
             return ;
             //welcome()首页
 		}
@@ -32,6 +33,7 @@ void my_information(int user_pos)
         }
         else if(mouse_press(562, 50, 682, 100)==1)
         {
+            mouse_off_arrow(&mouse);
             press3(2);//进入路线规划界面
             route(cur_orders,num_of_orders.cur_count,user_pos);//进入路线规划界面
             //return后从这开始
@@ -42,6 +44,7 @@ void my_information(int user_pos)
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
+            mouse_off_arrow(&mouse);
             press3(3); //按钮高亮
             my_accept_order(user_pos);
             //return后从这开始

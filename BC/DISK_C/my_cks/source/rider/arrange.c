@@ -18,11 +18,10 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
     int dist;
     int best_dist;
     int i;
-    char buf[64];
+    char buf[100];
     int next_index;
     int next_pos;
     int next_type;
-
     char debuf[10];
     for(i = 0; i < n_orders; i++) 
     {
@@ -35,7 +34,8 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
     /*—— 主循环 ——*/
 
     if(temp_remaining == 0) {
-        PrintText(150, 200, "您已完成所有订单", HEI, 24, 1, black);
+        bar1(0,150,1024,326,white);
+        PrintText(400, 250, "当前暂无任务", HEI, 36, 1, Red);
         return -1; // 返回-1表示没有可执行任务
     }
     while (temp_remaining > 0) {
@@ -156,7 +156,7 @@ int arrange(int start_idx,  AcceptedOrder cur_orders[], int n_orders)
 void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int best_i, int best_type) 
 {
     int text_x,text_y;
-    char buf[20];
+    char buf[100];
     int distance_m;
     float distance_km;
     float time_min; // 假设最小时间为1分钟
@@ -205,6 +205,9 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
         calculate_centered_text(10, 160, 130, 210, buf, 24, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 24, 1, black);//起点
     }
+    //计算距离和时间
+    distance_km = distance_m / 1000.0; // 转换为公里
+    time_min = distance_m / 1000.0 * 60 / 20; // 假设平均速度为20km/h，计算时间
     if (j <= 4)  //地点在第一排
     {
         //画地点框
@@ -225,12 +228,10 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
         Line_Thick(10+221*j-3, 185, 221*j-10-3, 165, 3, black);
         Line_Thick(10+221*j-3, 185, 221*j-10-3, 205, 3, black);//箭头
         //标注距离
-        distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(buf, "%.2fkm", distance_km);
         calculate_centered_text(221*j-91+3, 185-16*2 , 10+221*j-3, 185 , buf, 16, &text_x, &text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//距离
         //标注时间
-        time_min = distance_m / 1000.0 * 60 / 20; // 假设平均速度为20km/h，计算时间
         if(time_min < 1.0) 
         {
             time_s = (int)(time_min * 60.0 + 0.5);  // 四舍五入
@@ -267,10 +268,16 @@ void draw_arrange(int j, struct AcceptedOrder cur_orders[], int start_index, int
         calculate_centered_text(220*j-1090+3 ,291-16*2 ,220*j-990-3 ,291 , buf, 16,&text_x,&text_y);
         PrintText(text_x,text_y , buf , HEI ,16 ,1 ,black);//距离
         //标注时间
-        if(time_min < 1)
-        sprintf(buf, "%ds", time_s);
-        else    
-        sprintf(buf, "%dmin", time_min);
+        if(time_min < 1.0) 
+        {
+            time_s = (int)(time_min * 60.0 + 0.5);  // 四舍五入
+            sprintf(buf, "%ds", time_s);
+        }
+        else 
+        {
+            time_m = (int)(time_min + 0.5);
+            sprintf(buf, "%dmin", time_m);
+        }
         calculate_centered_text(220*j-1090+3 ,291 ,220*j-990-3 ,291+16*2 , buf ,24,&text_x,&text_y);
         PrintText(text_x, text_y, buf, HEI, 16, 1, black);//时间
     }
