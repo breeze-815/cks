@@ -85,7 +85,7 @@ void accept_order() //
         }
         else if (mouse_press(420, 700, 540, 750) == 1)  // обр╩рЁ
 		{
-			if ((page + 1) * 5 < delivers.acp_count) 
+			if ((page + 1) * 5 <= delivers.total_cnt) 
             {
 				page++;
                 draw_accept_order(page,&OL,&FL,&DL);

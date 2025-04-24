@@ -2,8 +2,7 @@
 #define __ACP_DET_H
 
 void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList *FL, DeliverList *DL);
-void draw_items(int type, int local_index,OrderList *OL, FoodList *FL,int page);
 void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
-    int local_index, int page, int totalPage);
+    int local_index, int page);
 void accept_order_detail(int local_index, int type);
 #endif

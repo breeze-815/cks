@@ -58,6 +58,7 @@ void rider_accept(OrderList *OL, FoodList *FL, DeliverList *DL,
             DL->elem[i] = DL->elem[i + 1];
         DL->length--;
     }
+    
     delivers.acp_count++;
     // sprintf(debg,"acp_count=%d",delivers.acp_count);
     // PrintText(100, 50, debg, HEI, 24, 1, Red);
