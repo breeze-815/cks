@@ -122,7 +122,7 @@ void my_accept_order(int user_pos)
             draw_my_accept();  
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 276, 160, 326) == 1) //Œ“µƒ’Àªß
+        else if(mouse_press(40, 276, 160, 326) == 1)
         {
             press4(1);
             my_information(user_pos);

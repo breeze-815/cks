@@ -111,9 +111,9 @@ void draw_business_order(int page,OrderList *OL,FoodList *FL,int index){
 
     
     for (i = start_index; i < end_index; i++) {
-        char order_id[10]; // 订单ID字符串
-        char user_info[16]; // 用户信息字符串
-        char total_price[10];// 总价字符串
+        char order_id[50]; // 订单ID字符串
+        char user_info[50]; // 用户信息字符串
+        char total_price[50];// 总价字符串
 
         if(index==0){
         	Order order = OL->elem[i]; // 获取当前订单
