@@ -7,6 +7,7 @@ int welcome() {
 	char code[12]="\0";//密码
     char judge[12]="\0";//用于判断的密码
     int result=-5;//判断登陆结果,-5表示未登录,-2表示密码错误，-3表示用户不存在，>=0表示登录成功，返回用户位置
+    int last_hover[2] = {0};//上次悬停状态
 
     int state=0;//判断是否在登录注册界面
 
@@ -20,6 +21,11 @@ int welcome() {
 	mouse_on_arrow(mouse);
 
 	while(1){
+
+        int now_hover[2];
+        now_hover[0] = mouse_location(350, 490, 485, 540); // 是否悬浮在登录按钮上
+        now_hover[1] = mouse_location(515, 490, 650, 540); // 是否悬浮在注册按钮上
+          
 		mouse_show_arrow(&mouse);
         
         if(state==0)//在登录注册界面
@@ -103,6 +109,48 @@ int welcome() {
             delay(15);
             }
 
+            // 悬停效果
+            if (now_hover[0] != last_hover[0])
+            {
+                if (now_hover[0] == 1)
+                {
+                    mouse_off_arrow(&mouse);
+                    Fill_Rounded_Rectangle(350, 490, 485, 540, 5, white);
+                    Draw_Rounded_Rectangle(350, 490, 485, 540, 5, 1, lightblue);
+                    PrintCC(390, 503, "登录", HEI, 24, 1, lightblue);
+                    mouse_on_arrow(mouse);
+                }
+                else
+                {
+                    mouse_off_arrow(&mouse);
+                    Fill_Rounded_Rectangle(350, 490, 485, 540, 5, lightblue);
+                    PrintCC(390, 503, "登录", HEI, 24, 1, white);
+                    mouse_on_arrow(mouse);
+                }
+
+                last_hover[0] = now_hover[0]; // 更新状态
+            }
+            if (now_hover[1]!= last_hover[1])
+            {
+                if (now_hover[1] == 1)
+                {
+                    mouse_off_arrow(&mouse);
+                    Fill_Rounded_Rectangle(515, 490, 650, 540, 5, white);
+                    Draw_Rounded_Rectangle(515, 490, 650, 540, 5, 1, lightblue);
+                    PrintCC(555, 503, "注册", HEI, 24, 1, lightblue);
+                    mouse_on_arrow(mouse);
+                }
+                else
+                {
+                    mouse_off_arrow(&mouse);
+                    Fill_Rounded_Rectangle(515, 490, 650, 540, 5, lightblue);
+                    PrintCC(555, 503, "注册", HEI, 24, 1, white);
+                    mouse_on_arrow(mouse);
+                }
+
+                last_hover[1] = now_hover[1]; // 更新状态
+            }
+
         }
 
         if(state==1)
@@ -138,16 +186,15 @@ void draw_basic()
     Fill_Rounded_Rectangle(350, 330, 650, 380, 5,lightgrew);//账号栏填色
     Fill_Rounded_Rectangle(350, 410, 650, 460, 5,lightgrew);//密码栏填色
 
-    Fill_Rounded_Rectangle(350, 490, 485, 540, 5,0x435c);//登录按钮//长185，宽50
-    Draw_Rounded_Rectangle(515, 490, 650, 540, 5,1,0x0235);//注册按钮//圆角方框，两字，x65，y+13
-    
+    Fill_Rounded_Rectangle(350, 490, 485, 540, 5,lightblue);//登录按钮//长185，宽50
+    Fill_Rounded_Rectangle(515, 490, 650, 540, 5,lightblue);//注册按钮//圆角方框，两字，x65，y+13
 
     PrintCC(355,245,"校园外卖快递平台",HEI,32,1,0);
     PrintCC(355,285,"基于华中科技大学校园制作",HEI,16,1,0XC618);
     PrintCC(355,345,"账号",HEI,24,1,deepgrew);
     PrintCC(355,425,"密码",HEI,24,1,deepgrew);
-    PrintCC(390,503,"登录",HEI,24,1,0xFFFF);
-    PrintCC(555,503,"注册",HEI,24,1,0x0235);
+    PrintCC(390,503,"登录",HEI,24,1,white);
+    PrintCC(555,503,"注册",HEI,24,1,white);
     PrintCC(750,50,"关于我们",HEI,16,1,white);
     PrintCC(900,50,"关于产品",HEI,16,1,white);
 

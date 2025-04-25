@@ -89,5 +89,6 @@ extern RouteState route_state;
 #define Red 0xF800
 #define deepgrew 0XC618
 #define lightgrew 0xDEFB
+#define lightblue 0x435c
 #endif
 

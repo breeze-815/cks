@@ -12,8 +12,8 @@ void business(int user_pos){
     int temp_index = -1; // 临时变量,选择食堂/超市时不保存
     int index=-1;//食堂/超市编号
     int market_index=0;//超市编号
-    
 
+    
     ReadAllUser(&UL); // 读取用户列表
 
     currentUser=UL.elem[user_pos];// 获取当前用户信息
@@ -430,5 +430,3 @@ int choose_canteen(int x, int y, int* last_index) {
         }
     }
 }
-
-

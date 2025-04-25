@@ -157,7 +157,7 @@ void MouseSet(int x, int y)
 /***得到某一点的颜色值***/
 unsigned int Getpixel64k(int x, int y)
 {
-    unsigned int far * const video_buffer = (unsigned int far *)0xa0000000L;
+    unsigned int far* const video_buffer = (unsigned int far *)0xa0000000L;
     unsigned char page;                                                  //要切换的页面号
     unsigned long int page_dev;                                           //对应显存地址偏移量                       
     if(x < 0 || x > (SCR_WIDTH - 1) || y < 0 || y > (SCR_HEIGHT - 1))           //判断点是否在屏幕范围内，不在就退出 
@@ -190,28 +190,14 @@ int mouse_press(int x1, int y1, int x2, int y2)
 }
 
 //判断鼠标是否停留在某个区域
-// int mouse_location(int x1,int y1,int x2,int y2)
-// {
-// 	MOUSE mouse = {0, 0, 0};
-// 	MouseGet(&mouse);
-// 	if ((mouse.x >= x1) && (mouse.x <= x2) && (mouse.y >= y1) && (mouse.y <= y2))
-// 	{
-// 		return 1;
-// 	}
-// 	else
-// 	{
-// 		return 0;
-// 	}
-// }
 int mouse_location(int x1,int y1,int x2,int y2)
 {
-    MOUSE mouse;
-    MouseGet(&mouse);
-    // 修改为直接返回布尔值
-    if ((mouse.x >= x1) && (mouse.x <= x2) && (mouse.y >= y1) && (mouse.y <= y2))
-    {
-        return 1;
-    }
+	MOUSE mouse = {0, 0, 0};
+	MouseGet(&mouse);
+	if ((mouse.x >= x1) && (mouse.x <= x2) && (mouse.y >= y1) && (mouse.y <= y2))
+	{
+		return 1;
+	}
 	else
 	{
 		return 0;
@@ -390,23 +376,6 @@ void mouse_off_hand(MOUSE *mouse)
 	}
 }
 
-/* 初始化鼠标，设置水平垂直方向像素比相等 */
-void Curinit()
-{
-	_AX = 0;
-	geninterrupt(0x33);
-	if (_AX == 0)
-		puts("mouse init fail!");
-	_AX = 7;
-	_CX = 10;
-	_DX = 1000;
-	geninterrupt(0x33);
-	_AX = 8;
-	_CX = 10;
-	_DX = 750;
-	geninterrupt(0x33);
-}
-
 void draw_mouse_arrow(int mx, int my)
 {
 	int i, j;
@@ -467,4 +436,32 @@ void cursor_grew(int x, int y)
     {
         hide_cursor_grew(x, y);
     }
+}
+
+// 鼠标滚轮
+int mouse_scroll(int *scroll_position, int min_scroll, int max_scroll)
+{
+    static int last_y = -1;
+    MOUSE mouse;
+    MouseGet(&mouse);
+
+    if (mouse.key & 1) // 如果按下鼠标左键
+    {
+        if (last_y != -1) // 检测到拖动
+        {
+            int delta = mouse.y - last_y; // 计算垂直位移
+            *scroll_position += delta; // 更新滚动位置
+            if (*scroll_position < min_scroll)
+                *scroll_position = min_scroll;
+            if (*scroll_position > max_scroll)
+                *scroll_position = max_scroll;
+        }
+        last_y = mouse.y; // 更新上一次 Y 坐标
+    }
+    else
+    {
+        last_y = -1; // 鼠标左键抬起，重置
+    }
+
+    return *scroll_position;
 }

@@ -37,5 +37,6 @@ void hide_cursor_grew(int x, int y);
 void cursor(int x, int y);
 void cursor_grew(int x, int y);
 int mouse_location(int x1,int y1,int x2,int y2);
+int mouse_scroll(int *scroll_position, int min_scroll, int max_scroll);
 unsigned int Getpixel64k(int x, int y);
 #endif // MOUSE_H
