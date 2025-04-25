@@ -80,7 +80,7 @@ void draw_my_information(USER currentUser)
     char show_num[50];
     char show_account[50];
     bar1(0, 150, 1024, 768,white);
-    bar1(0,150,200,768,deepblue);
+    bar1(0, 150, 200, 1024, deepblue);
     sprintf(show_name,"用户：%s",currentUser.name);
     PrintText(350,200,show_name,HEI,32,1,black);
     sprintf(show_num,"手机号：%s",currentUser.number);
@@ -95,16 +95,16 @@ void draw_my_information(USER currentUser)
     PrintText(350,650,show_account,HEI,32,1,black);
 
 
-    Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//填色
+    Fill_Rounded_Rectangle(40, 276, 160, 326, 25,deepblue);//填色
     Fill_Rounded_Rectangle(40, 439, 160, 489, 25,white);//填色
     Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);//填色
 
     
-    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);//账户按钮
+    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,white);//账户按钮
     Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);//当前按钮
     Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//历史按钮
 
-    PrintCC(75,291,"账户",HEI,24,1,deepblue);
+    PrintCC(75,291,"账户",HEI,24,1,white);
     PrintCC(75,454,"当前",HEI,24,1,deepblue);
     PrintCC(75,617,"历史",HEI,24,1,deepblue);
 }
@@ -115,7 +115,7 @@ void press4(int x)
     switch (x)
     { 
         case 1:
-        {
+        {   
             Fill_Rounded_Rectangle(40, 276, 160, 326, 25, deepblue);
             Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,white);
             PrintCC(75,291, "账户", HEI, 24, 1, white);

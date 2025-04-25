@@ -56,7 +56,7 @@ void rider(int user_pos)
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
             press3(3); //按钮高亮
-            press4(1);
+            bar1(0,150,200,768,deepblue);
             my_information(user_pos);//进入我的信息界面
             //return后从这开始
             mouse_off_arrow(&mouse);
@@ -126,6 +126,7 @@ void press3(int x)
         }
         case 3: //点击我的
         {
+            //PrintCC(100,1, "进入三三", HEI, 24, 1, white);
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, white);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);
@@ -133,7 +134,7 @@ void press3(int x)
             Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,deepblue);
             PrintCC(562+35, 65, "路线", HEI, 24, 1, deepblue);
             Fill_Rounded_Rectangle(782, 50, 902, 100, 25, deepblue);
-            Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,deepblue);
+            Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,white);
             PrintCC(782+35, 65,"我的", HEI ,24 ,1 ,white);
             break;
         }

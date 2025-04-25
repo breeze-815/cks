@@ -135,6 +135,7 @@ void my_accept_order(int user_pos)
         {
             press3(3); //按钮高亮
             mouse_off_arrow(&mouse);
+            bar1(0,150,200,768,deepblue);
             my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);
@@ -249,55 +250,60 @@ void draw_my_accept()
     sprintf(debg,"%d",num_of_orders.cur_count);
     PrintText(150, 100, debg, HEI, 24, 1, Red);
 
-    for (i = 0; i < num_of_orders.cur_count; i++) {
-        AcceptedOrder *ao = &cur_orders[i]; 
-        // 画框
-        Draw_Rounded_Rectangle(220, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
+    if (num_of_orders.cur_count == 0)
+    PrintCC(400,400,"当前无正在进行中订单",HEI,32,1,Red);
+    else
+    {
+        for (i = 0; i < num_of_orders.cur_count; i++) 
+        {
+            AcceptedOrder *ao = &cur_orders[i]; 
+            // 画框
+            Draw_Rounded_Rectangle(220, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
 
-        Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
-        Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
-        PrintCC(750+25, y_offset+35, "详情", HEI, 24, 1, deepblue);
+            Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
+            Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
+            PrintCC(750+25, y_offset+35, "详情", HEI, 24, 1, deepblue);
 
-        // 取消按钮
-        Fill_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, white);
-        Draw_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, 1, deepblue);
-        PrintCC(900, y_offset + 35, "取消", HEI, 24, 1, deepblue);
-        // 根据类型取数据
-        switch (ao->type) {
-            case ORDER_SUPERMARKET: {
-                int pu   = ao->data.order.pick_up_location;
-                int dst  = ao->data.order.destination;
-                amount   = ao->data.order.total_amount;
+            // 取消按钮
+            Fill_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, white);
+            Draw_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, 1, deepblue);
+            PrintCC(900, y_offset + 35, "取消", HEI, 24, 1, deepblue);
+            // 根据类型取数据
+            switch (ao->type) {
+                case ORDER_SUPERMARKET: {
+                    int pu   = ao->data.order.pick_up_location;
+                    int dst  = ao->data.order.destination;
+                    amount   = ao->data.order.total_amount;
 
-                sprintf(pick_up, "取货点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
-            }
-            case ORDER_FOOD: {
-                int pu   = ao->data.food.pick_up_location;
-                int dst  = ao->data.food.destination;
-                amount   = ao->data.food.total_amount;
+                    sprintf(pick_up, "取货点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                case ORDER_FOOD: {
+                    int pu   = ao->data.food.pick_up_location;
+                    int dst  = ao->data.food.destination;
+                    amount   = ao->data.food.total_amount;
 
-                sprintf(pick_up, "取餐点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
-            }
-            case ORDER_DELIVER: {
-                int pu   = ao->data.deliver.station+408;
-                int dst  = ao->data.deliver.index;
-                amount   = 2.0f;
+                    sprintf(pick_up, "取餐点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                case ORDER_DELIVER: {
+                    int pu   = ao->data.deliver.station+408;
+                    int dst  = ao->data.deliver.index;
+                    amount   = 2.0f;
 
-                sprintf(debg,"deliver_station=%d",pu);
-                PrintText(200, 50, debg, HEI, 24, 1, 0x0000);
-                sprintf(pick_up, "取货点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
-            }
-            default:
-                continue;
+                    sprintf(debg,"deliver_station=%d",pu);
+                    PrintText(200, 50, debg, HEI, 24, 1, 0x0000);
+                    sprintf(pick_up, "取货点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                default:
+                    continue;
         }
 
         // 计算并打印距离、费用
@@ -314,6 +320,8 @@ void draw_my_accept()
         
         y_offset += 120;
     }
+    }
+    
 }
 
 void cut_current_order(int index) //从列表中删除某个索引

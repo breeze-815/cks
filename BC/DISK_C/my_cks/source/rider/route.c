@@ -505,6 +505,7 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
         {
             press3(3); //按钮高亮
             mouse_off_arrow(&mouse);
+            bar1(0,150,200,768,deepblue);
             my_information(user_pos);
             //return后从这开始
             mouse_on_arrow(mouse);

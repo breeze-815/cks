@@ -15,8 +15,8 @@ void accept_order(int user_pos) // 接单界面
     DeliverList DL = {0};
     mouse_off_arrow(&mouse);
     ReadAllOrder(&OL); // 读取订单列表
-    ReadAllFood(&FL); // 读取食品列表
-    ReadAllDeliver(&DL); // 读取快递列表
+    // ReadAllFood(&FL); // 读取食品列表
+    // ReadAllDeliver(&DL); // 读取快递列表
     num_of_orders.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
     num_of_orders.cur_count=0;//初始化当前接单数为0
 	draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
