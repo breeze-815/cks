@@ -541,8 +541,6 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
                 // »­Ïß
                 dijkstra(&node[from], &node[to], 1);
                 route_state.remaining--;
-                sprintf(debg,"%d",route_state.remaining);
-                PrintText(0,0,debg,HEI,24,1,black);
             } 
             if(route_state.remaining == 0)
             {

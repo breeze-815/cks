@@ -423,6 +423,7 @@ void my_history_detail(int index , int user_pos)
 		}
         
     }
+    
 }
 
 

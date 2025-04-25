@@ -5,6 +5,8 @@ USER users={0};//存储信息的用户结构体
 void user_register(){
     
 	char judge[12]="\0";//用于判断的密码 
+    int last_hover[2] = {0};//上次悬停状态
+    int i;//循环变量
 
     users.state=-1;//初始化为-1，代表未绑定
 
@@ -15,6 +17,9 @@ void user_register(){
 	mouse_on_arrow(mouse);
 
 	while(1){
+        int now_hover[2];
+        now_hover[0]=mouse_location(300,490, 480, 540);//返回
+        now_hover[1]=mouse_location(520, 490, 700, 540);//立即注册
 		mouse_show_arrow(&mouse);
 
 		if(mouse_press(300,490, 480, 540)==1){
@@ -99,6 +104,23 @@ void user_register(){
                 bar1(430,550,650,580,white);
             }
 		}
+
+        //悬停效果
+        for(i=0;i<2;i++)
+        {
+        	if(now_hover[i]!=last_hover[i])
+            {
+                if(now_hover[i]==1)
+                {
+                    hover_u_re(1,i);//按钮高亮
+                }
+                else
+                {
+                    hover_u_re(0,i);//按钮恢复
+                }
+                last_hover[i]=now_hover[i];//更新状态
+            }
+        }
     }
 }
 void draw_register()
@@ -115,14 +137,14 @@ void draw_register()
     Draw_Rounded_Rectangle(300, 330, 420, 380, 25, 1,0x0235);//商家按钮
     Draw_Rounded_Rectangle(300, 410, 420, 460, 25, 1,0x0235);//骑手按钮
     
-    Fill_Rounded_Rectangle(300,490, 480, 540, 5,0x435c);//返回按钮
-    Draw_Rounded_Rectangle(520, 490, 700, 540, 5,1,0x0235);//立即注册按钮
+    Fill_Rounded_Rectangle(300,490, 480, 540, 5,lightblue);//返回按钮
+    Fill_Rounded_Rectangle(520, 490, 700, 540, 5,lightblue);//立即注册按钮
     
     PrintCC(455,265,"账号",HEI,24,1,0XC618);
     PrintCC(455,345,"密码",HEI,24,1,0XC618);
     PrintCC(455,425,"确认密码",HEI,24,1,0XC618);
-    PrintCC(360,503,"返回",HEI,24,1,0xFFFF);
-    PrintCC(560,503,"立即注册",HEI,24,1,0x0235);
+    PrintCC(360,503,"返回",HEI,24,1,white);
+    PrintCC(560,503,"立即注册",HEI,24,1,white);
     PrintCC(335,265,"用户",HEI,24,1,0x0235);
     PrintCC(335,345,"商家",HEI,24,1,0x0235);
     PrintCC(335,425,"骑手",HEI,24,1,0x0235);
@@ -167,6 +189,43 @@ void press(int x){
             Draw_Rounded_Rectangle(300, 410, 420, 460, 25, 1,0x0235);
             PrintCC(335,425,"骑手",HEI,24,1,0xFFFF);
             break;
+        }
+    }
+    mouse_on_arrow(mouse);
+}
+
+void hover_u_re(int state,int x){
+    mouse_off_arrow(&mouse);
+    if(state==1){
+        switch(x)
+        {
+            case 0:{
+                Fill_Rounded_Rectangle(300,490, 480, 540, 5,white);//返回按钮
+                Draw_Rounded_Rectangle(300,490, 480, 540, 5, 1,lightblue);//返回按钮
+                PrintCC(360,503,"返回",HEI,24,1,lightblue);
+                break;
+            }
+            case 1:{
+                Fill_Rounded_Rectangle(520, 490, 700, 540, 5,white);//立即注册按钮
+                Draw_Rounded_Rectangle(520, 490, 700, 540, 5, 1,lightblue);//立即注册按钮
+                PrintCC(560,503,"立即注册",HEI,24,1,lightblue);
+                break;
+            }
+        }
+    }
+    else if(state==0){
+        switch(x)
+        {
+            case 0:{
+                Fill_Rounded_Rectangle(300,490, 480, 540, 5,lightblue);//返回按钮
+                PrintCC(360,503,"返回",HEI,24,1,white);
+                break;
+            }
+            case 1:{
+                Fill_Rounded_Rectangle(520, 490, 700, 540, 5,lightblue);//立即注册按钮
+                PrintCC(560,503,"立即注册",HEI,24,1,white);
+                break;
+            }
         }
     }
     mouse_on_arrow(mouse);
