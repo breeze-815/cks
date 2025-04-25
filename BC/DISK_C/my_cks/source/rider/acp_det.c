@@ -46,13 +46,13 @@ void draw_order_detail_header(int type, int local_index,OrderList *OL, FoodList 
         sprintf(time_str, "下单时间：%s", f->order_time);
         sprintf(phone_str, "手机号：%s", f->user_phone);
         // 取餐点
-        sprintf(buf, "取货点：%s", node[f->pick_up_location].name);
+        sprintf(buf, "取货点：%s", node[f->station].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
         sprintf(buf, "用户地址：%s", node[f->destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
         //距离
-        distance_m = dijkstra(&node[f->pick_up_location], &node[f->destination],3); // 计算距离
+        distance_m = dijkstra(&node[f->station], &node[f->destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
         PrintText(200, 200 + 150, show_distance, HEI, 24, 1, 0x0000);
@@ -177,8 +177,8 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
 
         item_y = (page == 0) ? 450 : 200;
         for (i = startIdx; i < endIdx; i++) {
-            char total_str[50]; // 商品总价
-            char quantity_str[20]; // 商品数量
+            char total_str[100]; // 商品总价
+            char quantity_str[100]; // 商品数量
 
             if(type == ORDER_SUPERMARKET)//超市订单
             {

@@ -4,7 +4,6 @@ Num_of_Orders num_of_orders;
 
 void rider(int user_pos)
 {
-    char debg[30];
     //获取当前用户信息
 	UserList UL = {0};
     USER currentUser;
@@ -101,7 +100,7 @@ void press3(int x)
         case 1: //点击接单
         {
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, deepblue);
-            Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
+            Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,white);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, white);
             Fill_Rounded_Rectangle(562, 50, 682, 100, 25, white);
             Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,deepblue);
@@ -117,7 +116,7 @@ void press3(int x)
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);
             Fill_Rounded_Rectangle(562, 50, 682, 100, 25, deepblue);
-            Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,deepblue);
+            Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,white);
             PrintCC(562+35, 65, "路线", HEI, 24, 1, white);
             Fill_Rounded_Rectangle(782, 50, 902, 100, 25, white);
             Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,deepblue);

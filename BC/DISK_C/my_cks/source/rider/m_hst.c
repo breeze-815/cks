@@ -124,10 +124,10 @@ void draw_my_history_order()
     int distance_m;
     float dist_km, amount, fee;
     int i;
-    char debg[20];
+    //char debg[20];
     bar1(200, 150, 1024, 768, white);
-    sprintf(debg,"%d",num_of_orders.hst_count);
-    PrintText(0,  0, debg, HEI, 24, 1, BLACK);
+    //sprintf(debg,"%d",num_of_orders.hst_count);
+    //PrintText(0,  0, debg, HEI, 24, 1, BLACK);
     if (num_of_orders.hst_count == 0)
     PrintCC(450,400,"当前无历史订单",HEI,32,1,Red);
     else
@@ -159,7 +159,7 @@ void draw_my_history_order()
                     break;
                 }
                 case ORDER_FOOD: {
-                    int pu   = ho->data.food.pick_up_location;
+                    int pu   = ho->data.food.station;
                     int dst  = ho->data.food.destination;
                     amount   = ho->data.food.total_amount;
     

@@ -35,8 +35,13 @@ void add_my_accept(OrderList *OL, FoodList *FL, DeliverList *DL,int type, int lo
     }
     else if (type == ORDER_FOOD) 
     {
+        // char debg[20];
+        // sprintf(debg,"%d",local_index);
+        // PrintText(50,0,debg,HEI,32,1,black);
+        // sprintf(debg,"%d",cur_orders[num_of_orders.cur_count].data.food.station);
+        // PrintText(0,0,debg,HEI,32,1,black);
         cur_orders[num_of_orders.cur_count].data.food = FL->elem[local_index];
-        distance_m = dijkstra(&node[cur_orders[num_of_orders.cur_count].data.food.pick_up_location], 
+        distance_m = dijkstra(&node[cur_orders[num_of_orders.cur_count].data.food.station], 
             &node[cur_orders[num_of_orders.cur_count].data.food.destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         item_price = cur_orders[num_of_orders.cur_count].data.food.total_amount;
@@ -76,9 +81,6 @@ void delete_my_order(int index)
     // ReadAllFood(&FL); // 读取食品列表
     // ReadAllDeliver(&DL); // 读取快递列表
     type = cur_orders[index].type;
-
-    cut_current_order(index); 
-    
     if (type == ORDER_SUPERMARKET) 
     {
         save_order(cur_orders[index].data.order);
@@ -93,6 +95,7 @@ void delete_my_order(int index)
     {
         save_Deliver(cur_orders[index].data.deliver);
     }
+    cut_current_order(index); 
 }
     
 void my_accept_order(int user_pos) 
@@ -247,6 +250,21 @@ void draw_my_accept()
     int i;
     char debg[20];
     bar1(200, 150, 1024, 768, white);
+    bar1(0, 150, 200, 768,deepblue);
+    
+    Fill_Rounded_Rectangle(40, 276, 160, 326, 25,white);//填色
+    Fill_Rounded_Rectangle(40, 439, 160, 489, 25,deepblue);//填色
+    Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);//填色
+
+    
+    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);//信息按钮
+    Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,white);//当前按钮
+    Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//历史按钮
+
+    PrintCC(75,291,"信息",HEI,24,1,deepblue);
+    PrintCC(75,454,"当前",HEI,24,1,white);
+    PrintCC(75,617,"历史",HEI,24,1,deepblue);
+
     sprintf(debg,"%d",num_of_orders.cur_count);
     PrintText(150, 100, debg, HEI, 24, 1, Red);
 
@@ -281,7 +299,7 @@ void draw_my_accept()
                     break;
                 }
                 case ORDER_FOOD: {
-                    int pu   = ao->data.food.pick_up_location;
+                    int pu   = ao->data.food.station;
                     int dst  = ao->data.food.destination;
                     amount   = ao->data.food.total_amount;
 
@@ -295,8 +313,8 @@ void draw_my_accept()
                     int dst  = ao->data.deliver.index;
                     amount   = 2.0f;
 
-                    sprintf(debg,"deliver_station=%d",pu);
-                    PrintText(200, 50, debg, HEI, 24, 1, 0x0000);
+                    // sprintf(debg,"deliver_station=%d",pu);
+                    // PrintText(200, 50, debg, HEI, 24, 1, 0x0000);
                     sprintf(pick_up, "取货点：%s", node[pu].name);
                     sprintf(dest,    "目的地：%s", node[dst].name);
                     distance_m = dijkstra(&node[pu], &node[dst], 3);

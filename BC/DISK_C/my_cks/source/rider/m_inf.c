@@ -91,7 +91,7 @@ void draw_my_information(USER currentUser)
     else if(currentUser.ocp == 2 && currentUser.type == 3)
     PrintText(350,500,"骑手类型：兼职骑手",HEI,32,1,black);
 
-    sprintf(show_account,"账户余额：%.2f",currentUser.account);
+    sprintf(show_account,"信息余额：%.2f",currentUser.account);
     PrintText(350,650,show_account,HEI,32,1,black);
 
 
@@ -100,11 +100,11 @@ void draw_my_information(USER currentUser)
     Fill_Rounded_Rectangle(40, 602, 160, 652, 25,white);//填色
 
     
-    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,white);//账户按钮
+    Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,white);//信息按钮
     Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);//当前按钮
     Draw_Rounded_Rectangle(40, 602, 160, 652, 25, 1,deepblue);//历史按钮
 
-    PrintCC(75,291,"账户",HEI,24,1,white);
+    PrintCC(75,291,"信息",HEI,24,1,white);
     PrintCC(75,454,"当前",HEI,24,1,deepblue);
     PrintCC(75,617,"历史",HEI,24,1,deepblue);
 }
@@ -118,7 +118,7 @@ void press4(int x)
         {   
             Fill_Rounded_Rectangle(40, 276, 160, 326, 25, deepblue);
             Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,white);
-            PrintCC(75,291, "账户", HEI, 24, 1, white);
+            PrintCC(75,291, "信息", HEI, 24, 1, white);
             Fill_Rounded_Rectangle(40, 439, 160, 489, 25, white);
             Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);
             PrintCC(75,454, "当前", HEI, 24, 1, deepblue);
@@ -131,7 +131,7 @@ void press4(int x)
         {
             Fill_Rounded_Rectangle(40, 276, 160, 326, 25, white);
             Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);
-            PrintCC(75, 291, "账户", HEI, 24, 1, deepblue);
+            PrintCC(75, 291, "信息", HEI, 24, 1, deepblue);
             Fill_Rounded_Rectangle(40, 439, 160, 489, 25, deepblue);
             Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,white);
             PrintCC(75, 454, "当前", HEI, 24, 1, white);
@@ -144,7 +144,7 @@ void press4(int x)
         {
             Fill_Rounded_Rectangle(40, 276, 160, 326, 25, white);
             Draw_Rounded_Rectangle(40, 276, 160, 326, 25, 1,deepblue);
-            PrintCC(75,291, "账户", HEI, 24, 1, deepblue);
+            PrintCC(75,291, "信息", HEI, 24, 1, deepblue);
             Fill_Rounded_Rectangle(40, 439, 160, 489, 25, white);
             Draw_Rounded_Rectangle(40, 439, 160, 489, 25, 1,deepblue);
             PrintCC(75,454, "当前", HEI, 24, 1, deepblue);
