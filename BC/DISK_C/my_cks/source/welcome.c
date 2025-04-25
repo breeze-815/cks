@@ -1,6 +1,7 @@
 #include "all_func.h"
 
 int welcome() {
+
     int i;//循环变量
 
     char name[12]="\0";//用户名

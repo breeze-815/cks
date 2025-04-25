@@ -514,6 +514,7 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
         }
         else if (mouse_press(900, 266, 1020, 316))  //点击到达按钮
         {
+            char debg[20];
             mouse_off_arrow(&mouse);
             
             Readbmp64k(0, 326, "bmp\\map4.bmp");
@@ -539,6 +540,9 @@ void route(AcceptedOrder cur_orders[], int n_orders,int user_pos)
                 route_state.seq_cursor++;
                 // 画线
                 dijkstra(&node[from], &node[to], 1);
+                route_state.remaining--;
+                sprintf(debg,"%d",route_state.remaining);
+                PrintText(0,0,debg,HEI,24,1,black);
             } 
             if(route_state.remaining == 0)
             {
@@ -611,7 +615,7 @@ int dijkstra(Node *start, Node *end, int count)
             x2 = node[path[i - 1]].x;
             y2 = node[path[i - 1]].y + 326;
             if(count == 1)
-                Line2(x1, y1, x2, y2, Red);    
+                Line2(x1, y1, x2, y2, Green);    
     }
     if (count == 1)
     {
@@ -625,9 +629,10 @@ int dijkstra(Node *start, Node *end, int count)
 void draw_route()
 {
     bar1(0, 150, 1024, 768,white);
-    bar1(0, 0, 1024, 150,deepblue);
+    //bar1(0, 0, 1024, 150,deepblue);
     Readbmp64k(0, 326, "bmp\\map4.bmp");
-    
+    PrintCC(0,326,"蓝色是您的当前位置",HEI,16,1,deepblue);
+    PrintCC(0,350,"红色是您的目标位置",HEI,16,1,Red);
     
     Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
     Fill_Rounded_Rectangle(342, 50, 462, 100, 25,white);//填色

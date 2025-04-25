@@ -24,6 +24,8 @@ void my_information(int user_pos)
             press3(1);//进入接单界面
             accept_order(user_pos);//接单页面
             //return后从这开始
+            press3(3);
+            press4(1);
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
             draw_my_information(currentUser);
@@ -35,6 +37,8 @@ void my_information(int user_pos)
             press3(2);//进入路线规划界面
             route(cur_orders,num_of_orders.cur_count,user_pos);//进入路线规划界面
             //return后从这开始
+            press3(3);
+            press4(1);
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
             draw_my_information(currentUser);
@@ -46,6 +50,8 @@ void my_information(int user_pos)
             press3(3); //按钮高亮
             my_accept_order(user_pos);
             //return后从这开始
+            press3(3);
+            press4(1);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_my_information(currentUser);
@@ -53,9 +59,12 @@ void my_information(int user_pos)
         }
         else if(mouse_press(40, 439, 160, 489) == 1)//当前
         {
+            mouse_off_arrow(&mouse);
             press4(2);
             my_accept_order(user_pos);
             //return后从这开始
+            press3(3);
+            press4(1);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_my_information(currentUser);
@@ -63,9 +72,12 @@ void my_information(int user_pos)
         }
         else if(mouse_press(40, 602, 160, 652) == 1)//历史
         {
+            mouse_off_arrow(&mouse);
             press4(3);
             my_history_order(user_pos);
             //return后从这开始
+            press3(3);
+            press4(1);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_my_information(currentUser);
@@ -91,7 +103,7 @@ void draw_my_information(USER currentUser)
     else if(currentUser.ocp == 2 && currentUser.type == 3)
     PrintText(350,500,"骑手类型：兼职骑手",HEI,32,1,black);
 
-    sprintf(show_account,"信息余额：%.2f",currentUser.account);
+    sprintf(show_account,"余额：%.2f",currentUser.account);
     PrintText(350,650,show_account,HEI,32,1,black);
 
 

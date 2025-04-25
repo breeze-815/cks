@@ -36,6 +36,7 @@ void rider(int user_pos)
             mouse_off_arrow(&mouse);
             accept_order(user_pos);//进入接单页面
             //return后从这开始
+            press3(1);//按钮高亮
             mouse_off_arrow(&mouse); //隐藏鼠标，防止留下残痕
             bar1(0, 150, 1024, 768, white); // 清除接单界面残留
             draw_rider(); //重画界面
@@ -47,6 +48,7 @@ void rider(int user_pos)
             mouse_off_arrow(&mouse);
             route(cur_orders,num_of_orders.cur_count,user_pos);//进入路线界面
             //return后从这开始
+            press3(2);//按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); 
             draw_rider();
@@ -58,6 +60,7 @@ void rider(int user_pos)
             bar1(0,150,200,768,deepblue);
             my_information(user_pos);//进入我的信息界面
             //return后从这开始
+            press3(3); //按钮高亮
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); 
             draw_rider();
@@ -71,7 +74,7 @@ void draw_rider()
 {
     bar1(0, 0, 1024, 768, white);
     bar1(0, 0, 1024, 150, deepblue);//上侧按钮栏底色
-
+    press3(0);
     PrintCC(10, 10, "当前账号类型为：骑手", HEI, 24, 1, white);
     //返回按钮
     Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
@@ -97,8 +100,27 @@ void press3(int x)
     mouse_off_arrow(&mouse);
     switch (x)
     { 
+        case 0: //未点击状态
+        {
+            Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
+            Draw_Rounded_Rectangle(122, 50, 242, 100, 25, 1,deepblue);//轮廓
+            PrintCC(122+35, 65, "返回", HEI, 24, 1, deepblue);//打字
+            Fill_Rounded_Rectangle(342, 50, 462, 100, 25, white);
+            Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
+            PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);
+            Fill_Rounded_Rectangle(562, 50, 682, 100, 25, white);
+            Draw_Rounded_Rectangle(562, 50, 682, 100, 25, 1,deepblue);
+            PrintCC(562+35, 65, "路线", HEI, 24, 1, deepblue);
+            Fill_Rounded_Rectangle(782, 50, 902, 100, 25, white);
+            Draw_Rounded_Rectangle(782, 50, 902, 100, 25, 1,deepblue);
+            PrintCC(782+35, 65, "我的", HEI, 24, 1, deepblue);
+            break;
+        }
         case 1: //点击接单
         {
+            Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
+            Draw_Rounded_Rectangle(122, 50, 242, 100, 25, 1,deepblue);//轮廓
+            PrintCC(122+35, 65, "返回", HEI, 24, 1, deepblue);//打字
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, deepblue);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,white);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, white);
@@ -112,6 +134,9 @@ void press3(int x)
         }
         case 2: //点击路线
         {
+            Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
+            Draw_Rounded_Rectangle(122, 50, 242, 100, 25, 1,deepblue);//轮廓
+            PrintCC(122+35, 65, "返回", HEI, 24, 1, deepblue);//打字
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, white);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);
@@ -125,7 +150,9 @@ void press3(int x)
         }
         case 3: //点击我的
         {
-            //PrintCC(100,1, "进入三三", HEI, 24, 1, white);
+            Fill_Rounded_Rectangle(122, 50, 242, 100, 25,white);//填色
+            Draw_Rounded_Rectangle(122, 50, 242, 100, 25, 1,deepblue);//轮廓
+            PrintCC(122+35, 65, "返回", HEI, 24, 1, deepblue);//打字
             Fill_Rounded_Rectangle(342, 50, 462, 100, 25, white);
             Draw_Rounded_Rectangle(342, 50, 462, 100, 25, 1,deepblue);
             PrintCC(342+35, 65, "接单", HEI, 24, 1, deepblue);

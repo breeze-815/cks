@@ -17,9 +17,10 @@ void accept_order(int user_pos) // 接单界面
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
     ReadAllDeliver(&DL); // 读取快递列表
+    draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
     mouse_off_arrow(&mouse);
+    //press3(1);
     num_of_orders.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
-	draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
 	mouse_on_arrow(mouse);
     //sprintf(debg,"%d",num_of_orders.cur_count);
     //PrintText(1,1,debg,HEI,32,1,black);
@@ -45,6 +46,7 @@ void accept_order(int user_pos) // 接单界面
             DestroyDList(&DL); // 释放快递列表内存
             route(cur_orders,num_of_orders.cur_count,user_pos); //进入路线界面
             //return后从这开始
+            press3(1); //按钮高亮
             mouse_on_arrow(mouse);
             ReadAllOrder(&OL); // 读取订单列表
             ReadAllFood(&FL); // 读取食品列表
@@ -62,6 +64,7 @@ void accept_order(int user_pos) // 接单界面
             DestroyFList(&FL); // 释放食品列表内存
             DestroyDList(&DL); // 释放快递列表内存
             //return后从这开始
+            press3(1); //按钮高亮
             ReadAllOrder(&OL); // 读取订单列表
             ReadAllFood(&FL); // 读取食品列表
             ReadAllDeliver(&DL); // 读取快递列表
@@ -109,6 +112,7 @@ void accept_order(int user_pos) // 接单界面
                 DestroyDList(&DL); // 释放快递列表内存
                 show_order_detail(local_index, type, user_pos); //进入订单详情页
                 //return后从这返回
+                press3(1); //按钮高亮
                 ReadAllOrder(&OL); // 读取订单列表
                 ReadAllFood(&FL); // 读取食品列表
                 ReadAllDeliver(&DL); // 读取快递列表
@@ -127,6 +131,7 @@ void accept_order(int user_pos) // 接单界面
                 DestroyDList(&DL); // 释放快递列表内存
                 show_order_detail(local_index, type, user_pos);
                 //return后从这返回
+                press3(1); //按钮高亮
                 ReadAllOrder(&OL); // 读取订单列表
                 ReadAllFood(&FL); // 读取食品列表
                 ReadAllDeliver(&DL); // 读取快递列表
@@ -145,6 +150,7 @@ void accept_order(int user_pos) // 接单界面
                 DestroyDList(&DL); // 释放快递列表内存
                 show_order_detail(local_index, type, user_pos);
                 //return后从这返回
+                press3(1); //按钮高亮
                 ReadAllOrder(&OL); // 读取订单列表
                 ReadAllFood(&FL); // 读取食品列表
                 ReadAllDeliver(&DL); // 读取快递列表
@@ -163,6 +169,7 @@ void accept_order(int user_pos) // 接单界面
                 DestroyDList(&DL); // 释放快递列表内存
                 show_order_detail(local_index, type, user_pos);
                 //return后从这返回
+                press3(1); //按钮高亮
                 ReadAllOrder(&OL); // 读取订单列表
                 ReadAllFood(&FL); // 读取食品列表
                 ReadAllDeliver(&DL); // 读取快递列表
@@ -274,15 +281,24 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
     int start_index = page * 4; // 当前页的起始订单索引
     int end_index = start_index + 4; // 当前页的结束订单索引
     char debg[20];
-    if (end_index > num_of_orders.total_cnt) 
+    if (end_index > num_of_orders.total_cnt)
+    {
         end_index = num_of_orders.total_cnt; // 防止越界
+    } 
+        
     
     bar1(0, 150, 1024, 768, white); // 清空屏幕
-    sprintf(debg,"%d",num_of_orders.total_cnt);
-    PrintText(0,0,debg,HEI,36,1,Red);
+    //press3(1);//画按钮
+    //PrintText(100,0,"111",HEI,32,1,Red);
+    // sprintf(debg,"总订单数：%d",num_of_orders.total_cnt);
+    // PrintText(0,0,debg,HEI,36,1,Red);
     
     if(num_of_orders.total_cnt==0)
-    PrintCC(400,400,"当前无可接订单",HEI,36,1,Red);
+    {
+        bar1(0, 150, 1024, 768, white); // 清空屏幕
+        PrintCC(400,400,"当前无可接订单",HEI,32,1,Red);
+    }
+    
     else
     {
         // 绘制订单
