@@ -13,6 +13,7 @@ void my_history_order(int user_pos)
 {   
     int page = 0;
     int type, local, global;
+    mouse_off_arrow(&mouse);
     // OrderList OL = {0};
     // FoodList FL = {0};
     // DeliverList DL = {0};
@@ -69,7 +70,17 @@ void my_history_order(int user_pos)
             draw_my_history_order(); // 重新绘制订单列表
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 439, 160, 489) == 1)
+        else if(mouse_press(40, 276, 160, 326) == 1) //信息
+        {
+            press4(1);
+            my_information(user_pos);
+            //return后从这开始
+            mouse_on_arrow(mouse);
+            bar1(0, 150, 1024, 768, white); //清屏
+            draw_my_accept();
+            mouse_on_arrow(mouse);
+        }
+        else if(mouse_press(40, 439, 160, 489) == 1) //当前
         {
             press4(2);
             my_accept_order(user_pos);
@@ -79,7 +90,7 @@ void my_history_order(int user_pos)
             draw_my_history_order();
             mouse_on_arrow(mouse);
         }
-        else if(mouse_press(40, 602, 160, 652) == 1)
+        else if(mouse_press(40, 602, 160, 652) == 1) //历史
         {
             press4(3);
             my_history_order(user_pos);
@@ -113,69 +124,75 @@ void draw_my_history_order()
     int distance_m;
     float dist_km, amount, fee;
     int i;
-    char debg[20];
+    //char debg[20];
     bar1(200, 150, 1024, 768, white);
-    sprintf(debg,"%d",num_of_orders.hst_count);
-    PrintText(0,  0, debg, HEI, 24, 1, BLACK);
-    for (i = 0; i < num_of_orders.cur_count; i++) 
+    //sprintf(debg,"%d",num_of_orders.hst_count);
+    //PrintText(0,  0, debg, HEI, 24, 1, BLACK);
+    if (num_of_orders.hst_count == 0)
+    PrintCC(450,400,"当前无历史订单",HEI,32,1,Red);
+    else
     {
-        AcceptedOrder *ho = &hst_orders[i]; 
-        // 画框
-        Draw_Rounded_Rectangle(220, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
-
-        Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
-        Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
-        PrintCC(750+25, y_offset+35, "详情", HEI, 24, 1, deepblue);
-
-        // // 取消按钮
-        // Fill_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, white);
-        // Draw_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, 1, deepblue);
-        // PrintCC(900, y_offset + 35, "取消", HEI, 24, 1, deepblue);
-        // 根据类型取数据
-        switch (ho->type) {
-            case ORDER_SUPERMARKET: {
-                int pu   = ho->data.order.pick_up_location;
-                int dst  = ho->data.order.destination;
-                amount   = ho->data.order.total_amount;
-
-                sprintf(pick_up, "取货点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
+        for (i = 0; i < num_of_orders.hst_count; i++) 
+        {
+            AcceptedOrder *ho = &hst_orders[i]; 
+            // 画框
+            Draw_Rounded_Rectangle(220, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
+    
+            Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
+            Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
+            PrintCC(750+25, y_offset+35, "详情", HEI, 24, 1, deepblue);
+    
+            // // 取消按钮
+            // Fill_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, white);
+            // Draw_Rounded_Rectangle(875, y_offset + 25, 975, y_offset + 75, 25, 1, deepblue);
+            // PrintCC(900, y_offset + 35, "取消", HEI, 24, 1, deepblue);
+            // 根据类型取数据
+            switch (ho->type) {
+                case ORDER_SUPERMARKET: {
+                    int pu   = ho->data.order.pick_up_location;
+                    int dst  = ho->data.order.destination;
+                    amount   = ho->data.order.total_amount;
+    
+                    sprintf(pick_up, "取货点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                case ORDER_FOOD: {
+                    int pu   = ho->data.food.station;
+                    int dst  = ho->data.food.destination;
+                    amount   = ho->data.food.total_amount;
+    
+                    sprintf(pick_up, "取餐点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                case ORDER_DELIVER: {
+                    int pu   = ho->data.deliver.station+408;
+                    int dst  = ho->data.deliver.index;
+                    amount   = 2.0f;
+                    sprintf(pick_up, "取货点：%s", node[pu].name);
+                    sprintf(dest,    "目的地：%s", node[dst].name);
+                    distance_m = dijkstra(&node[pu], &node[dst], 3);
+                    break;
+                }
+                default:
+                    continue;
             }
-            case ORDER_FOOD: {
-                int pu   = ho->data.food.pick_up_location;
-                int dst  = ho->data.food.destination;
-                amount   = ho->data.food.total_amount;
-
-                sprintf(pick_up, "取餐点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
-            }
-            case ORDER_DELIVER: {
-                int pu   = ho->data.deliver.station+408;
-                int dst  = ho->data.deliver.index;
-                amount   = 2.0f;
-                sprintf(pick_up, "取货点：%s", node[pu].name);
-                sprintf(dest,    "目的地：%s", node[dst].name);
-                distance_m = dijkstra(&node[pu], &node[dst], 3);
-                break;
-            }
-            default:
-                continue;
+    
+            // 计算并打印距离、费用
+            dist_km = distance_m / 1000.0f;
+            fee     = rider_deliver_price(distance_m, amount);
+    
+            PrintText(250,  y_offset + 10, pick_up, HEI, 24, 1, BLACK);
+            PrintText(250,  y_offset + 60, dest,    HEI, 24, 1, BLACK);
+            sprintf(distance_str, "距离：%.2fkm", dist_km);
+            PrintText(500, y_offset + 10, distance_str, HEI, 24, 1, BLACK);
+            sprintf(price_str,    "配送费：%.1f元", fee);
+            PrintText(500, y_offset + 60, price_str,    HEI, 24, 1, BLACK);
+            y_offset += 120;
         }
-
-        // 计算并打印距离、费用
-        dist_km = distance_m / 1000.0f;
-        fee     = rider_deliver_price(distance_m, amount);
-
-        PrintText(250,  y_offset + 10, pick_up, HEI, 24, 1, BLACK);
-        PrintText(250,  y_offset + 60, dest,    HEI, 24, 1, BLACK);
-        sprintf(distance_str, "距离：%.2fkm", dist_km);
-        PrintText(500, y_offset + 10, distance_str, HEI, 24, 1, BLACK);
-        sprintf(price_str,    "配送费：%.1f元", fee);
-        PrintText(500, y_offset + 60, price_str,    HEI, 24, 1, BLACK);
-        y_offset += 120;
     }
+    
 }

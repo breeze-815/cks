@@ -491,41 +491,107 @@ void DestroyOList(OrderList*OL)
 }
 
 // 初始化线性表
-void ReadAllOrder(OrderList *OL) {
-    int i = 0;
-    short length = 0;//线性表初始长度
-    short listsize = 10; //线性表初始容量（能够存储10个订单）
-    FILE *fp = NULL;
+// void ReadAllOrder(OrderList *OL) {
+//     int i = 0;
+//     short length = 0;//线性表初始长度
+//     short listsize = 10; //线性表初始容量（能够存储10个订单）
+//     FILE *fp = NULL;
 
-    if ((fp = fopen("data\\order.dat", "rb")) == NULL) {//如果打开文件失败
-        fp = fopen("data\\order.dat", "wb");// 如果文件不存在则创建一个新的文件
-        if (fp == NULL) {//如果创建文件失败
-            printf("无法创建文件！\n");
-            return;//无法创建文件则返回，不需要继续执行下面的代码
+//     if ((fp = fopen("data\\order.dat", "rb")) == NULL) {//如果打开文件失败
+//         fp = fopen("data\\order.dat", "wb");// 如果文件不存在则创建一个新的文件
+//         if (fp == NULL) {//如果创建文件失败
+//             printf("无法创建文件！\n");
+//             return;//无法创建文件则返回，不需要继续执行下面的代码
+//         }
+//         fwrite(&length, sizeof(short), 1, fp); //如果创建成功则写入初始长度0
+//         fwrite(&listsize, sizeof(short), 1, fp); //写入初始容量10
+//         fclose(fp);//关闭文件
+//         return;//创建完成后返回，不需要继续执行下面的代码
+//     }
+//     //如果打开文件成功则读取长度和容量
+//     fread(&length, sizeof(short), 1, fp); 
+//     fread(&listsize, sizeof(short), 1, fp); 
+//     //把读取的长度和容量赋值给线性表
+//     OL->length = length;
+//     OL->listsize = listsize;
+//     OL->elem = (Order *)malloc(listsize * sizeof(Order)); //分配存储空间
+//     //如果线性表的存储空间分配失败则输出错误信息并退出程序
+//     if (OL->elem == NULL) {
+//         printf("No enough memory!\n");
+//         printf("ReadAllOrder\n");
+//         fclose(fp);
+//         exit(-1);
+//     }
+//     //如果分配成功就逐个读取订单数据
+//     //并把读取的数据存储到线性表中
+//     for (i = 0; i < length; i++) {
+//         fread(&OL->elem[i], sizeof(Order), 1, fp);
+//     }
+
+//     fclose(fp);
+// }
+
+void ReadAllOrder(OrderList *OL) {
+    FILE *fp;
+    short length;
+    short listsize;
+    int i;
+
+    /* 尝试以只读方式打开数据文件 */
+    fp = fopen("data\\order.dat", "rb");
+    if (!fp) {
+        /* 文件不存在，则创建并写入初始头 */
+        fp = fopen("data\\order.dat", "wb");
+        if (!fp) {
+            perror("无法创建 data\\order.dat");
+            return;
         }
-        fwrite(&length, sizeof(short), 1, fp); //如果创建成功则写入初始长度0
-        fwrite(&listsize, sizeof(short), 1, fp); //写入初始容量10
-        fclose(fp);//关闭文件
-        return;//创建完成后返回，不需要继续执行下面的代码
-    }
-    //如果打开文件成功则读取长度和容量
-    fread(&length, sizeof(short), 1, fp); 
-    fread(&listsize, sizeof(short), 1, fp); 
-    //把读取的长度和容量赋值给线性表
-    OL->length = length;
-    OL->listsize = listsize;
-    OL->elem = (Order *)malloc(listsize * sizeof(Order)); //分配存储空间
-    //如果线性表的存储空间分配失败则输出错误信息并退出程序
-    if (OL->elem == NULL) {
-        printf("No enough memory!\n");
-        printf("ReadAllOrder\n");
+        length   = 0;
+        listsize = 10;
+        fwrite(&length,   sizeof(length),   1, fp);
+        fwrite(&listsize, sizeof(listsize), 1, fp);
         fclose(fp);
-        exit(-1);
+
+        /* 初始化 OL 结构，分配初始空间 */
+        OL->length   = 0;
+        OL->listsize = listsize;
+        OL->elem     = (Order *)malloc(listsize * sizeof(Order));
+        if (!OL->elem) {
+            fprintf(stderr, "内存分配失败 in ReadAllOrder (初始)\n");
+            exit(EXIT_FAILURE);
+        }
+        return;
     }
-    //如果分配成功就逐个读取订单数据
-    //并把读取的数据存储到线性表中
+
+    /* 读取文件头：长度和容量 */
+    if (fread(&length,   sizeof(length),   1, fp) != 1 ||
+        fread(&listsize, sizeof(listsize), 1, fp) != 1) {
+        fprintf(stderr, "order.dat 头部读取失败\n");
+        fclose(fp);
+        return;
+    }
+
+    /* 防止 length 大于 listsize，避免越界 */
+    if (length > listsize) {
+        listsize = length;
+    }
+
+    OL->length   = length;
+    OL->listsize = listsize;
+    OL->elem     = (Order *)malloc(listsize * sizeof(Order));
+    if (!OL->elem) {
+        fprintf(stderr, "内存分配失败 in ReadAllOrder\n");
+        fclose(fp);
+        exit(EXIT_FAILURE);
+    }
+
+    /* 逐条读取订单，读取失败则更新实际长度 */
     for (i = 0; i < length; i++) {
-        fread(&OL->elem[i], sizeof(Order), 1, fp);
+        if (fread(&OL->elem[i], sizeof(Order), 1, fp) != 1) {
+            fprintf(stderr, "order.dat 记录 %d 读取失败\n", i);
+            OL->length = i;
+            break;
+        }
     }
 
     fclose(fp);

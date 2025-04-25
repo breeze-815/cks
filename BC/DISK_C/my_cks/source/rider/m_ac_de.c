@@ -47,13 +47,13 @@ void draw_my_order_detail_body(int type, int index)
         sprintf(time_str, "下单时间：%s", cur_orders[index].data.food.order_time);
         sprintf(phone_str, "手机号：%s", cur_orders[index].data.food.user_phone);
         // 取餐点
-        sprintf(buf, "取货点：%s", node[cur_orders[index].data.food.pick_up_location].name);
+        sprintf(buf, "取货点：%s", node[cur_orders[index].data.food.station].name);
         PrintText(200, 150 + 150, buf, HEI, 24, 1, black);
         // 用户地址
         sprintf(buf, "用户地址：%s", node[cur_orders[index].data.food.destination].name);
         PrintText(500, 150 + 150, buf, HEI, 24, 1, black);
         //距离
-        distance_m = dijkstra(&node[cur_orders[index].data.food.pick_up_location], &node[cur_orders[index].data.food.destination],3); // 计算距离
+        distance_m = dijkstra(&node[cur_orders[index].data.food.station], &node[cur_orders[index].data.food.destination],3); // 计算距离
         distance_km = distance_m / 1000.0; // 转换为公里
         sprintf(show_distance, "距离：%.2fkm", distance_km);
         PrintText(200, 200 + 150, show_distance, HEI, 24, 1, black);
@@ -183,9 +183,6 @@ void draw_my_order_detail(int type,int index,int page)
     Order currentOrder ; 
     FoodOrder currentFood;
     Deliver currentDeliver;
-    OrderList OL;
-    FoodList FL;
-    DeliverList DL;
 
     char current_time[100]; // 获取当前时间
     char time_str[100]; // 打印下单时间
@@ -204,15 +201,9 @@ void draw_my_order_detail(int type,int index,int page)
     // 清屏
     bar1(0, 150, 1024, 768, white);
 
-    ReadAllOrder(&OL); // 读取订单列表
-    ReadAllFood(&FL); // 读取食品列表
-    ReadAllDeliver(&DL); // 读取快递列表
-    currentOrder = OL.elem[index]; // 当前订单
-    currentFood = FL.elem[index]; // 当前订单
-    currentDeliver = DL.elem[index]; // 当前快递
-    DestroyOList(&OL); // 释放快递列表内存
-    DestroyFList(&FL); // 释放食品列表内存
-    DestroyDList(&DL); // 释放快递列表内存
+    currentOrder = cur_orders[index].data.order; // 当前订单
+    currentFood = cur_orders[index].data.food; // 当前订单
+    currentDeliver = cur_orders[index].data.deliver; // 当前快递 
 
     // 绘制主体部分
     
@@ -346,6 +337,11 @@ void draw_my_order_detail(int type,int index,int page)
             }
         }
     }
+    if (route_state.picked[index] == 1)
+        PrintCC(600, 715, "已取餐，待配送", HEI, 24, 1, Red);
+    else 
+        PrintCC(600, 715, "待取餐", HEI, 24, 1, Red);
+
 }
 
 

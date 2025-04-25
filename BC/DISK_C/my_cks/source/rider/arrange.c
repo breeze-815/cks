@@ -55,7 +55,7 @@ void arrange(int start_idx, AcceptedOrder cur_orders[], int n_orders)
                 if (cur_orders[i].type == ORDER_SUPERMARKET) {
                     pu_idx = cur_orders[i].data.order.pick_up_location;
                 } else if (cur_orders[i].type == ORDER_FOOD) {
-                    pu_idx = cur_orders[i].data.food.pick_up_location;
+                    pu_idx = cur_orders[i].data.food.station;
                 } else {
                     pu_idx = cur_orders[i].data.deliver.station;
                 }
@@ -99,7 +99,7 @@ void arrange(int start_idx, AcceptedOrder cur_orders[], int n_orders)
             if (cur_orders[best_i].type == ORDER_SUPERMARKET) {
                 next_pos = cur_orders[best_i].data.order.pick_up_location;
             } else if (cur_orders[best_i].type == ORDER_FOOD) {
-                next_pos = cur_orders[best_i].data.food.pick_up_location;
+                next_pos = cur_orders[best_i].data.food.station;
             } else {
                 next_pos = cur_orders[best_i].data.deliver.station;
             }

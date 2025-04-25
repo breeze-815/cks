@@ -10,17 +10,19 @@ void accept_order(int user_pos) // 接单界面
     int page = 0; // 当前页码
     int clicked;
     int type=0, local_index=0, global_index=0; //type为订单种类，超市为0，外卖为1，代取为2；local_index为各订单在当前种类中的序号；global_index为各订单在所有订单中的序号
+    //char debg[20];
     OrderList OL = {0}; //创建超市，外卖，订单线性空表，便于读取
     FoodList FL = {0};
     DeliverList DL = {0};
-    mouse_off_arrow(&mouse);
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
     ReadAllDeliver(&DL); // 读取快递列表
+    mouse_off_arrow(&mouse);
     num_of_orders.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
-    num_of_orders.cur_count=0;//初始化当前接单数为0
 	draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
 	mouse_on_arrow(mouse);
+    //sprintf(debg,"%d",num_of_orders.cur_count);
+    //PrintText(1,1,debg,HEI,32,1,black);
 	while(1)
     {
 		mouse_show_arrow(&mouse);
@@ -182,14 +184,7 @@ void accept_order(int user_pos) // 接单界面
             }
             else
             {
-                DestroyOList(&OL); // 释放订单列表内存
-                DestroyFList(&FL); // 释放食品列表内存
-                DestroyDList(&DL); // 释放快递列表内存
                 add_my_accept(&OL, &FL, &DL, type, local_index); //加入接单列表
-                //return后从这返回
-                ReadAllOrder(&OL); // 读取订单列表
-                ReadAllFood(&FL); // 读取食品列表
-                ReadAllDeliver(&DL); // 读取快递列表
                 //重画订单展示列表
                 bar1(0, 150, 1024, 768, white);
                 draw_accept_order(page, &OL, &FL, &DL);
@@ -209,13 +204,7 @@ void accept_order(int user_pos) // 接单界面
                 }
                 else
                 {
-                    DestroyOList(&OL); // 释放订单列表内存
-                    DestroyFList(&FL); // 释放食品列表内存
-                    DestroyDList(&DL); // 释放快递列表内存
                     add_my_accept(&OL, &FL, &DL, type, local_index);
-                    ReadAllOrder(&OL); // 读取订单列表
-                    ReadAllFood(&FL); // 读取食品列表
-                    ReadAllDeliver(&DL); // 读取快递列表
                     //重画订单展示列表
                     bar1(0, 150, 1024, 768, white);
                     draw_accept_order(page, &OL, &FL, &DL);
@@ -236,14 +225,7 @@ void accept_order(int user_pos) // 接单界面
             }
             else
             {
-                DestroyOList(&OL); // 释放订单列表内存
-                DestroyFList(&FL); // 释放食品列表内存
-                DestroyDList(&DL); // 释放快递列表内存
                 add_my_accept(&OL, &FL, &DL, type, local_index);
-                //重画订单展示列表
-                ReadAllOrder(&OL); // 读取订单列表
-                ReadAllFood(&FL); // 读取食品列表
-                ReadAllDeliver(&DL); // 读取快递列表
                 bar1(0, 150, 1024, 768, white);
                 draw_accept_order(page, &OL, &FL, &DL);
             }
@@ -263,14 +245,8 @@ void accept_order(int user_pos) // 接单界面
                 }
                 else
                 {
-                    DestroyOList(&OL); // 释放订单列表内存
-                    DestroyFList(&FL); // 释放食品列表内存
-                    DestroyDList(&DL); // 释放快递列表内存
                     add_my_accept(&OL, &FL, &DL, type, local_index);
                     //重画订单展示列表
-                    ReadAllOrder(&OL); // 读取订单列表
-                    ReadAllFood(&FL); // 读取食品列表
-                    ReadAllDeliver(&DL); // 读取快递列表
                     bar1(0, 150, 1024, 768, white);
                     draw_accept_order(page, &OL, &FL, &DL);
                 }
@@ -297,121 +273,135 @@ void draw_accept_order(int page, OrderList *OL, FoodList *FL, DeliverList *DL) /
     int y_offset = 170; // 初始Y轴偏移
     int start_index = page * 4; // 当前页的起始订单索引
     int end_index = start_index + 4; // 当前页的结束订单索引
-
+    char debg[20];
     if (end_index > num_of_orders.total_cnt) 
         end_index = num_of_orders.total_cnt; // 防止越界
     
     bar1(0, 150, 1024, 768, white); // 清空屏幕
-
-    // 绘制订单
-    for (i = start_index; i < end_index; i++) 
+    sprintf(debg,"%d",num_of_orders.total_cnt);
+    PrintText(0,0,debg,HEI,36,1,Red);
+    
+    if(num_of_orders.total_cnt==0)
+    PrintCC(400,400,"当前无可接订单",HEI,36,1,Red);
+    else
     {
-        char show_pick_up[20]; // 取餐地点
-        char show_destination[20]; // 目的地
-        char show_distance[20]; // 距离
-        char show_deliver_price[20]; // 配送费用
-        int distance_m; // 距离
-        float distance_km; // 距离
-        float item_price;// 商品价格
-        double deliver_price;//配送费
-
-        if(i < OL->length) //先展示超市订单
+        // 绘制订单
+        for (i = start_index; i < end_index; i++) 
         {
-            Order order = OL->elem[i]; // 获取当前订单
-            //绘制订单框
-            Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, deepgrey);
-            //绘制详情按钮
-            Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
-            PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
-            //绘制接单按钮
-            Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
-            PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
-            // 显示订单简略信息
-            sprintf(show_pick_up, "取货点：%s", node[order.pick_up_location].name); //展示取货点
-            PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
+            char show_pick_up[20]; // 取餐地点
+            char show_destination[20]; // 目的地
+            char show_distance[20]; // 距离
+            char show_deliver_price[20]; // 配送费用
+            int distance_m; // 距离
+            float distance_km; // 距离
+            float item_price;// 商品价格
+            double deliver_price;//配送费
 
-            sprintf(show_destination, "送货点：%s", node[order.destination].name); //展示送货点
-            PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
+            if(i < OL->length) //先展示超市订单
+            {
+                //char debg[20];
+                Order order = OL->elem[i]; // 获取当前订单
+                //绘制订单框
+                // sprintf(debg,"%d",i);
+                // PrintText(0,0,debg,HEI,24,1,black);
+                // sprintf(debg,"%d",order.pick_up_location);
+                // PrintText(0,50,debg,HEI,32,1,black);
+                Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, deepgrey);
+                //绘制详情按钮
+                Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
+                PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
+                //绘制接单按钮
+                Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
+                PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
+                // 显示订单简略信息
+                sprintf(show_pick_up, "取货点：%s", node[order.pick_up_location].name); //展示取货点
+                PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
 
-            distance_m = dijkstra(&node[order.pick_up_location], &node[order.destination],3); // 计算距离
-            distance_km = distance_m / 1000.0; // 转换为公里
-            sprintf(show_distance, "距离：%.2fkm", distance_km); //展示距离
-            PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
+                sprintf(show_destination, "送货点：%s", node[order.destination].name); //展示送货点
+                PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
 
-            item_price = order.total_amount; // 获取商品价格
-            deliver_price = rider_deliver_price(distance_m, item_price); // 计算配送费用
-            sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
-            PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
+                distance_m = dijkstra(&node[order.pick_up_location], &node[order.destination],3); // 计算距离
+                distance_km = distance_m / 1000.0; // 转换为公里
+                sprintf(show_distance, "距离：%.2fkm", distance_km); //展示距离
+                PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
 
-            y_offset += 120; // 每个订单框之间的间距
-        }
-        else if (i >= OL->length && i < OL->length + FL->length) // 然后展示食堂订单
-        {
-            FoodOrder food_order = FL->elem[i - OL->length]; // 获取当前订单
+                item_price = order.total_amount; // 获取商品价格
+                deliver_price = rider_deliver_price(distance_m, item_price); // 计算配送费用
+                sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
+                PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
 
-            Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
+                y_offset += 120; // 每个订单框之间的间距
+            }
+            else if (i >= OL->length && i < OL->length + FL->length) // 然后展示食堂订单
+            {
+                
+                FoodOrder food_order = FL->elem[i - OL->length]; // 获取当前订单
+                
+                Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
 
-            Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
-            PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
-            
-            Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
-            PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
+                Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
+                PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
+                
+                Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
+                PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
 
-            sprintf(show_pick_up, "取餐点：%s", node[food_order.station].name);
-            PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
+                sprintf(show_pick_up, "取餐点：%s", node[food_order.station].name);
+                PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
 
-            sprintf(show_destination, "送餐点：%s", node[food_order.destination].name);
-            PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
+                sprintf(show_destination, "送餐点：%s", node[food_order.destination].name);
+                PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
 
-            distance_m = dijkstra(&node[food_order.station], &node[food_order.destination],3); 
-            distance_km = distance_m / 1000.0; 
-            sprintf(show_distance, "距离：%.2fkm", distance_km);
-            PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
+                distance_m = dijkstra(&node[food_order.station], &node[food_order.destination],3); 
+                distance_km = distance_m / 1000.0; 
+                sprintf(show_distance, "距离：%.2fkm", distance_km);
+                PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
 
-            item_price = food_order.total_amount; 
-            deliver_price = rider_deliver_price(distance_m, item_price); 
-            sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
-            PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
+                item_price = food_order.total_amount; 
+                deliver_price = rider_deliver_price(distance_m, item_price); 
+                sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
+                PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
 
-            y_offset += 120; // 每个订单框之间的间距
-        }
-        else if(i >= OL->length + FL->length)//最后展示快递代取订单
-        {
-            Deliver deliver = DL->elem[i - OL->length - FL->length]; 
+                y_offset += 120; // 每个订单框之间的间距
+            }
+            else if(i >= OL->length + FL->length)//最后展示快递代取订单
+            {
+                Deliver deliver = DL->elem[i - OL->length - FL->length]; 
 
-            Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
+                Draw_Rounded_Rectangle(20, y_offset, 1000, y_offset + 100, 30, 1, 0x6B4D);
 
-            Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
-            PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
-            
-            Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
-            Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
-            PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
-            
-            sprintf(show_pick_up, "取货点：%s", node[deliver.station+408].name);
-            PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
+                Fill_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(750, y_offset+25, 850, y_offset+75, 25, 1,deepblue);
+                PrintCC(750+25, y_offset+30, "详情", HEI, 24, 1, deepblue);
+                
+                Fill_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, white);
+                Draw_Rounded_Rectangle(875, y_offset+25, 975, y_offset+75, 25, 1,deepblue);
+                PrintCC(875+25, y_offset+30, "接单", HEI, 24, 1, deepblue);
+                
+                sprintf(show_pick_up, "取货点：%s", node[deliver.station+408].name);
+                PrintText(50, y_offset + 10, show_pick_up, HEI, 24, 1, black);
 
-            sprintf(show_destination, "送货点：%s", node[deliver.index].name);
-            PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
+                sprintf(show_destination, "送货点：%s", node[deliver.index].name);
+                PrintText(50, y_offset + 60, show_destination, HEI, 24, 1, black);
 
-            distance_m = dijkstra(&node[deliver.station], &node[deliver.index],3); 
-            distance_km = distance_m / 1000.0; 
-            sprintf(show_distance, "距离：%.2fkm", distance_km);
-            PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
+                distance_m = dijkstra(&node[deliver.station], &node[deliver.index],3); 
+                distance_km = distance_m / 1000.0; 
+                sprintf(show_distance, "距离：%.2fkm", distance_km);
+                PrintText(500, y_offset + 10, show_distance, HEI, 24, 1, black);
 
-            item_price = 2.0; 
-            deliver_price = rider_deliver_price(distance_m, item_price); 
-            sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
-            PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
+                item_price = 2.0; 
+                deliver_price = rider_deliver_price(distance_m, item_price); 
+                sprintf(show_deliver_price, "配送费：%.1f元", deliver_price);
+                PrintText(500, y_offset + 60, show_deliver_price, HEI, 24, 1, black);
 
-            y_offset += 120; 
+                y_offset += 120; 
+            }
         }
     }
+    
     // 绘制翻页按钮
     Draw_Rounded_Rectangle(220, 700, 340, 750, 25, 1, deepblue); // 上一页
     Draw_Rounded_Rectangle(420, 700, 540, 750, 25, 1, deepblue); // 下一页
