@@ -96,7 +96,7 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
     Order currentOrder ; 
     FoodOrder currentFood;
 
-    char current_time[20]; // 获取当前时间
+    char current_time[100]; // 获取当前时间
     char time_str[100]; // 打印下单时间
     char user_name[100]; // 打印用户名
     char user_phone[100]; // 打印用户手机号
@@ -108,7 +108,7 @@ void draw_order_detail(int type,OrderList *OL, FoodList *FL, DeliverList *DL,
     int item_y = 0;// 商品框的y坐标
 
     float total_amount = 0.0; // 总金额
-    char total_str[20]; // 总金额字符串
+    char total_str[100]; // 总金额字符串
     int fullPageItemCount = 0; // 满页商品数量
     
     bar1(0, 150, 1024, 768, white);// 将详情页绘制在 0,150 到 1024,768 区域
