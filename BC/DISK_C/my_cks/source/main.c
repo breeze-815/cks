@@ -2,7 +2,7 @@
 
 int main()
 {
-   
+    int distance;
     int gd = DETECT, gm;
     SetSVGA64k();//启动SVGA画图界面 
     
@@ -16,7 +16,8 @@ int main()
 
         welcome();//首页
     }
-    
+    //distance=dijkstra(&node[7], &node[12], 3);
+    //printf("%d",distance);
     return 0;
 }
 

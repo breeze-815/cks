@@ -101,8 +101,8 @@ void my_accept_detail(int index , int user_pos)
     int type;
     type=cur_orders[index].type;
 
-    ReadAllOrder(&OL); // 读取订单列表
-    ReadAllFood(&FL); // 读取食品列表
+    //ReadAllOrder(&OL); // 读取订单列表
+    //ReadAllFood(&FL); // 读取食品列表
 
     // 计算总页数//第一页4个，第二页后面9个
     if (type == ORDER_SUPERMARKET) {
@@ -337,11 +337,6 @@ void draw_my_order_detail(int type,int index,int page)
             }
         }
     }
-    if (route_state.picked[index] == 1)
-        PrintCC(600, 715, "已取餐，待配送", HEI, 24, 1, Red);
-    else 
-        PrintCC(600, 715, "待取餐", HEI, 24, 1, Red);
-
 }
 
 

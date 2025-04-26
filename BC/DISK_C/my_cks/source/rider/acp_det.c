@@ -362,7 +362,7 @@ void show_order_detail(int local_index, int type, int user_pos)
                 add_my_accept(&OL, &FL, &DL, type, local_index); //加入接单列表
                 //重画订单展示列表
                 bar1(0, 150, 1024, 768, white);
-                draw_accept_order(page, &OL, &FL, &DL);
+                accept_order(user_pos);
             }
         }
     }

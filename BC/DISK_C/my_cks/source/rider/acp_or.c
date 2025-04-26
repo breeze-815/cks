@@ -17,10 +17,10 @@ void accept_order(int user_pos) // 接单界面
     ReadAllOrder(&OL); // 读取订单列表
     ReadAllFood(&FL); // 读取食品列表
     ReadAllDeliver(&DL); // 读取快递列表
-    draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
     mouse_off_arrow(&mouse);
     //press3(1);
     num_of_orders.total_cnt = OL.length + FL.length + DL.length; // 计算订单总数
+    draw_accept_order(page,&OL,&FL,&DL); // 绘制接单页面
 	mouse_on_arrow(mouse);
     //sprintf(debg,"%d",num_of_orders.cur_count);
     //PrintText(1,1,debg,HEI,32,1,black);

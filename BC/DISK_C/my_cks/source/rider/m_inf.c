@@ -92,7 +92,7 @@ void draw_my_information(USER currentUser)
     char show_num[50];
     char show_account[50];
     bar1(0, 150, 1024, 768,white);
-    bar1(0, 150, 200, 1024, deepblue);
+    bar1(0, 150, 200, 768, deepblue);
     sprintf(show_name,"用户：%s",currentUser.name);
     PrintText(350,200,show_name,HEI,32,1,black);
     sprintf(show_num,"手机号：%s",currentUser.number);
@@ -123,6 +123,7 @@ void draw_my_information(USER currentUser)
 
 void press4(int x)
 {
+    bar1(0, 150, 200, 768, deepblue);
     mouse_off_arrow(&mouse);
     switch (x)
     { 

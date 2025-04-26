@@ -119,7 +119,7 @@ void my_history_order(int user_pos)
             press3(3);
             press4(3);
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 
+            //bar1(0, 150, 200, 768, white); // 
             draw_my_history_order();
             mouse_on_arrow(mouse);
         }
@@ -130,7 +130,7 @@ void my_history_order(int user_pos)
             press3(3);
             press4(3);
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); //
+            //bar1(0, 150, 200, 768, white); //
             draw_my_history_order();
             mouse_on_arrow(mouse);
         }
@@ -141,7 +141,7 @@ void my_history_order(int user_pos)
             press3(3);
             press4(3);
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 
+            //bar1(0, 150, 200, 768, white); // 
             draw_my_history_order();
             mouse_on_arrow(mouse);
         }
@@ -152,7 +152,7 @@ void my_history_order(int user_pos)
             press3(3);
             press4(3);
             mouse_on_arrow(mouse);
-            bar1(0, 150, 1024, 768, white); // 
+            //bar1(0, 150, 200, 768, white); // 
             draw_my_history_order();
             mouse_on_arrow(mouse);
         }
@@ -384,7 +384,7 @@ void my_history_detail(int index , int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); 
-            draw_my_order_detail(type, index,page);
+            draw_my_history_detail(type, index,page);
         }
         else if(mouse_press(782, 50, 902, 100)==1) //我的
         {
@@ -395,13 +395,13 @@ void my_history_detail(int index , int user_pos)
             //return后从这开始
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white);  
-            draw_my_order_detail(type, index,page);
+            draw_my_history_detail(type, index,page);
         }
         else if (mouse_press(220, 700, 340, 750) == 1) 
 		{
             if (page > 0) {
                 page--;
-                draw_my_order_detail(type, index,page);
+                draw_my_history_detail(type, index,page);
             } else {
                 // 提示：已是第一页
                 PrintCC(630, 715, "已是第一页", HEI, 24, 1, lightred);
@@ -413,7 +413,7 @@ void my_history_detail(int index , int user_pos)
 		{
 			if (page < totalPage - 1) {
 				page++;
-				draw_my_order_detail(type, index,page);
+				draw_my_history_detail(type, index,page);
 			} else {
 				// 提示：已是最后一页
 				PrintCC(630, 715, "已是最后一页", HEI, 24, 1, lightred);
@@ -469,7 +469,7 @@ void draw_my_history_detail(int type,int index,int page)
     // 第一页绘制头部
     if(page==0&&type!=ORDER_DELIVER)
     {
-        draw_my_order_detail_body(type, index);
+        draw_my_history_detail_body(type, index);
 
         // 表头
         PrintCC(200, 400, "商品详情", HEI, 24, 1, black);
@@ -482,7 +482,7 @@ void draw_my_history_detail(int type,int index,int page)
     }
     else if(page==0&&type==ORDER_DELIVER)
     {
-        draw_my_order_detail_body(type, index);
+        draw_my_history_detail_body(type, index);
     }
     else // 其他页
     {
