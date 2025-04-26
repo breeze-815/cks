@@ -118,6 +118,8 @@ void my_accept_order(int user_pos)
             mouse_off_arrow(&mouse);
             accept_order(user_pos);//接单页面
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_off_arrow(&mouse);
             bar1(0, 150, 1024, 768, white); // 清屏
             draw_my_accept();
@@ -129,6 +131,8 @@ void my_accept_order(int user_pos)
             mouse_off_arrow(&mouse);
             route(cur_orders,num_of_orders.cur_count,user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); 
             draw_my_accept();  
@@ -141,6 +145,8 @@ void my_accept_order(int user_pos)
             bar1(0,150,200,768,deepblue);
             my_information(user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); 
             draw_my_accept();  
@@ -151,6 +157,8 @@ void my_accept_order(int user_pos)
             press4(1);
             my_information(user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); //清屏
             draw_my_accept();
@@ -161,6 +169,8 @@ void my_accept_order(int user_pos)
             press4(3);
             my_history_order(user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 清除路线界面残留
             draw_my_accept();
@@ -170,6 +180,8 @@ void my_accept_order(int user_pos)
         {
             my_accept_detail(0,user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 
             draw_my_accept();
@@ -179,6 +191,8 @@ void my_accept_order(int user_pos)
         {
             my_accept_detail(1,user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); //
             draw_my_accept();
@@ -188,6 +202,8 @@ void my_accept_order(int user_pos)
         {
             my_accept_detail(2,user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 
             draw_my_accept();
@@ -197,6 +213,8 @@ void my_accept_order(int user_pos)
         {
             my_accept_detail(3,user_pos);
             //return后从这开始
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 
             draw_my_accept();
@@ -206,6 +224,8 @@ void my_accept_order(int user_pos)
         {
             delete_my_order(0);
             //删除后更新我的当前列表
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white);
             draw_my_accept();
@@ -215,6 +235,8 @@ void my_accept_order(int user_pos)
         {
             delete_my_order(1);
             //删除后更新我的当前列表
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); //
             draw_my_accept();
@@ -225,6 +247,8 @@ void my_accept_order(int user_pos)
             delete_my_order(2);
             //删除后更新我的当前列表
             mouse_on_arrow(mouse);
+            press3(3);
+            press4(2);
             bar1(0, 150, 1024, 768, white); // 
             draw_my_accept();
             mouse_on_arrow(mouse);
@@ -233,6 +257,8 @@ void my_accept_order(int user_pos)
         {
             delete_my_order(3);
             //删除后更新我的当前列表
+            press3(3);
+            press4(2);
             mouse_on_arrow(mouse);
             bar1(0, 150, 1024, 768, white); // 
             draw_my_accept();
@@ -248,7 +274,7 @@ void draw_my_accept()
     int distance_m;
     float dist_km, amount, fee;
     int i;
-    char debg[20];
+    //char debg[20];
     bar1(200, 150, 1024, 768, white);
     bar1(0, 150, 200, 768,deepblue);
     
@@ -265,8 +291,8 @@ void draw_my_accept()
     PrintCC(75,454,"当前",HEI,24,1,white);
     PrintCC(75,617,"历史",HEI,24,1,deepblue);
 
-    sprintf(debg,"%d",num_of_orders.cur_count);
-    PrintText(150, 100, debg, HEI, 24, 1, Red);
+    //sprintf(debg,"%d",num_of_orders.cur_count);
+    //PrintText(150, 100, debg, HEI, 24, 1, Red);
 
     if (num_of_orders.cur_count == 0)
     PrintCC(400,400,"当前无正在进行中订单",HEI,32,1,Red);

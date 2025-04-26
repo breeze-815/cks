@@ -348,5 +348,22 @@ void show_order_detail(int local_index, int type, int user_pos)
 				bar1(630, 715, 780, 765, white);
 			}
 		}
+        else if(mouse_press(800, 700, 1000, 750) == 1)  //点击接单
+        {
+            if (num_of_orders.cur_count == 4)
+            { 
+                //打印提示
+                PrintText(100, 100, "接单数量已达上限！", HEI, 24, 1, Red);
+                delay(500);
+                bar1(100,100,500,130,deepblue);
+            }
+            else
+            {
+                add_my_accept(&OL, &FL, &DL, type, local_index); //加入接单列表
+                //重画订单展示列表
+                bar1(0, 150, 1024, 768, white);
+                draw_accept_order(page, &OL, &FL, &DL);
+            }
+        }
     }
 }
